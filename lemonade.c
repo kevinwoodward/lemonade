@@ -2,9 +2,32 @@
 
 int main()
 {
-  initscr();                //Start ncurses mode
-  printw("Hello World!");   //'print' hello World
-  refresh();                //Write buffer to screen
-  getch();                  //Wait for user input
-  endwin();                 //End curses mode
+  initscr();                        //Start ncurses mode
+  printw("                                     .@@#+,                                    \n");
+  printw("                                    :@@++#@@@`                                 \n");
+  printw("                                   #@.@:::::+@+                                \n");
+  printw("                                 :#@,,@:;::::,@'                               \n");
+  printw("                                '@,,,,#@:::::::@                               \n");
+  printw("                               .@.,,,,,@,:;::::#@                              \n");
+  printw("                               @:,,,,,,#@::::::,@                              \n");
+  printw("                              :@,,,,,,::@@::::::@;                             \n");
+  printw("                              @:,,:,,,,,:@@'::::'@                             \n");
+  printw("                              @,:,,:,,,,,:;@@@@@@@                             \n");
+  printw("                             `@:,,,,,,,,,,::::;@.                              \n");
+  printw("                             ,@:,,,,,,,,,,,,,,,@                               \n");
+  printw("                             :@,:,,:,:,,,,,,,,,@                               \n");
+  printw("                             .@:,::,:,,,,,,,,,,@                               \n");
+  printw("                              @,,:,:,,,,,,,,,,,@                               \n");
+  printw("                              @,,::,,,,,,,,,,,+@                               \n");
+  printw("                              ##,,,,,,,,,,,,,,@`                               \n");
+  printw("                               @,,,,,,,,,,,,:'@                                \n");
+  printw("                               +@,,,,,,,,,,,,@`                                \n");
+  printw("                                @@:,,,,,,,,,@'                                 \n");
+  printw("                                 @@,,,:,:,;@'                                  \n");
+  printw("                                  ;@@,,,'@@`                                   \n");
+  printw("                                    #@,,@,`                                    \n");
+  printw("                                     @@@'                                      \n");
+  refresh();                        //Write buffer to screen
+  getch();                          //Wait for user input
+  endwin();                         //End curses mode
 }
