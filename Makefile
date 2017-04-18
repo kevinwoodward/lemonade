@@ -1,5 +1,4 @@
 Lemonade: lemonade.c
 	gcc lemonade.c -lncurses -o lemonade
-BP:	boilerplateMPD.c
-	gcc boilerplateMPD.c -lmpdclient -o boilerplateMPD
-
+client:	client.c
+	gcc client.c -o client
