@@ -9,9 +9,9 @@ EXEBIN = frontend
 all : frontend
 
 frontend : frontend.o
-	$(CC) -o $(EXEBIN) frontend.o
+	$(CC) -o $(EXEBIN) frontend.o -lncurses
 
-frontend.c :	frontend.c
+frontend.o :	frontend.c
 	$(CC) -c $(FLAGS) frontend.c
 
 clean :
