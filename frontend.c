@@ -28,28 +28,21 @@ int main(int argc, char* argv[]){
 		
 		switch(ch){
 			case '1':
-			delwin(activewin);
-			activewin = NULL;
+				remWin(activewin);
 				break;
 			
 			case '2':
-			delwin(activewin);
-			activewin = NULL;
+				remWin(activewin);
 				break;
 				
 			case '3':
-			delwin(activewin);
-			activewin = NULL;
+				remWin(activewin);
 				break;
 				
 		}
 		
 		//Refresh screen
 		wrefresh(mainwin);
-		if(activewin !=NULL){
-			wrefresh(activewin);
-		}
-		refresh();
 		
 	}
 	

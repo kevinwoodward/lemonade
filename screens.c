@@ -33,3 +33,11 @@ WINDOW* cSelwin(WINDOW* mainwin){
 WINDOW* cBrowwin(WINDOW* mainwin){
 	return NULL;
 }
+
+
+void remWin(WINDOW* childwin){
+	wclear(childwin);
+	delwin(childwin);
+	return;
+}
+

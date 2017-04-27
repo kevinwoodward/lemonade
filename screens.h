@@ -13,7 +13,7 @@ WINDOW* cSelwin(WINDOW* mainwin);
 
 WINDOW* cBrowwin(WINDOW* mainwin);
 
-
+void remWin(WINDOW* childwin);
 
 
 
