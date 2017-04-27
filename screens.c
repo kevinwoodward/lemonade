@@ -25,14 +25,50 @@ WINDOW* cWelcwin(WINDOW* mainwin){
 
 
 
-WINDOW* cSelwin(WINDOW* mainwin){
-	return NULL;
+WINDOW* cSelectwin(WINDOW* mainwin){
+	WINDOW* childwin;
+	int width = 26, height = 10;
+    int rows  = 25, cols   = 80;
+    int x = (cols - width)  / 2;
+    int y = (rows - height) / 2;
+	childwin = subwin(mainwin, height, width, y, x);
+    box(childwin, 0, 0);
+    mvwaddstr(childwin, 1, 1, "This is where the user");
+    mvwaddstr(childwin, 2, 1, "will select songs");
+	wrefresh(childwin);
+	return childwin;
 }
 
 
-WINDOW* cBrowwin(WINDOW* mainwin){
-	return NULL;
+WINDOW* cBrowsewin(WINDOW* mainwin){
+	WINDOW* childwin;
+	int width = 26, height = 10;
+    int rows  = 25, cols   = 80;
+    int x = (cols - width)  / 2;
+    int y = (rows - height) / 2;
+	childwin = subwin(mainwin, height, width, y, x);
+    box(childwin, 0, 0);
+    mvwaddstr(childwin, 1, 1, "This is where the user");
+    mvwaddstr(childwin, 2, 1, "will browse songs");
+	wrefresh(childwin);
+	return childwin;
 }
+
+
+WINDOW* cAboutwin(WINDOW* mainwin){
+	WINDOW* childwin;
+	int width = 26, height = 10;
+    int rows  = 25, cols   = 80;
+    int x = (cols - width)  / 2;
+    int y = (rows - height) / 2;
+	childwin = subwin(mainwin, height, width, y, x);
+    box(childwin, 0, 0);
+    mvwaddstr(childwin, 1, 1, "This is where the user");
+    mvwaddstr(childwin, 2, 1, "will read about things");
+	wrefresh(childwin);
+	return childwin;
+}
+
 
 
 void remWin(WINDOW* childwin){

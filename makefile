@@ -3,7 +3,7 @@
 
 CC = gcc
 FLAGS = -c -std=c99 -Wall
-OBJECTS = frontend.o hello.o screens.o
+OBJECTS = frontend.o hello.o util.o screens.o
 EXEBIN = frontend
 
 all : frontend

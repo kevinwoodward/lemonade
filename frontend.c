@@ -29,14 +29,18 @@ int main(int argc, char* argv[]){
 		switch(ch){
 			case '1':
 				remWin(activewin);
+				activewin = cSelectwin(mainwin);
 				break;
 			
 			case '2':
 				remWin(activewin);
+				activewin = cBrowsewin(mainwin);
+				
 				break;
 				
 			case '3':
 				remWin(activewin);
+				activewin = cAboutwin(mainwin);
 				break;
 				
 		}
@@ -48,10 +52,10 @@ int main(int argc, char* argv[]){
 	
 	
 	//End of excecution
-	
+	remWin(activewin);
     delwin(mainwin);
     endwin();
-    refresh();
+    //refresh();
 	return 0;
 }
 

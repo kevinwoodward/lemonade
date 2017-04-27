@@ -9,9 +9,11 @@
 
 WINDOW* cWelcwin(WINDOW* mainwin);
 
-WINDOW* cSelwin(WINDOW* mainwin);
+WINDOW* cSelectwin(WINDOW* mainwin);
 
-WINDOW* cBrowwin(WINDOW* mainwin);
+WINDOW* cBrowsewin(WINDOW* mainwin);
+
+WINDOW* cAboutwin(WINDOW* mainwin);
 
 void remWin(WINDOW* childwin);
 
