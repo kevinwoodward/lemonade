@@ -34,7 +34,7 @@ void splash(WINDOW* mainwin){
 	printw("                                    #@,,@,`                                    \n");
 	printw("                                     @@@'                                      \n");
 	refresh();
-	sleep(2);
+	sleep(1.5);
 	wclear(mainwin);
 	refresh();
 }
