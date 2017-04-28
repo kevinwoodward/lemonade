@@ -39,7 +39,7 @@ int main(int argc, char **argv) {
   char* filePath = NULL;
 
 
-  while((argCase = getopt(argc, argv, "ps:k")) != -1) {
+  while((argCase = getopt(argc, argv, "ps:ke")) != -1) {
     switch (argCase) {
       case 'p':
         playpause();
@@ -52,6 +52,8 @@ int main(int argc, char **argv) {
         system("killall screen");
         return 0;
         break;
+      case 'e':
+        system("screen -r");
       case '?':
         if (optopt == 's') {
           fprintf (stdout, "Option -%c requires an argument.\n", optopt);
