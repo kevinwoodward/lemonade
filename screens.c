@@ -4,16 +4,22 @@
 
 #include "screens.h"
 
+#define WIDTH 26
+#define HEIGHT 10
+#define ROWS 25
+#define COLS 80
+
+
 WINDOW* cWelcwin(WINDOW* mainwin){
 	WINDOW* childwin;
-	int width = 26, height = 10;
-    int rows  = 25, cols   = 80;
+	int width = WIDTH, height = HEIGHT;
+    int rows  = ROWS, cols   = COLS;
     int x = (cols - width)  / 2;
     int y = (rows - height) / 2;
 	childwin = subwin(mainwin, height, width, y, x);
     box(childwin, 0, 0);
     mvwaddstr(childwin, 1, 1, "Welcome to the Lemonade");
-    mvwaddstr(childwin, 2, 5, "music player!");
+    mvwaddstr(childwin, 2, 7, "music player!");
     mvwaddstr(childwin, 3, 1, "Please select an action:");
     mvwaddstr(childwin, 5, 1, "[1]: Select a song");
     mvwaddstr(childwin, 6, 1, "[2]: Browse Files");
@@ -27,8 +33,8 @@ WINDOW* cWelcwin(WINDOW* mainwin){
 
 WINDOW* cSelectwin(WINDOW* mainwin){
 	WINDOW* childwin;
-	int width = 26, height = 10;
-    int rows  = 25, cols   = 80;
+	int width = WIDTH, height = HEIGHT;
+    int rows  = ROWS, cols   = COLS;
     int x = (cols - width)  / 2;
     int y = (rows - height) / 2;
 	childwin = subwin(mainwin, height, width, y, x);
@@ -42,8 +48,8 @@ WINDOW* cSelectwin(WINDOW* mainwin){
 
 WINDOW* cBrowsewin(WINDOW* mainwin){
 	WINDOW* childwin;
-	int width = 26, height = 10;
-    int rows  = 25, cols   = 80;
+	int width = WIDTH, height = HEIGHT;
+    int rows  = ROWS, cols   = COLS;
     int x = (cols - width)  / 2;
     int y = (rows - height) / 2;
 	childwin = subwin(mainwin, height, width, y, x);
@@ -57,8 +63,8 @@ WINDOW* cBrowsewin(WINDOW* mainwin){
 
 WINDOW* cAboutwin(WINDOW* mainwin){
 	WINDOW* childwin;
-	int width = 26, height = 10;
-    int rows  = 25, cols   = 80;
+	int width = WIDTH, height = HEIGHT;
+    int rows  = ROWS, cols   = COLS;
     int x = (cols - width)  / 2;
     int y = (rows - height) / 2;
 	childwin = subwin(mainwin, height, width, y, x);
