@@ -9,7 +9,8 @@
 #define ROWS 25
 #define COLS 80
 
-
+//cWelcwin()
+//Print out welcome window
 WINDOW* cWelcwin(WINDOW* mainwin){
 	WINDOW* childwin;
 	int width = WIDTH, height = HEIGHT;
@@ -29,8 +30,8 @@ WINDOW* cWelcwin(WINDOW* mainwin){
 	return childwin;
 }
 
-
-
+//cSelectwin()
+//Print out select song window
 WINDOW* cSelectwin(WINDOW* mainwin){
 	WINDOW* childwin;
 	int width = WIDTH, height = HEIGHT;
@@ -45,7 +46,8 @@ WINDOW* cSelectwin(WINDOW* mainwin){
 	return childwin;
 }
 
-
+//cBrowsewin()
+//Print out File browser window
 WINDOW* cBrowsewin(WINDOW* mainwin){
 	WINDOW* childwin;
 	int width = WIDTH, height = HEIGHT;
@@ -60,7 +62,8 @@ WINDOW* cBrowsewin(WINDOW* mainwin){
 	return childwin;
 }
 
-
+//cAboutwin()
+//Print out about window
 WINDOW* cAboutwin(WINDOW* mainwin){
 	WINDOW* childwin;
 	int width = WIDTH, height = HEIGHT;
@@ -75,8 +78,8 @@ WINDOW* cAboutwin(WINDOW* mainwin){
 	return childwin;
 }
 
-
-
+//remWin()
+//Clears and removes active window. 
 void remWin(WINDOW* childwin){
 	wclear(childwin);
 	delwin(childwin);

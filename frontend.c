@@ -7,6 +7,8 @@
 
 int main(int argc, char* argv[]){	
 	
+	//mainwin is background window, activewin is 
+	//	window currently being viewed by the user
 	WINDOW * mainwin, * activewin;	
 	int ch;
 	

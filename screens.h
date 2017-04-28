@@ -7,12 +7,16 @@
 
 #include <ncurses.h>
 
+//Print out welcome window
 WINDOW* cWelcwin(WINDOW* mainwin);
 
+//Print out select song window
 WINDOW* cSelectwin(WINDOW* mainwin);
 
+//Print out File browser window
 WINDOW* cBrowsewin(WINDOW* mainwin);
 
+//Print out about window
 WINDOW* cAboutwin(WINDOW* mainwin);
 
 void remWin(WINDOW* childwin);
