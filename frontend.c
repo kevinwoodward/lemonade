@@ -48,12 +48,9 @@ int main(int argc, char* argv[]){
 				remWin(activewin);
 				activewin = cWelcwin(mainwin);
 				break;
-		}
+		}//End of switch
 		
-		//Refresh screen
-		wrefresh(mainwin);
-		
-	}
+	}//End of input while
 	
 	
 	//End of excecution
