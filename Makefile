@@ -3,7 +3,7 @@
 
 CC = gcc
 FLAGS = -c -std=c99 -Wall
-OBJECTS = frontend.o hello.o util.o screens.o
+OBJECTS = frontend.o hello.o util.o screens.o client.o
 EXEBIN = frontend
 
 all : frontend
@@ -25,6 +25,9 @@ screens.o : screens.h screens.c
 	
 hello.o : hello.c
 	$(CC) -c $(FLAGS) hello.c
+
+client.o : client.c
+  $(CC) -c $(FLAGS) client.c
 
 clean :
 	rm -f $(EXEBIN) $(OBJECTS) hello
