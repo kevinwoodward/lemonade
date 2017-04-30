@@ -6,7 +6,7 @@
 
 #include "frontend.h"
 
-#define WIDTH 26
+#define WIDTH 70
 #define HEIGHT 10
 #define ROWS 25
 #define COLS 80
@@ -75,8 +75,15 @@ WINDOW* cSelectwin(WINDOW* mainwin){
     int y = (rows - height) / 2;
 	childwin = subwin(mainwin, height, width, y, x);
     box(childwin, 0, 0);
-    mvwaddstr(childwin, 1, 1, "This is where the user");
-    mvwaddstr(childwin, 2, 1, "will select songs");
+		FILE *ls = popen("ls *.mp3", "r");
+	  char buf[256];
+	  while (fgets(buf, sizeof(buf), ls) != 0) {
+			mvwaddstr(childwin, 1, 1, buf);
+			//mvwaddstr(childwin, 1, 1, "\n");
+	    //mvwaddstr(childwin, 2, 1, buf);
+	  }
+	  pclose(ls);
+
 	wrefresh(childwin);
 	return childwin;
 }
@@ -114,10 +121,9 @@ WINDOW* cAboutwin(WINDOW* mainwin){
 }
 
 //remWin()
-//Clears and removes active window. 
+//Clears and removes active window.
 void remWin(WINDOW* childwin){
 	wclear(childwin);
 	delwin(childwin);
 	return;
 }
-
