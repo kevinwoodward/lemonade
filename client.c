@@ -4,83 +4,103 @@
 #include <ctype.h>
 #include <unistd.h>
 
-void playpause();
-void startProcess();
-void loadSongFile();
-char* getPidString();
-
-int main(int argc, char **argv)
-{
-
-  /*int pflag = 0;
-  int fileflag = 0;
-  char *cvalue = NULL;
-  int index;
-  int c;
-
-  opterr = 0;
-
-  while ((c = getopt (argc, argv, "pf:")) != -1) {
-    switch (c)
-      {
-      case 'p':
-        playpause();
-        printf("%s\n", "here we want to play/pause currently playing song");
-        break;
-      case 'f':
-        cvalue = optarg;
-        printf("%s\n", "here we want to take a filename as a param and play it");
-        break;
-      case '?':
-        if (optopt == 'f')
-          fprintf (stdout, "Option -%c requires an argument.\n", optopt);
-        else if (isprint (optopt))
-          fprintf (stdout, "Unknown option `-%c'.\n", optopt);
-        else
-          fprintf (stdout,
-                   "Unknown option character `\\x%x'.\n",
-                   optopt);
-        return 1;
-      default:
-        abort ();
-      }
-    }*/
-  startProcess();
-  loadSongFile();
-  return 0;
-
+void createScreen() {
+  //creates a new detachted screen terminal instance with the name lemonade
+  system("screen -d -m -S lemonade");
 }
 
-void playpause() {
-  /*system("cat | mpg123 *.mp3");
-  int pid = system("pidof mplayer");
-  char pidstr[10];
-  sprintf(pidstr, "%d", pid);
-  char str[150];
-  strcpy(str, "echo -n p > /proc/");
-  strcat(str, pidstr);
-  strcat(str, "/cd/0");
-  sprintf(str, "%d", pid);
-  system(str);*/
+void sendScreenCommand(char* command) {
+  //takes the passed string and shoves it into the previously opened screen and auto executes it within said screen
+  char str[300];
+  strcpy(str, "screen -S lemonade -X stuff '");
+  strcat(str, command);
+  strcat(str, "^M'");
+  char buffer[500];
+  snprintf(
+    buffer,
+    sizeof(buffer),
+    "screen -S lemonade -X stuff '%s^M'",
+    command
+  );
+  system(buffer);
   return;
 }
 
-void startProcess() {
-  system("cat | mpg123 -R");
+void playpause() {
+  //send the space char to the screen, causing a pause or play depending on current state.
+  sendScreenCommand(" ");
+  return;
 }
 
-void loadSongFile() {
-  char str[150];
-  char* pidStr = getPidString();
-  strcpy(str, "echo \"load em.mp3\" > /proc/");
-  strcat(str, pidStr);
-  strcat(str, "/fd/0");
-  system(str);
+void testList() {
+  //in progress for getting ls output and handling accordingly
+  FILE *ls = popen("ls --file-type", "r");
+  char buf[256];
+  while (fgets(buf, sizeof(buf), ls) != 0) {
+    //handle the contents of the ls here, including file vs dir, playback, cding, etc
+    printf("%s", buf);
+  }
+  pclose(ls);
+
 }
 
-char* getPidString() {
-  int procID = system("pidof mpg123");
-  static char pidStr[10];
-  sprintf(pidStr, "%d", procID);
-  return pidStr;
+int main(int argc, char **argv) {
+
+  if(argc <= 1) {
+    printf("No option specified! Currently:\n-s for start, followed by a filepath to an mp3\n-p for play/pause\n-k for kill\n-e to enter screen\n-l to do the test ls function\n");
+  }
+
+  int argCase;
+  char* filePath = NULL;
+
+  //handles flag options
+  while((argCase = getopt(argc, argv, "ps:kel")) != -1) {
+    switch (argCase) {
+      case 'p':
+        playpause();
+        return 0;
+        break;
+      case 's':
+        filePath = optarg;
+        break;
+      case 'k':
+        system("killall screen");
+        return 0;
+        break;
+      case 'e':
+        system("screen -r");
+        break;
+      case 'l':
+        testList();
+        break;
+      case '?':
+        if (optopt == 's') {
+          fprintf (stdout, "Option -%c requires an argument.\n", optopt);
+          return 1;
+        }
+        else if (isprint (optopt)) {
+          fprintf (stdout, "Unknown option `-%c'.\n", optopt);
+          return 1;
+        }
+        else {
+          fprintf (stdout,
+                   "Unknown option character `\\x%x'.\n",
+                   optopt);
+                   return 1;
+        }
+    }
+  }
+
+  //starts process if command is -s with specified song
+  if(filePath != NULL) {
+    system("killall screen");
+    createScreen();
+    sendScreenCommand("cd ~/Documents/github/lemonade");
+    char fileStr[100];
+    strcpy(fileStr, "mpg123 -C ");
+    strcat(fileStr, filePath);
+    sendScreenCommand(fileStr);
+  }
+
+  return 0;
 }
