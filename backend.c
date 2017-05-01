@@ -35,14 +35,16 @@ void playpause() {
   return;
 }
 
-void testList() {
+/*char * testList() {
   //in progress for getting ls output and handling accordingly
-  FILE *ls = popen("ls --file-type", "r");
+  FILE *ls = popen("ls *.mp3", "r");
   char buf[256];
   while (fgets(buf, sizeof(buf), ls) != 0) {
     //handle the contents of the ls here, including file vs dir, playback, cding, etc
-    printf("%s", buf);
+    //printf("%s", buf);
   }
   pclose(ls);
 
-}
+  return buf;
+
+}*/

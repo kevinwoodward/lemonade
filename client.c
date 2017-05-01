@@ -15,7 +15,7 @@ int main(int argc, char **argv) {
   }
 
   //Backend: ---------------------------------------------------------
-  
+
   int argCase;
   char* filePath = NULL;
 
@@ -37,7 +37,7 @@ int main(int argc, char **argv) {
         system("screen -r");
         break;
       case 'l':
-        testList();
+        //testList();
         break;
       case '?':
         if (optopt == 's') {
@@ -68,62 +68,62 @@ int main(int argc, char **argv) {
     sendScreenCommand(fileStr);
   }
 
-  
+
 	//Frontend: --------------------------------------------------
-  
-  
-	//mainwin is background window, activewin is 
+
+
+	//mainwin is background window, activewin is
 	//	window currently being viewed by the user
-	WINDOW * mainwin, * activewin;	
+	WINDOW * mainwin, * activewin;
 	int ch;
-	
+
 	//Init main window
 	if((mainwin = initscr()) == NULL){
 		fprintf(stderr, "ERROR: Failed to init main window.\n");
 	}
-	
+
 	//Disable echoing of typed chars to screen
 	noecho();
-	
+
 	//Print out splash screen on startup
 	splash(mainwin);
-	
+
 	//Print out welcome window:
 	activewin = cWelcwin(mainwin);
-	
+
 	//Primary program input loop
 	while( (ch = getch()) != 'q'){
-		
+
 		switch(ch){
 			case '1':
 				remWin(activewin);
 				activewin = cSelectwin(mainwin);
 				break;
-			
+
 			case '2':
 				remWin(activewin);
 				activewin = cBrowsewin(mainwin);
 				break;
-				
+
 			case '3':
 				remWin(activewin);
 				activewin = cAboutwin(mainwin);
 				break;
-			
+
 			case '\e':
 				remWin(activewin);
 				activewin = cWelcwin(mainwin);
 				break;
 		}//End of switch
-		
+
 	}//End of input while
-	
-	
+
+
 	//End of excecution
 	remWin(activewin);
     delwin(mainwin);
     endwin();
     //refresh();
-  
+
   return 0;
 }

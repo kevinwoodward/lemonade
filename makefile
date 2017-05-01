@@ -3,7 +3,7 @@
 
 CC = gcc
 FLAGS = -c -Wall
-OBJECTS = client.o frontend.o 
+OBJECTS = client.o frontend.o
 EXEBIN = lemonade
 
 all : lemonade
@@ -11,9 +11,12 @@ all : lemonade
 lemonade : $(OBJECTS)
 	$(CC) -o $(EXEBIN) $(OBJECTS) -lncurses
 
+helpers.o : helpers.c
+	$(CC) -c $(FLAGS) helpers.c
+
 backend.o :	backend.c
 	$(CC) -c $(FLAGS) backend.c
-	
+
 frontend.o : frontend.h frontend.c
 	$(CC) -c $(FLAGS) frontend.c
 
