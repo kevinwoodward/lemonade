@@ -3,7 +3,7 @@
 
 CC = gcc
 FLAGS = -c -Wall
-OBJECTS = client.o frontend.o backend.o
+OBJECTS = client.o frontend.o 
 EXEBIN = lemonade
 
 all : lemonade
