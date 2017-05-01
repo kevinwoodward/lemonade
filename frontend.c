@@ -3,8 +3,10 @@
 //Lemonade music player
 
 #include <unistd.h>
+#include <string.h>
 
 #include "frontend.h"
+#include "helpers.c"
 
 #define WIDTH 70
 #define HEIGHT 10
@@ -70,20 +72,20 @@ WINDOW* cWelcwin(WINDOW* mainwin){
 WINDOW* cSelectwin(WINDOW* mainwin){
 	WINDOW* childwin;
 	int width = WIDTH, height = HEIGHT;
-    int rows  = ROWS, cols   = COLS;
-    int x = (cols - width)  / 2;
-    int y = (rows - height) / 2;
+  int rows  = ROWS, cols   = COLS;
+  int x = (cols - width)  / 2;
+  int y = (rows - height) / 2;
+	int lsCount = 1;
 	childwin = subwin(mainwin, height, width, y, x);
-    box(childwin, 0, 0);
-		FILE *ls = popen("ls *.mp3", "r");
-	  char buf[256];
-	  while (fgets(buf, sizeof(buf), ls) != 0) {
-			mvwaddstr(childwin, 1, 1, buf);
-			//mvwaddstr(childwin, 1, 1, "\n");
-	    //mvwaddstr(childwin, 2, 1, buf);
-	  }
-	  pclose(ls);
-
+  box(childwin, 0, 0);
+	FILE *ls = popen("ls *.mp3", "r");
+	char buf[512];
+	while (fgets(buf, sizeof(buf), ls) != 0) {
+		trimwhitespace(buf);
+		mvwaddstr(childwin, lsCount, 1, buf);
+		lsCount++;
+	}
+	pclose(ls);
 	wrefresh(childwin);
 	return childwin;
 }
@@ -109,13 +111,13 @@ WINDOW* cBrowsewin(WINDOW* mainwin){
 WINDOW* cAboutwin(WINDOW* mainwin){
 	WINDOW* childwin;
 	int width = WIDTH, height = HEIGHT;
-    int rows  = ROWS, cols   = COLS;
-    int x = (cols - width)  / 2;
-    int y = (rows - height) / 2;
+  int rows  = ROWS, cols   = COLS;
+  int x = (cols - width)  / 2;
+  int y = (rows - height) / 2;
 	childwin = subwin(mainwin, height, width, y, x);
-    box(childwin, 0, 0);
-    mvwaddstr(childwin, 1, 1, "This is where the user");
-    mvwaddstr(childwin, 2, 1, "will read about things");
+  box(childwin, 0, 0);
+  mvwaddstr(childwin, 1, 1, "This is where the user");
+  mvwaddstr(childwin, 2, 1, "will read about things");
 	wrefresh(childwin);
 	return childwin;
 }
