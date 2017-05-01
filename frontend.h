@@ -1,4 +1,4 @@
-//screens.h
+//frontend.h
 //CMPS 115 Spring 2017
 //Lemonade music player
 
@@ -6,6 +6,9 @@
 #define SCREENS_H
 
 #include <ncurses.h>
+
+//Prints out splash screen to be used on startup
+void splash(WINDOW* mainwin);
 
 //Print out welcome window
 WINDOW* cWelcwin(WINDOW* mainwin);

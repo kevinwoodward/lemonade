@@ -4,45 +4,9 @@
 #include <ctype.h>
 #include <unistd.h>
 
-void createScreen() {
-  //creates a new detachted screen terminal instance with the name lemonade
-  system("screen -d -m -S lemonade");
-}
+#include "backend.c"
+#include "frontend.h"
 
-void sendScreenCommand(char* command) {
-  //takes the passed string and shoves it into the previously opened screen and auto executes it within said screen
-  char str[300];
-  strcpy(str, "screen -S lemonade -X stuff '");
-  strcat(str, command);
-  strcat(str, "^M'");
-  char buffer[500];
-  snprintf(
-    buffer,
-    sizeof(buffer),
-    "screen -S lemonade -X stuff '%s^M'",
-    command
-  );
-  system(buffer);
-  return;
-}
-
-void playpause() {
-  //send the space char to the screen, causing a pause or play depending on current state.
-  sendScreenCommand(" ");
-  return;
-}
-
-void testList() {
-  //in progress for getting ls output and handling accordingly
-  FILE *ls = popen("ls --file-type", "r");
-  char buf[256];
-  while (fgets(buf, sizeof(buf), ls) != 0) {
-    //handle the contents of the ls here, including file vs dir, playback, cding, etc
-    printf("%s", buf);
-  }
-  pclose(ls);
-
-}
 
 int main(int argc, char **argv) {
 
@@ -50,6 +14,8 @@ int main(int argc, char **argv) {
     printf("No option specified! Currently:\n-s for start, followed by a filepath to an mp3\n-p for play/pause\n-k for kill\n-e to enter screen\n-l to do the test ls function\n");
   }
 
+  //Backend: ---------------------------------------------------------
+  
   int argCase;
   char* filePath = NULL;
 
@@ -102,5 +68,62 @@ int main(int argc, char **argv) {
     sendScreenCommand(fileStr);
   }
 
+  
+	//Frontend: --------------------------------------------------
+  
+  
+	//mainwin is background window, activewin is 
+	//	window currently being viewed by the user
+	WINDOW * mainwin, * activewin;	
+	int ch;
+	
+	//Init main window
+	if((mainwin = initscr()) == NULL){
+		fprintf(stderr, "ERROR: Failed to init main window.\n");
+	}
+	
+	//Disable echoing of typed chars to screen
+	noecho();
+	
+	//Print out splash screen on startup
+	splash(mainwin);
+	
+	//Print out welcome window:
+	activewin = cWelcwin(mainwin);
+	
+	//Primary program input loop
+	while( (ch = getch()) != 'q'){
+		
+		switch(ch){
+			case '1':
+				remWin(activewin);
+				activewin = cSelectwin(mainwin);
+				break;
+			
+			case '2':
+				remWin(activewin);
+				activewin = cBrowsewin(mainwin);
+				break;
+				
+			case '3':
+				remWin(activewin);
+				activewin = cAboutwin(mainwin);
+				break;
+			
+			case '\e':
+				remWin(activewin);
+				activewin = cWelcwin(mainwin);
+				break;
+		}//End of switch
+		
+	}//End of input while
+	
+	
+	//End of excecution
+	remWin(activewin);
+    delwin(mainwin);
+    endwin();
+    //refresh();
+  
   return 0;
 }
