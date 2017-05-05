@@ -4,7 +4,8 @@
 #include <ctype.h>
 #include <unistd.h>
 
-#include "backend.c"
+//#include "helpers.h"
+#include "backend.h"
 #include "frontend.h"
 
 

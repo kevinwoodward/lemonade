@@ -6,7 +6,7 @@
 #include <string.h>
 
 #include "frontend.h"
-#include "helpers.c"
+#include "helpers.h"
 
 #define WIDTH 70
 #define HEIGHT 10

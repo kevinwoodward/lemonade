@@ -1,4 +1,7 @@
 #include <ctype.h>
+#include <string.h>
+
+#include "helpers.h"
 
 char *trimwhitespace(char *str) {
   char *end;
