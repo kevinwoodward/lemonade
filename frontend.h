@@ -6,6 +6,7 @@
 #define SCREENS_H
 
 #include <ncurses.h>
+#include <menu.h>
 
 //Prints out splash screen to be used on startup
 void splash(WINDOW* mainwin);

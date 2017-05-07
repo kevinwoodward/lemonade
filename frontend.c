@@ -75,11 +75,21 @@ WINDOW* cSelectwin(WINDOW* mainwin){
   int rows  = ROWS, cols   = COLS;
   int x = (cols - width)  / 2;
   int y = (rows - height) / 2;
-	int lsCount = 1;
+	//char *choices[];
+	ITEM **my_items;
+	int c;
+	MENU *my_menu;
+	int n_choices, i;
+	ITEM *cur_item;
+
+	int fileCount = popen("ls -l | wc -l","r");
+	char * choices[fileCount];
+
+	//int lsCount = 1;
 	childwin = subwin(mainwin, height, width, y, x);
   box(childwin, 0, 0);
-	FILE *ls = popen("ls -d */", "r");
-	char buf[512];
+	//FILE *ls = popen("ls -d */", "r");
+	/*char buf[512];
 	attron(A_BOLD);
 	while (fgets(buf, sizeof(buf), ls) != 0) {
 		trimwhitespace(buf);
@@ -94,7 +104,7 @@ WINDOW* cSelectwin(WINDOW* mainwin){
 		mvwaddstr(childwin, lsCount, 1, buf);
 		lsCount++;
 	}
-	pclose(ls);
+	pclose(ls);*/
 	wrefresh(childwin);
 	return childwin;
 }
