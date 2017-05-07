@@ -78,8 +78,17 @@ WINDOW* cSelectwin(WINDOW* mainwin){
 	int lsCount = 1;
 	childwin = subwin(mainwin, height, width, y, x);
   box(childwin, 0, 0);
-	FILE *ls = popen("ls *.mp3", "r");
+	FILE *ls = popen("ls -d */", "r");
 	char buf[512];
+	attron(A_BOLD);
+	while (fgets(buf, sizeof(buf), ls) != 0) {
+		trimwhitespace(buf);
+		mvwaddstr(childwin, lsCount, 1, buf);
+		lsCount++;
+	}
+	attroff(A_BOLD);
+	ls = popen("ls *.mp3", "r");
+	//char buf[512];
 	while (fgets(buf, sizeof(buf), ls) != 0) {
 		trimwhitespace(buf);
 		mvwaddstr(childwin, lsCount, 1, buf);
