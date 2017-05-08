@@ -2,8 +2,10 @@
 //CMPS 115 Spring 2017
 //Lemonade music player
 
+#include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
+#include <menu.h>
 
 #include "frontend.h"
 #include "helpers.c"
@@ -59,10 +61,20 @@ WINDOW* cWelcwin(WINDOW* mainwin){
     mvwaddstr(childwin, 1, 1, "Welcome to the Lemonade");
     mvwaddstr(childwin, 2, 7, "music player!");
     mvwaddstr(childwin, 3, 1, "Please select an action:");
-    mvwaddstr(childwin, 5, 1, "[1]: Select a song");
-    mvwaddstr(childwin, 6, 1, "[2]: Browse Files");
-    mvwaddstr(childwin, 7, 1, "[3]: About");
-    mvwaddstr(childwin, 8, 1, "[q]: Quit");
+	
+	//Init choices
+	char* choices[] = {"Select a song","Browse files","About","Quit"};
+	ITEM** items = (ITEM **)calloc(5, sizeof(ITEM *));
+	for(int i = 0; i < 5; ++i)
+	        items[i] = new_item(choices[i], choices[i]);
+	items[4] = (ITEM *)NULL;
+	
+	//Init Menu
+	MENU* menu = new_menu((ITEM **)items);
+	set_menu_win(menu, childwin);
+	set_menu_sub(menu, derwin(childwin, 4, 15, 5, 1));
+	post_menu(menu);
+	
 	wrefresh(childwin);
 	return childwin;
 }
