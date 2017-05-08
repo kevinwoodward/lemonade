@@ -73,13 +73,13 @@ int main(int argc, char **argv) {
 	//Frontend: --------------------------------------------------
 
 
-	//mainwin is background window, activewin is
+	//mainWin is background window, activeWin is
 	//	window currently being viewed by the user
-	WINDOW * mainwin, * activewin;
+	WINDOW * mainWin;
 	int ch;
 
 	//Init main window
-	if((mainwin = initscr()) == NULL){
+	if((mainWin = initscr()) == NULL){
 		fprintf(stderr, "ERROR: Failed to init main window.\n");
 	}
 
@@ -87,33 +87,41 @@ int main(int argc, char **argv) {
 	noecho();
 
 	//Print out splash screen on startup
-	splash(mainwin);
+	splash(mainWin);
+	
+	//Create pointers for active window and menus
+	WINDOW * activeWin;
+	MENU * activeMenu;
 
 	//Print out welcome window:
-	activewin = cWelcwin(mainwin);
+	cWelcwin(mainWin, &activeWin, &activeMenu);
 
 	//Primary program input loop
 	while( (ch = getch()) != 'q'){
 
 		switch(ch){
 			case '1':
-				remWin(activewin);
-				activewin = cSelectwin(mainwin);
+				if(activeMenu != NULL) remMenu(&activeMenu);
+				remWin(&activeWin);
+				activeWin = cSelectwin(mainWin);
 				break;
 
 			case '2':
-				remWin(activewin);
-				activewin = cBrowsewin(mainwin);
+				if(activeMenu != NULL) remMenu(&activeMenu);
+				remWin(&activeWin);
+				activeWin = cBrowsewin(mainWin);
 				break;
 
 			case '3':
-				remWin(activewin);
-				activewin = cAboutwin(mainwin);
+				if(activeMenu != NULL) remMenu(&activeMenu);
+				remWin(&activeWin);
+				activeWin = cAboutwin(mainWin);
 				break;
 
 			case '\e':
-				remWin(activewin);
-				activewin = cWelcwin(mainwin);
+				if(activeMenu != NULL) remMenu(&activeMenu);
+				remWin(&activeWin);
+				cWelcwin(mainWin, &activeWin, &activeMenu);
 				break;
 			/* case KEY_DOWN:
 		        menu_driver(my_menu, REQ_DOWN_ITEM);
@@ -127,8 +135,9 @@ int main(int argc, char **argv) {
 
 
 	//End of excecution
-	remWin(activewin);
-    delwin(mainwin);
+	if(activeMenu != NULL) remWin(&activeWin);
+	remMenu(&activeMenu);
+    delwin(mainWin);
     endwin();
     //refresh();
 

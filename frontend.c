@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
-#include <menu.h>
+//#include <menu.h>
 
 #include "frontend.h"
 #include "helpers.h"
@@ -48,7 +48,6 @@ void splash(WINDOW* mainwin){
 	refresh();
 }
 
-
 //createWin()
 //Creates childwindow with designated size
 WINDOW* createWin(WINDOW* mainwin){
@@ -62,33 +61,43 @@ WINDOW* createWin(WINDOW* mainwin){
 	return childwin;
 }
 
+//createMenu()
+//Returns pointer to menu with given options
+MENU* createMenu(WINDOW* win, int numChoices, char** choices){
+	
+	ITEM** items = (ITEM **)calloc(5, sizeof(ITEM *));
+	
+	for(int i = 0; i < numChoices; ++i){
+		items[i] = new_item(choices[i], choices[i]);
+	}
+	items[4] = (ITEM *)NULL;
+	
+	//Init Menu
+	MENU* menu = new_menu((ITEM **)items);
+	set_menu_win(menu, win);
+	set_menu_sub(menu, derwin(win, 4, 15, 5, 1));
+	post_menu(menu);
+	
+	return menu;
+}
 
 //cWelcwin()
 //Print out welcome window
-WINDOW* cWelcwin(WINDOW* mainwin){
+void cWelcwin(WINDOW* mainwin, WINDOW** pchildwin, MENU** pmenu){
 	WINDOW* childwin = createWin(mainwin);
 	
     mvwaddstr(childwin, 1, 1, "Welcome to the Lemonade");
     mvwaddstr(childwin, 2, 7, "music player!");
     mvwaddstr(childwin, 3, 1, "Please select an action:");
 	
-	//Init choices
+	//Create selection menu
 	char* choices[] = {"Select a song","Browse files","About","Quit"};
-	ITEM** items = (ITEM **)calloc(5, sizeof(ITEM *));
-	for(int i = 0; i < 5; ++i)
-	        items[i] = new_item(choices[i], choices[i]);
-	items[4] = (ITEM *)NULL;
-	
-	//Init Menu
-	MENU* menu = new_menu((ITEM **)items);
-	set_menu_win(menu, childwin);
-	set_menu_sub(menu, derwin(childwin, 4, 15, 5, 1));
-	post_menu(menu);
+	MENU* menu = createMenu(childwin, 4, choices);
 	
 	wrefresh(childwin);
 	
-	//*activeMen = 
-	return childwin;
+	*pchildwin = childwin;
+	*pmenu = menu;
 }
 
 //cSelectwin()
@@ -97,8 +106,6 @@ WINDOW* cSelectwin(WINDOW* mainwin){
 	WINDOW* childwin = createWin(mainwin);
 	
 	int lsCount = 1;
-
-	box(childwin, 0, 0);
 	FILE *ls = popen("ls *.mp3", "r");
 	char buf[512];
 	attron(A_BOLD);
@@ -142,8 +149,19 @@ WINDOW* cAboutwin(WINDOW* mainwin){
 
 //remWin()
 //Clears and removes active window.
-void remWin(WINDOW* childwin){
-	wclear(childwin);
-	delwin(childwin);
+void remWin(WINDOW** pchildwin){
+	wclear(*pchildwin);
+	delwin(*pchildwin);
+	*pchildwin = NULL;
 	return;
 }
+
+//remMenu()
+//Frees memory associated with a menu
+void remMenu(MENU** activeMenu){
+	// unpost_menu(activeMenu);
+	// for(i = 0; i < n_choices; ++i)
+		// free_item(my_items[i]);
+	// free_menu(activeMenu);
+}
+
