@@ -7,6 +7,8 @@
 #include <ctype.h>
 #include <unistd.h>
 
+#include "backend.h"
+
 void createScreen() {
   //creates a new detachted screen terminal instance with the name lemonade
   system("screen -d -m -S lemonade");
@@ -34,6 +36,8 @@ void playpause() {
   sendScreenCommand(" ");
   return;
 }
+
+
 
 /*char * testList() {
   //in progress for getting ls output and handling accordingly

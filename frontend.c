@@ -8,7 +8,7 @@
 #include <menu.h>
 
 #include "frontend.h"
-#include "helpers.c"
+#include "helpers.h"
 
 #define WIDTH 70
 #define HEIGHT 10
@@ -97,9 +97,19 @@ WINDOW* cSelectwin(WINDOW* mainwin){
 	WINDOW* childwin = createWin(mainwin);
 	
 	int lsCount = 1;
+
 	box(childwin, 0, 0);
 	FILE *ls = popen("ls *.mp3", "r");
 	char buf[512];
+	attron(A_BOLD);
+	while (fgets(buf, sizeof(buf), ls) != 0) {
+		trimwhitespace(buf);
+		mvwaddstr(childwin, lsCount, 1, buf);
+		lsCount++;
+	}
+	attroff(A_BOLD);
+	ls = popen("ls *.mp3", "r");
+	//char buf[512];
 	while (fgets(buf, sizeof(buf), ls) != 0) {
 		trimwhitespace(buf);
 		mvwaddstr(childwin, lsCount, 1, buf);
