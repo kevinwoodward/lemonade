@@ -2,10 +2,8 @@
 # Makefile for use with CMPS 115 lemonade client
 
 CC = gcc
-FLAGS = -c -Wall
-
+FLAGS = -Wall
 OBJECTS = client.o frontend.o backend.o helpers.o
-
 EXEBIN = lemonade
 
 all : lemonade

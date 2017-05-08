@@ -1,3 +1,7 @@
+//backend.h
+//CMPS 115 Spring 2017
+//Lemonade music player
+
 #ifndef BACKEND_H
 #define BACKEND_H
 
