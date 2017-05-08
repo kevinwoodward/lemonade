@@ -103,19 +103,19 @@ int main(int argc, char **argv) {
 			case '1':
 				if(activeMenu != NULL) remMenu(&activeMenu);
 				remWin(&activeWin);
-				activeWin = cSelectwin(mainWin);
+				cSelectwin(mainWin, &activeWin, &activeMenu);
 				break;
 
 			case '2':
 				if(activeMenu != NULL) remMenu(&activeMenu);
 				remWin(&activeWin);
-				activeWin = cBrowsewin(mainWin);
+				cBrowsewin(mainWin, &activeWin, &activeMenu);
 				break;
 
 			case '3':
 				if(activeMenu != NULL) remMenu(&activeMenu);
 				remWin(&activeWin);
-				activeWin = cAboutwin(mainWin);
+				cAboutwin(mainWin, &activeWin, &activeMenu);
 				break;
 
 			case '\e':

@@ -102,7 +102,7 @@ void cWelcwin(WINDOW* mainwin, WINDOW** pchildwin, MENU** pmenu){
 
 //cSelectwin()
 //Print out select song window
-WINDOW* cSelectwin(WINDOW* mainwin){
+void cSelectwin(WINDOW* mainwin, WINDOW** pchildwin, MENU** pmenu){
 	WINDOW* childwin = createWin(mainwin);
 	
 	int lsCount = 1;
@@ -124,27 +124,34 @@ WINDOW* cSelectwin(WINDOW* mainwin){
 	}
 	pclose(ls);
 	wrefresh(childwin);
-	return childwin;
+	
+	*pchildwin = childwin;
+	*pmenu = NULL;
 }
 
 //cBrowsewin()
 //Print out File browser window
-WINDOW* cBrowsewin(WINDOW* mainwin){
+void cBrowsewin(WINDOW* mainwin, WINDOW** pchildwin, MENU** pmenu){
 	WINDOW* childwin = createWin(mainwin);
+	
     mvwaddstr(childwin, 1, 1, "This is where the user");
     mvwaddstr(childwin, 2, 1, "will browse songs");
 	wrefresh(childwin);
-	return childwin;
-}
+	
+	*pchildwin = childwin;
+	*pmenu = NULL;}
 
 //cAboutwin()
 //Print out about window
-WINDOW* cAboutwin(WINDOW* mainwin){
+void cAboutwin(WINDOW* mainwin, WINDOW** pchildwin, MENU** pmenu){
 	WINDOW* childwin = createWin(mainwin);
+	
 	mvwaddstr(childwin, 1, 1, "This is where the user");
 	mvwaddstr(childwin, 2, 1, "will read about things");
 	wrefresh(childwin);
-	return childwin;
+	
+	*pchildwin = childwin;
+	*pmenu = NULL;
 }
 
 //remWin()

@@ -15,13 +15,13 @@ void splash(WINDOW* mainwin);
 void cWelcwin(WINDOW* mainwin, WINDOW** pchildwin, MENU** pmenu);
 
 //Print out select song window
-WINDOW* cSelectwin(WINDOW* mainwin);
+void cSelectwin(WINDOW* mainwin, WINDOW** pchildwin, MENU** pmenu);
 
 //Print out File browser window
-WINDOW* cBrowsewin(WINDOW* mainwin);
+void cBrowsewin(WINDOW* mainwin, WINDOW** pchildwin, MENU** pmenu);
 
 //Print out about window
-WINDOW* cAboutwin(WINDOW* mainwin);
+void cAboutwin(WINDOW* mainwin, WINDOW** pchildwin, MENU** pmenu);
 
 //Frees memory associated with a window
 void remWin(WINDOW** pchildwin);
