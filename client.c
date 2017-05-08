@@ -115,6 +115,12 @@ int main(int argc, char **argv) {
 				remWin(activewin);
 				activewin = cWelcwin(mainwin);
 				break;
+			/* case KEY_DOWN:
+		        menu_driver(my_menu, REQ_DOWN_ITEM);
+				break;
+			case KEY_UP:
+				menu_driver(my_menu, REQ_UP_ITEM);
+				break; */
 		}//End of switch
 
 	}//End of input while

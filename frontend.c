@@ -2,8 +2,10 @@
 //CMPS 115 Spring 2017
 //Lemonade music player
 
+#include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
+#include <menu.h>
 
 #include "frontend.h"
 #include "helpers.h"
@@ -46,9 +48,10 @@ void splash(WINDOW* mainwin){
 	refresh();
 }
 
-//cWelcwin()
-//Print out welcome window
-WINDOW* cWelcwin(WINDOW* mainwin){
+
+//createWin()
+//Creates childwindow with designated size
+WINDOW* createWin(WINDOW* mainwin){
 	WINDOW* childwin;
 	int width = WIDTH, height = HEIGHT;
     int rows  = ROWS, cols   = COLS;
@@ -56,29 +59,47 @@ WINDOW* cWelcwin(WINDOW* mainwin){
     int y = (rows - height) / 2;
 	childwin = subwin(mainwin, height, width, y, x);
     box(childwin, 0, 0);
+	return childwin;
+}
+
+
+//cWelcwin()
+//Print out welcome window
+WINDOW* cWelcwin(WINDOW* mainwin){
+	WINDOW* childwin = createWin(mainwin);
+	
     mvwaddstr(childwin, 1, 1, "Welcome to the Lemonade");
     mvwaddstr(childwin, 2, 7, "music player!");
     mvwaddstr(childwin, 3, 1, "Please select an action:");
-    mvwaddstr(childwin, 5, 1, "[1]: Select a song");
-    mvwaddstr(childwin, 6, 1, "[2]: Browse Files");
-    mvwaddstr(childwin, 7, 1, "[3]: About");
-    mvwaddstr(childwin, 8, 1, "[q]: Quit");
+	
+	//Init choices
+	char* choices[] = {"Select a song","Browse files","About","Quit"};
+	ITEM** items = (ITEM **)calloc(5, sizeof(ITEM *));
+	for(int i = 0; i < 5; ++i)
+	        items[i] = new_item(choices[i], choices[i]);
+	items[4] = (ITEM *)NULL;
+	
+	//Init Menu
+	MENU* menu = new_menu((ITEM **)items);
+	set_menu_win(menu, childwin);
+	set_menu_sub(menu, derwin(childwin, 4, 15, 5, 1));
+	post_menu(menu);
+	
 	wrefresh(childwin);
+	
+	//*activeMen = 
 	return childwin;
 }
 
 //cSelectwin()
 //Print out select song window
 WINDOW* cSelectwin(WINDOW* mainwin){
-	WINDOW* childwin;
-	int width = WIDTH, height = HEIGHT;
-  int rows  = ROWS, cols   = COLS;
-  int x = (cols - width)  / 2;
-  int y = (rows - height) / 2;
+	WINDOW* childwin = createWin(mainwin);
+	
 	int lsCount = 1;
-	childwin = subwin(mainwin, height, width, y, x);
-  box(childwin, 0, 0);
-	FILE *ls = popen("ls -d */", "r");
+
+	box(childwin, 0, 0);
+	FILE *ls = popen("ls *.mp3", "r");
 	char buf[512];
 	attron(A_BOLD);
 	while (fgets(buf, sizeof(buf), ls) != 0) {
@@ -102,13 +123,7 @@ WINDOW* cSelectwin(WINDOW* mainwin){
 //cBrowsewin()
 //Print out File browser window
 WINDOW* cBrowsewin(WINDOW* mainwin){
-	WINDOW* childwin;
-	int width = WIDTH, height = HEIGHT;
-    int rows  = ROWS, cols   = COLS;
-    int x = (cols - width)  / 2;
-    int y = (rows - height) / 2;
-	childwin = subwin(mainwin, height, width, y, x);
-    box(childwin, 0, 0);
+	WINDOW* childwin = createWin(mainwin);
     mvwaddstr(childwin, 1, 1, "This is where the user");
     mvwaddstr(childwin, 2, 1, "will browse songs");
 	wrefresh(childwin);
@@ -118,15 +133,9 @@ WINDOW* cBrowsewin(WINDOW* mainwin){
 //cAboutwin()
 //Print out about window
 WINDOW* cAboutwin(WINDOW* mainwin){
-	WINDOW* childwin;
-	int width = WIDTH, height = HEIGHT;
-  int rows  = ROWS, cols   = COLS;
-  int x = (cols - width)  / 2;
-  int y = (rows - height) / 2;
-	childwin = subwin(mainwin, height, width, y, x);
-  box(childwin, 0, 0);
-  mvwaddstr(childwin, 1, 1, "This is where the user");
-  mvwaddstr(childwin, 2, 1, "will read about things");
+	WINDOW* childwin = createWin(mainwin);
+	mvwaddstr(childwin, 1, 1, "This is where the user");
+	mvwaddstr(childwin, 2, 1, "will read about things");
 	wrefresh(childwin);
 	return childwin;
 }

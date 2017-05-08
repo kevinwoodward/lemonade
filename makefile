@@ -3,13 +3,15 @@
 
 CC = gcc
 FLAGS = -c -Wall
+
 OBJECTS = client.o frontend.o backend.o helpers.o
+
 EXEBIN = lemonade
 
 all : lemonade
 
 lemonade : $(OBJECTS)
-	$(CC) -o $(EXEBIN) $(OBJECTS) -lncurses
+	$(CC) -o $(EXEBIN) $(OBJECTS) -lmenu -lncurses
 
 helpers.o : helpers.h helpers.c
 	$(CC) -c $(FLAGS) helpers.c
