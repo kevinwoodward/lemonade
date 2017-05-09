@@ -118,19 +118,28 @@ int main(int argc, char **argv) {
 				cAboutwin(mainWin, &activeWin, &activeMenu);
 				break;
 
-			case '\e':
+			case '\e': //ESCAPE key
 				if(activeMenu != NULL) remMenu(&activeMenu);
 				remWin(&activeWin);
 				cWelcwin(mainWin, &activeWin, &activeMenu);
 				break;
-			/* case KEY_DOWN:
-		        menu_driver(my_menu, REQ_DOWN_ITEM);
+				
+			case 65: //UP arrow key
+				if(activeMenu != NULL){
+					menu_driver(activeMenu, REQ_UP_ITEM);
+				}
 				break;
-			case KEY_UP:
-				menu_driver(my_menu, REQ_UP_ITEM);
-				break; */
+				
+			case 66: //DOWN arrow key
+		        if(activeMenu != NULL){
+					menu_driver(activeMenu, REQ_DOWN_ITEM);
+				}
+				break;
+				
 		}//End of switch
-
+		
+		wrefresh(activeWin);
+		
 	}//End of input while
 
 
