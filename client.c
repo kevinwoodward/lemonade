@@ -85,6 +85,9 @@ int main(int argc, char **argv) {
 
 	//Disable echoing of typed chars to screen
 	noecho();
+	
+	//Enable keypad (simplifies input)
+	keypad(stdscr, TRUE);
 
 	//Print out splash screen on startup
 	splash(mainWin);
@@ -103,39 +106,35 @@ int main(int argc, char **argv) {
 			case '1':
 				if(activeMenu != NULL) remMenu(&activeMenu);
 				remWin(&activeWin);
-				cSelectwin(mainWin, &activeWin, &activeMenu);
+				cWelcwin(mainWin, &activeWin, &activeMenu);
 				break;
 
 			case '2':
 				if(activeMenu != NULL) remMenu(&activeMenu);
 				remWin(&activeWin);
-				cBrowsewin(mainWin, &activeWin, &activeMenu);
+				cSelectwin(mainWin, &activeWin, &activeMenu);
 				break;
 
 			case '3':
 				if(activeMenu != NULL) remMenu(&activeMenu);
 				remWin(&activeWin);
+				cBrowsewin(mainWin, &activeWin, &activeMenu);
+				break;
+				
+			case '4':
+				if(activeMenu != NULL) remMenu(&activeMenu);
+				remWin(&activeWin);
 				cAboutwin(mainWin, &activeWin, &activeMenu);
 				break;
 
-			case '\e': //ESCAPE key
-				if(activeMenu != NULL) remMenu(&activeMenu);
-				remWin(&activeWin);
-				cWelcwin(mainWin, &activeWin, &activeMenu);
+			case KEY_UP : //UP arrow key
+				menu_driver(activeMenu, REQ_UP_ITEM);
 				break;
-				
-			case 65: //UP arrow key
-				if(activeMenu != NULL){
-					menu_driver(activeMenu, REQ_UP_ITEM);
-				}
+			
+			case KEY_DOWN : //DOWN arrow key
+				menu_driver(activeMenu, REQ_DOWN_ITEM);
 				break;
-				
-			case 66: //DOWN arrow key
-		        if(activeMenu != NULL){
-					menu_driver(activeMenu, REQ_DOWN_ITEM);
-				}
-				break;
-				
+ 
 		}//End of switch
 		
 		wrefresh(activeWin);
