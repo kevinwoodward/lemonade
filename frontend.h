@@ -6,25 +6,30 @@
 #define SCREENS_H
 
 #include <ncurses.h>
+#include <menu.h>
+
+#include "winInfo.h"
 
 //Prints out splash screen to be used on startup
 void splash(WINDOW* mainwin);
 
 //Print out welcome window
-WINDOW* cWelcwin(WINDOW* mainwin);
+void cWelcwin(Winfo activeInfo);
 
 //Print out select song window
-WINDOW* cSelectwin(WINDOW* mainwin);
+void cSelectwin(Winfo activeInfo);
 
 //Print out File browser window
-WINDOW* cBrowsewin(WINDOW* mainwin);
+void cBrowsewin(Winfo activeInfo);
 
 //Print out about window
-WINDOW* cAboutwin(WINDOW* mainwin);
+void cAboutwin(Winfo activeInfo);
 
-void remWin(WINDOW* childwin);
+//Frees memory associated with a window
+void remWin(Winfo activeInfo);
 
-
+//Frees memory associated with a menu
+void remMenu(Winfo activeInfo);
 
 
 #endif
