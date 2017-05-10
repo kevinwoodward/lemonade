@@ -174,5 +174,5 @@ int main(int argc, char **argv) {
     endwin();
     //refresh();
 
-	exit(0);
+	return 0;
 }

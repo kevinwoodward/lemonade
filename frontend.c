@@ -168,8 +168,10 @@ void remWin(WINDOW** pchildwin){
 void remMenu(MENU** pactiveMenu){
 	unpost_menu(*pactiveMenu);
 	
-	// for(i = 0; i < n_choices; ++i)
+	// for(i = 0; i < n_choices; ++i){
 		// free_item(my_items[i]);
+	//}
 	free_menu(*pactiveMenu);
+	*pactiveMenu = NULL;
 }
 
