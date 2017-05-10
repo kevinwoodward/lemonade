@@ -7,6 +7,7 @@
 //#include "helpers.h"
 #include "backend.h"
 #include "frontend.h"
+#include "winInfo.h"
 
 
 int main(int argc, char **argv) {
@@ -73,64 +74,102 @@ int main(int argc, char **argv) {
 	//Frontend: --------------------------------------------------
 
 
-	//mainwin is background window, activewin is
-	//	window currently being viewed by the user
-	WINDOW * mainwin, * activewin;
-	int ch;
-
 	//Init main window
-	if((mainwin = initscr()) == NULL){
+	WINDOW * mainWin;
+	if((mainWin = initscr()) == NULL){
 		fprintf(stderr, "ERROR: Failed to init main window.\n");
 	}
 
-	//Disable echoing of typed chars to screen
-	noecho();
+	noecho();              //Disable echoing to screen
+	keypad(stdscr, TRUE);  //Simplifies input handling
 
 	//Print out splash screen on startup
-	splash(mainwin);
-
+	splash(mainWin);
+	
+	//Init activeInfo for tracking window/menu/items
+	Winfo activeInfo = newWinfo(mainWin);
+	
 	//Print out welcome window:
-	activewin = cWelcwin(mainwin);
-
+	cWelcwin(activeInfo);
+	
+	int ch;
+	int itemNum;
+	
 	//Primary program input loop
 	while( (ch = getch()) != 'q'){
-
+		MENU* activeMenu = getMenu(activeInfo);
 		switch(ch){
 			case '1':
-				remWin(activewin);
-				activewin = cSelectwin(mainwin);
+				if(activeMenu != NULL) remMenu(activeInfo);
+				remWin(activeInfo);
+				cWelcwin(activeInfo);
 				break;
 
 			case '2':
-				remWin(activewin);
-				activewin = cBrowsewin(mainwin);
+				if(activeMenu != NULL) remMenu(activeInfo);
+				remWin(activeInfo);
+				cSelectwin(activeInfo);
 				break;
 
 			case '3':
-				remWin(activewin);
-				activewin = cAboutwin(mainwin);
+				if(activeMenu != NULL) remMenu(activeInfo);
+				remWin(activeInfo);
+				cBrowsewin(activeInfo);
+				break;
+				
+			case '4':
+				if(activeMenu != NULL) remMenu(activeInfo);
+				remWin(activeInfo);
+				cAboutwin(activeInfo);
 				break;
 
-			case '\e':
-				remWin(activewin);
-				activewin = cWelcwin(mainwin);
+			case KEY_UP : //UP arrow key
+				menu_driver(getMenu(activeInfo), REQ_UP_ITEM);
 				break;
-			/* case KEY_DOWN:
-		        menu_driver(my_menu, REQ_DOWN_ITEM);
+			
+			case KEY_DOWN : //DOWN arrow key
+				menu_driver(getMenu(activeInfo), REQ_DOWN_ITEM);
 				break;
-			case KEY_UP:
-				menu_driver(my_menu, REQ_UP_ITEM);
-				break; */
+			
+			case '\n': //ENTER key
+				itemNum = item_index(current_item(activeMenu));
+				switch (itemNum){
+					case 0: //Select
+					if(activeMenu != NULL) remMenu(activeInfo);
+					remWin(activeInfo);
+					cSelectwin(activeInfo);
+					break;
+				case 1: //Browse
+					if(activeMenu != NULL) remMenu(activeInfo);
+					remWin(activeInfo);
+					cBrowsewin(activeInfo);
+					break;
+				case 2: //About
+					if(activeMenu != NULL) remMenu(activeInfo);
+					remWin(activeInfo);
+					cAboutwin(activeInfo);
+					break;
+				case 3: //Quit
+					if(activeMenu != NULL) remMenu(activeInfo);
+					remWin(activeInfo);
+					break;
+				}//End of ENTER switch
+				break;
+ 
 		}//End of switch
-
+		
+		wrefresh(getWin(activeInfo));
+		
 	}//End of input while
 
 
 	//End of excecution
-	remWin(activewin);
-    delwin(mainwin);
+	if(getMenu(activeInfo) != NULL) remWin(activeInfo);
+	remMenu(activeInfo);
+	freeWinfo(&activeInfo);
+    delwin(mainWin);
     endwin();
     //refresh();
 
-  return 0;
+	return 0;
 }
