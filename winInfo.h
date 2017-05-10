@@ -11,6 +11,9 @@
 #ifndef WININFO_H
 #define WININFO_H
 
+#include <ncurses.h>
+#include <menu.h>
+
 typedef struct WinfoObj* Winfo;
 
 
@@ -32,7 +35,7 @@ void setItems(Winfo aWinfo, ITEM** newItems);
 
 //Get/Setters for numItems field
 int getNumItems(Winfo aWinfo);
-void setNumItems(Winfo aWinfo, int numItems);
+void setNumItems(Winfo aWinfo, int newNumItems);
 
 
 #endif
