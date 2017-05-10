@@ -165,10 +165,11 @@ void remWin(WINDOW** pchildwin){
 
 //remMenu()
 //Frees memory associated with a menu
-void remMenu(MENU** activeMenu){
-	// unpost_menu(activeMenu);
+void remMenu(MENU** pactiveMenu){
+	unpost_menu(*pactiveMenu);
+	
 	// for(i = 0; i < n_choices; ++i)
 		// free_item(my_items[i]);
-	// free_menu(activeMenu);
+	free_menu(*pactiveMenu);
 }
 

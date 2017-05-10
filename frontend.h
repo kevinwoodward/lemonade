@@ -27,7 +27,7 @@ void cAboutwin(WINDOW* mainwin, WINDOW** pchildwin, MENU** pmenu);
 void remWin(WINDOW** pchildwin);
 
 //Frees memory associated with a menu
-void remMenu(MENU** activeMenu);
+void remMenu(MENU** pactiveMenu);
 
 
 #endif

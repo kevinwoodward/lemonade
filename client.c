@@ -83,11 +83,8 @@ int main(int argc, char **argv) {
 		fprintf(stderr, "ERROR: Failed to init main window.\n");
 	}
 
-	//Disable echoing of typed chars to screen
-	noecho();
-	
-	//Enable keypad (simplifies input)
-	keypad(stdscr, TRUE);
+	noecho();              //Disable echoing to screen
+	keypad(stdscr, TRUE);  //Enable keypad (simplifies input)
 
 	//Print out splash screen on startup
 	splash(mainWin);
@@ -99,6 +96,8 @@ int main(int argc, char **argv) {
 	//Print out welcome window:
 	cWelcwin(mainWin, &activeWin, &activeMenu);
 
+	int itemNum;
+	
 	//Primary program input loop
 	while( (ch = getch()) != 'q'){
 
@@ -134,6 +133,32 @@ int main(int argc, char **argv) {
 			case KEY_DOWN : //DOWN arrow key
 				menu_driver(activeMenu, REQ_DOWN_ITEM);
 				break;
+			
+			case '\n': //ENTER key
+				itemNum = item_index(current_item(activeMenu));
+				fprintf(stderr, "%d\n", itemNum);
+				switch (itemNum){
+					case 0: //Select
+					if(activeMenu != NULL) remMenu(&activeMenu);
+					remWin(&activeWin);
+					cSelectwin(mainWin, &activeWin, &activeMenu);
+					break;
+				case 1: //Browse
+					if(activeMenu != NULL) remMenu(&activeMenu);
+					remWin(&activeWin);
+					cBrowsewin(mainWin, &activeWin, &activeMenu);
+					break;
+				case 2: //About
+					if(activeMenu != NULL) remMenu(&activeMenu);
+					remWin(&activeWin);
+					cAboutwin(mainWin, &activeWin, &activeMenu);
+					break;
+				case 3: //Quit
+					if(activeMenu != NULL) remMenu(&activeMenu);
+					remWin(&activeWin);
+					break;
+				}//End of ENTER switch
+				break;
  
 		}//End of switch
 		
@@ -149,5 +174,5 @@ int main(int argc, char **argv) {
     endwin();
     //refresh();
 
-  return 0;
+	exit(0);
 }
