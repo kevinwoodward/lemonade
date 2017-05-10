@@ -8,26 +8,28 @@
 #include <ncurses.h>
 #include <menu.h>
 
+#include "winInfo.h"
+
 //Prints out splash screen to be used on startup
 void splash(WINDOW* mainwin);
 
 //Print out welcome window
-void cWelcwin(WINDOW* mainwin, WINDOW** pchildwin, MENU** pmenu);
+void cWelcwin(Winfo activeInfo);
 
 //Print out select song window
-void cSelectwin(WINDOW* mainwin, WINDOW** pchildwin, MENU** pmenu);
+void cSelectwin(Winfo activeInfo);
 
 //Print out File browser window
-void cBrowsewin(WINDOW* mainwin, WINDOW** pchildwin, MENU** pmenu);
+void cBrowsewin(Winfo activeInfo);
 
 //Print out about window
-void cAboutwin(WINDOW* mainwin, WINDOW** pchildwin, MENU** pmenu);
+void cAboutwin(Winfo activeInfo);
 
 //Frees memory associated with a window
-void remWin(WINDOW** pchildwin);
+void remWin(Winfo activeInfo);
 
 //Frees memory associated with a menu
-void remMenu(MENU** pactiveMenu);
+void remMenu(Winfo activeInfo);
 
 
 #endif

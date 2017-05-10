@@ -4,8 +4,15 @@
 
 //	This is a simple organizer class used to simplify
 //	the way window creation and destruction is handled.
-//	Holds pointers to a WINDOW, MENU, and 2d array of ITEMS
-//	as well as a number of items in the menu.
+
+
+//	Fields:
+//
+//	Main window: background ncurses window
+//	Active window: subwindow currently being viewed
+//	Menu: currently  active ncurses menu
+//	Item: two dimensional array composed of ncurses Menu items
+//	numItems: number of items in menu
 
 
 #ifndef WININFO_H
@@ -14,12 +21,21 @@
 #include <ncurses.h>
 #include <menu.h>
 
+
 typedef struct WinfoObj* Winfo;
 
 
 //newWinfo()
 //Constructor for Winfo object
 Winfo newWinfo();
+
+//freeWinfo()
+//Destructor for Winfo object
+void freeWinfo(Winfo* pWinfo);
+
+//Get/Setters for main WINDOW* field
+WINDOW* getMainWin(Winfo aWinfo);
+void setMainWin(Winfo aWinfo, WINDOW* newWin);
 
 //Get/Setters for WINDOW* field
 WINDOW* getWin(Winfo aWinfo);

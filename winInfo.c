@@ -6,22 +6,48 @@
 
 #include <stdlib.h>
 
+
+//Struct Definition: -----------------------------------------------------
+
+
 typedef struct WinfoObj{
+	WINDOW* mainWin;
 	WINDOW* activeWin;
 	MENU* activeMenu;
 	ITEM** activeItems;
 	int numItems;
 }WinfoObj;
 
+
+//Con/Destructor: -----------------------------------------------------------
+
+
 //newWinfo()
 //Constructor for Winfo object
-Winfo newWinfo(){
+Winfo newWinfo(WINDOW* mainWin){
 	Winfo nWinfo = malloc(sizeof(WinfoObj));
+	nWinfo->mainWin = mainWin;
 	nWinfo->activeWin = NULL;
 	nWinfo->activeMenu = NULL;
 	nWinfo->activeItems = NULL;
 	nWinfo->numItems = 0;
 	return nWinfo;
+}
+
+//freeWinfo()
+//Destructor for Winfo object
+void freeWinfo(Winfo* pWinfo){
+	free(*pWinfo);
+	*pWinfo = NULL;
+}
+
+
+//Access functions: ------------------------------------------------------
+
+
+//Getter for main WINDOW* field
+WINDOW* getMainWin(Winfo aWinfo){
+	return aWinfo->mainWin;
 }
 
 
