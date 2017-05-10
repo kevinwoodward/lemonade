@@ -25,3 +25,35 @@ Winfo newWinfo(){
 	nWinfo->numItems = 0;
 	return nWinfo;
 }
+
+//Get/Setters for WINDOW* field
+WINDOW* getWin(Winfo aWinfo){
+	return aWinfo->activeWin;
+}
+void setWin(Winfo aWinfo, WINDOW* newWin){
+	aWinfo->activeWin = newWin;
+}
+
+//Get/Setters for MENU* field
+MENU* getMenu(Winfo aWinfo){
+	return aWinfo->activeMenu;
+}
+void setMenu(Winfo aWinfo, MENU* newMenu){
+	aWinfo->activeMenu = newMenu;
+}
+
+//Get/Setters for ITEM** field
+ITEM** getItems(Winfo aWinfo){
+	return aWinfo->activeItems;
+}
+void setItems(Winfo aWinfo, ITEM** newItems){
+	aWinfo->activeItems = newItems;
+}
+
+//Get/Setters for numItems field
+int getNumItems(Winfo aWinfo){
+	return aWinfo->numItems;
+}
+void setNumItems(Winfo aWinfo, int numItems){
+	aWinfo->numItems = this->numItems;
+}
