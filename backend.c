@@ -37,6 +37,16 @@ void playpause() {
   return;
 }
 
+void startSingleSong(char* filePath) {
+  system("killall screen");
+  createScreen();
+  sendScreenCommand("cd ~/Documents/github/lemonade");
+  char fileStr[100];
+  strcpy(fileStr, "mpg123 -C ");
+  strcat(fileStr, filePath);
+  sendScreenCommand(fileStr);
+}
+
 
 
 /*char * testList() {

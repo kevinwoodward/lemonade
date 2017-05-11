@@ -11,6 +11,8 @@ Console Based Music Player for CMPS 115
 
 * [Scrum Board](https://trello.com/b/sGYflS81/scrum)
 
+* [Sprint 2 Burnup](https://docs.google.com/a/ucsc.edu/spreadsheets/d/18VBGBWh5GzPUBvDYOq1lUUzMq0F6Jbn54dnNYJ55A-s/edit?usp=sharing)
+
 **Sprint 1**
 
 * [Sprint 1 plan](https://docs.google.com/a/ucsc.edu/document/d/1L6uv80Ln1fk7bUuRMfIYYZkqv5k9C8ltlhYyDFE8a4s/edit?usp=sharing)
@@ -18,3 +20,5 @@ Console Based Music Player for CMPS 115
 * [Scrum Board](https://lemonade115.kanbantool.com/b/307825)
 
 * [Sprint 1 Report](https://docs.google.com/a/ucsc.edu/document/d/10aAu5mijuTxqflUW4KJlm9x3uvWvGSMkrRYPsL_BXwY/edit?usp=sharing)
+
+* [Sprint 1 Burnup](https://docs.google.com/a/ucsc.edu/spreadsheets/d/1otYD11mtwfz7TOHVXpSgMoqE7OyQRABYokPvGRgq_C8/edit?usp=sharing)

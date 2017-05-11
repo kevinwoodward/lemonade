@@ -19,7 +19,7 @@ int main(int argc, char **argv) {
   //Backend: ---------------------------------------------------------
 
   int argCase;
-  char* filePath = NULL;
+  //char* filePath = NULL;
 
   //handles flag options
   while((argCase = getopt(argc, argv, "ps:kel")) != -1) {
@@ -29,7 +29,8 @@ int main(int argc, char **argv) {
         return 0;
         break;
       case 's':
-        filePath = optarg;
+        //filePath = optarg;
+
         break;
       case 'k':
         system("killall screen");
@@ -44,7 +45,8 @@ int main(int argc, char **argv) {
       case '?':
         if (optopt == 's') {
           fprintf (stdout, "Option -%c requires an argument.\n", optopt);
-          return 1;
+          startSingleSong("em.mp3");
+          //return 1;
         }
         else if (isprint (optopt)) {
           fprintf (stdout, "Unknown option `-%c'.\n", optopt);
@@ -60,15 +62,15 @@ int main(int argc, char **argv) {
   }
 
   //starts process if command is -s with specified song
-  if(filePath != NULL) {
-    system("killall screen");
-    createScreen();
-    sendScreenCommand("cd ~/Documents/github/lemonade");
-    char fileStr[100];
-    strcpy(fileStr, "mpg123 -C ");
-    strcat(fileStr, filePath);
-    sendScreenCommand(fileStr);
-  }
+  // if(filePath != NULL) {
+  //   system("killall screen");
+  //   createScreen();
+  //   sendScreenCommand("cd ~/Documents/github/lemonade");
+  //   char fileStr[100];
+  //   strcpy(fileStr, "mpg123 -C ");
+  //   strcat(fileStr, filePath);
+  //   sendScreenCommand(fileStr);
+  // }
 
 
 	//Frontend: --------------------------------------------------
@@ -85,16 +87,16 @@ int main(int argc, char **argv) {
 
 	//Print out splash screen on startup
 	splash(mainWin);
-	
+
 	//Init activeInfo for tracking window/menu/items
 	Winfo activeInfo = newWinfo(mainWin);
-	
+
 	//Print out welcome window:
 	cWelcwin(activeInfo);
-	
+
 	int ch;
 	int itemNum;
-	
+
 	//Primary program input loop
 	while( (ch = getch()) != 'q'){
 		MENU* activeMenu = getMenu(activeInfo);
@@ -116,7 +118,7 @@ int main(int argc, char **argv) {
 				remWin(activeInfo);
 				cBrowsewin(activeInfo);
 				break;
-				
+
 			case '4':
 				if(activeMenu != NULL) remMenu(activeInfo);
 				remWin(activeInfo);
@@ -126,11 +128,11 @@ int main(int argc, char **argv) {
 			case KEY_UP : //UP arrow key
 				menu_driver(getMenu(activeInfo), REQ_UP_ITEM);
 				break;
-			
+
 			case KEY_DOWN : //DOWN arrow key
 				menu_driver(getMenu(activeInfo), REQ_DOWN_ITEM);
 				break;
-			
+
 			case '\n': //ENTER key
 				itemNum = item_index(current_item(activeMenu));
 				switch (itemNum){
@@ -155,11 +157,11 @@ int main(int argc, char **argv) {
 					break;
 				}//End of ENTER switch
 				break;
- 
+
 		}//End of switch
-		
+
 		wrefresh(getWin(activeInfo));
-		
+
 	}//End of input while
 
 

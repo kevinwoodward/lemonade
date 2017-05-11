@@ -14,4 +14,7 @@ void sendScreenCommand(char* command);
 //Sends a play/pause command to screen
 void playpause();
 
+//plays a single specified song
+void startSingleSong(char* filePath);
+
 #endif
