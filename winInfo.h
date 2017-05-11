@@ -33,6 +33,10 @@ Winfo newWinfo();
 //Destructor for Winfo object
 void freeWinfo(Winfo* pWinfo);
 
+//Get/Setters for state field
+int getState(Winfo aWinfo);
+void setState(Winfo aWinfo, int newState);
+
 //Get/Setters for main WINDOW* field
 WINDOW* getMainWin(Winfo aWinfo);
 void setMainWin(Winfo aWinfo, WINDOW* newWin);

@@ -16,6 +16,7 @@ typedef struct WinfoObj{
 	MENU* activeMenu;
 	ITEM** activeItems;
 	int numItems;
+	int state;
 }WinfoObj;
 
 
@@ -31,6 +32,7 @@ Winfo newWinfo(WINDOW* mainWin){
 	nWinfo->activeMenu = NULL;
 	nWinfo->activeItems = NULL;
 	nWinfo->numItems = 0;
+	nWinfo->state = 0;
 	return nWinfo;
 }
 
@@ -48,6 +50,15 @@ void freeWinfo(Winfo* pWinfo){
 //Getter for main WINDOW* field
 WINDOW* getMainWin(Winfo aWinfo){
 	return aWinfo->mainWin;
+}
+
+
+//Get/Setters for state field
+int getState(Winfo aWinfo){
+	return aWinfo->state;
+}
+void setState(Winfo aWinfo, int newState){
+	aWinfo->state = newState;
 }
 
 
