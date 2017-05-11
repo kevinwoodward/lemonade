@@ -13,7 +13,7 @@
 //	Menu: currently  active ncurses menu
 //	Item: two dimensional array composed of ncurses Menu items
 //	numItems: number of items in menu
-
+//  state: state variable that determines correct inputs to check for
 
 #ifndef WININFO_H
 #define WININFO_H
