@@ -40,7 +40,7 @@ int main(int argc, char **argv) {
         system("screen -r");
         break;
       case 'l':
-        //testList();
+        //open
         break;
       case 'x':
         createPlaylistFile(name, arr);

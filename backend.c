@@ -9,6 +9,8 @@
 
 #include "backend.h"
 
+
+
 void createScreen() {
   //creates a new detachted screen terminal instance with the name lemonade
   system("screen -d -m -S lemonade");
@@ -17,17 +19,24 @@ void createScreen() {
 void sendScreenCommand(char* command) {
   //takes the passed string and shoves it into the previously opened screen and auto executes it within said screen
   char str[300];
+  FILE *pf;
   strcpy(str, "screen -S lemonade -X stuff '");
   strcat(str, command);
   strcat(str, "^M'");
   char buffer[500];
+  char outStr[1000];
   snprintf(
     buffer,
     sizeof(buffer),
     "screen -S lemonade -X stuff '%s^M'",
     command
   );
-  system(buffer);
+  pf = popen(buffer, "r");
+  while (fgets(outStr, sizeof(outStr), pf) != NULL) {
+    printf("%s", outStr);
+  }
+  pclose(pf);
+  //system(buffer);
   return;
 }
 
@@ -56,6 +65,11 @@ int createPlaylistFile(char* fileName, char* songFilePaths[]) {
 
 }
 
-int currentPlaylistToFile(char* playlistName) {
 
-}
+//ON HOLD
+// int currentPlaylistToFile(char* playlistName) {
+//   char pl[300];
+//   sendScreenCommand("l");
+//   printf("%s\n", pl);
+//   return 1;
+// }

@@ -16,7 +16,8 @@ void playpause();
 //char* songFilePaths[]: an array of strings, each an absolute path to an mp3 file. LAST ARRAY ELEMENT MUST BE AN EMPTY STRING.
 int createPlaylistFile(char* fileName, char* songFilePaths[]);
 
+//ON HOLD
 //Creates a playlist file based of the current playlist
-int currentPlaylistToFile(char* playlistName);
+//int currentPlaylistToFile(char* playlistName);
 
 #endif
