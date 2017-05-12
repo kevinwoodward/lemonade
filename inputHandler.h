@@ -9,7 +9,7 @@
 
 
 //Takes state information, and routes input to correct handlers
-void handleInput(Winfo activeInfo, char ch);
+void handleInput(Winfo activeInfo, int ch);
 
 
 #endif

@@ -193,6 +193,7 @@ void remMenu(Winfo activeInfo){
 		free_item(items[i]);
 	}
 	
+	
 	free_menu(menu);
 	
 	setItems(activeInfo, NULL);

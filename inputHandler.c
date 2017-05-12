@@ -14,19 +14,46 @@
 
 //handleWelcWin()
 //Handles input specific to "welcome" window
-void handleWelcWin(Winfo activeInfo){
-	
+void handleWelcWin(Winfo activeInfo, int ch){
+	int itemNum;
+	MENU* activeMenu = getMenu(activeInfo);
+	switch(ch){
+		case '\n': //ENTER key
+			itemNum = item_index(current_item(activeMenu));
+			switch (itemNum){
+				case 0: //Select
+				if(activeMenu != NULL) remMenu(activeInfo);
+				remWin(activeInfo);
+				cSelectwin(activeInfo);
+				break;
+			case 1: //Browse
+				if(activeMenu != NULL) remMenu(activeInfo);
+				remWin(activeInfo);
+				cBrowsewin(activeInfo);
+				break;
+			case 2: //About
+				if(activeMenu != NULL) remMenu(activeInfo);
+				remWin(activeInfo);
+				cAboutwin(activeInfo);
+				break;
+			case 3: //Quit
+				if(activeMenu != NULL) remMenu(activeInfo);
+				remWin(activeInfo);
+				break;
+			}//End of ENTER switch
+			break;
+	}//End of switch
 }
 
 //handleBrowseWin()
 //Handles input specific to "browser" window
-void handleBrowseWin(Winfo activeInfo){
+void handleBrowseWin(Winfo activeInfo, int ch){
 	
 }
 
 //handleAboutWin()
 //Handles input specific to "about" window
-void handleAboutWin(Winfo activeInfo){
+void handleAboutWin(Winfo activeInfo, int ch){
 	
 }
 
@@ -36,7 +63,7 @@ void handleAboutWin(Winfo activeInfo){
 
 //handleInput()
 //Takes state information, and routes input to correct handlers
-void handleInput(Winfo activeInfo, char ch){
+void handleInput(Winfo activeInfo, int ch){
 	
 	//Handle screen switching
 	MENU* activeMenu = getMenu(activeInfo);
@@ -64,6 +91,15 @@ void handleInput(Winfo activeInfo, char ch){
 			remWin(activeInfo);
 			cAboutwin(activeInfo);
 			return;
+			
+		case KEY_UP : //UP arrow key
+			menu_driver(getMenu(activeInfo), REQ_UP_ITEM);
+			break;
+		
+		case KEY_DOWN : //DOWN arrow key
+			menu_driver(getMenu(activeInfo), REQ_DOWN_ITEM);
+			break;
+			
 	}//End of switch
 		
 	
@@ -71,13 +107,13 @@ void handleInput(Winfo activeInfo, char ch){
 	int state = getState(activeInfo);
 	switch(state){
 		case 0:
-			handleWelcWin(activeInfo);
+			handleWelcWin(activeInfo, ch);
 			break;
 		case 1:
-			handleBrowseWin(activeInfo);
+			handleBrowseWin(activeInfo, ch);
 			break;
 		case 2:
-			handleAboutWin(activeInfo);
+			handleAboutWin(activeInfo, ch);
 			break;
 	}
 }
