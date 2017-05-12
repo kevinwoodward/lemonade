@@ -1,3 +1,7 @@
+//helpers.h
+//CMPS 115 Spring 2017
+//Lemonade music player
+
 #ifndef HELPERS_H
 #define HELPERS_H
 
