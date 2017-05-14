@@ -92,7 +92,8 @@ int main(int argc, char **argv) {
 	//Init activeInfo for tracking window/menu/items
 	Winfo activeInfo = newWinfo(mainWin);
 
-	//Print out welcome window:
+	//Print out welcome and intruction windows:
+	WINDOW* insnWin = cInsnwin(mainWin);
 	cWelcwin(activeInfo);
 
 	int ch;
@@ -113,6 +114,7 @@ int main(int argc, char **argv) {
 	remMenu(activeInfo);
 	freeWinfo(&activeInfo);
     delwin(mainWin);
+	delwin(insnWin);
     endwin();
     //refresh();
 

@@ -13,6 +13,9 @@
 //Prints out splash screen to be used on startup
 void splash(WINDOW* mainwin);
 
+//Prints out window navigation instruction
+WINDOW* cInsnwin(WINDOW* mainwin);
+
 //Print out welcome window
 void cWelcwin(Winfo activeInfo);
 
