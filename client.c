@@ -10,8 +10,9 @@
 #include "winInfo.h"
 #include "inputHandler.h"
 
-
-int main(int argc, char **argv){
+int main(int argc, char **argv) {
+  char* name = "hello";
+  char* arr[] = {"apple", "banana", "clementine", "durian", ""};
 
   if(argc <= 1) {
     printf("No option specified! Currently:\n-s for start, followed by a filepath to an mp3\n-p for play/pause\n-k for kill\n-e to enter screen\n-l to do the test ls function\n");
@@ -23,7 +24,7 @@ int main(int argc, char **argv){
   //char* filePath = NULL;
 
   //handles flag options
-  while((argCase = getopt(argc, argv, "ps:kel")) != -1) {
+  while((argCase = getopt(argc, argv, "ps:kelx")) != -1) {
     switch (argCase) {
       case 'p':
         playpause();
@@ -42,6 +43,9 @@ int main(int argc, char **argv){
         break;
       case 'l':
         //testList();
+        break;
+      case 'x':
+        createPlaylistFile(name, arr);
         break;
       case '?':
         if (optopt == 's') {
