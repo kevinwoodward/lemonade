@@ -10,6 +10,8 @@
 
 #include "winInfo.h"
 
+//Print out Screens: -----------------------------------------------------
+
 //Prints out splash screen to be used on startup
 void splash(WINDOW* mainwin);
 
@@ -28,11 +30,17 @@ void cBrowsewin(Winfo activeInfo);
 //Print out about window
 void cAboutwin(Winfo activeInfo);
 
+//Remove and clean windows/menus: ----------------------------------------
+
 //Frees memory associated with a window
 void remWin(Winfo activeInfo);
 
 //Frees memory associated with a menu
 void remMenu(Winfo activeInfo);
+
+//Removes active windows and menus, cleans memory before exiting
+void clearAndClean(Winfo activeInfo);
+
 
 
 #endif

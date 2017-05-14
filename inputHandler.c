@@ -37,8 +37,7 @@ void handleWelcWin(Winfo activeInfo, int ch){
 				cAboutwin(activeInfo);
 				break;
 			case 3: //Quit
-				if(activeMenu != NULL) remMenu(activeInfo);
-				remWin(activeInfo);
+				clearAndClean(activeInfo);
 				break;
 			}//End of ENTER switch
 			break;

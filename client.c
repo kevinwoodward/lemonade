@@ -11,7 +11,7 @@
 #include "inputHandler.h"
 
 
-int main(int argc, char **argv) {
+int main(int argc, char **argv){
 
   if(argc <= 1) {
     printf("No option specified! Currently:\n-s for start, followed by a filepath to an mp3\n-p for play/pause\n-k for kill\n-e to enter screen\n-l to do the test ls function\n");
@@ -89,11 +89,13 @@ int main(int argc, char **argv) {
 	//Print out splash screen on startup
 	splash(mainWin);
 
-	//Init activeInfo for tracking window/menu/items
-	Winfo activeInfo = newWinfo(mainWin);
-
 	//Print out welcome and intruction windows:
 	WINDOW* insnWin = cInsnwin(mainWin);
+	
+	//Init activeInfo for tracking window/menu/items
+	Winfo activeInfo = newWinfo(mainWin, insnWin);
+	
+	//Print Welcome window
 	cWelcwin(activeInfo);
 
 	int ch;
@@ -109,14 +111,12 @@ int main(int argc, char **argv) {
 	}//End of input while
 
 
-	//End of excecution
-	if(getMenu(activeInfo) != NULL) remWin(activeInfo);
-	remMenu(activeInfo);
+	//End of excecution cleanup
+	clearAndClean(activeInfo);
 	freeWinfo(&activeInfo);
-    delwin(mainWin);
-	delwin(insnWin);
-    endwin();
-    //refresh();
-
+	
+	//	clearAndClean exits program, but 
+	//	this is here to make the compiler happy.
 	return 0;
+
 }

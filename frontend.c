@@ -213,11 +213,28 @@ void remMenu(Winfo activeInfo){
 	}
 	free(items);
 	
-	
 	free_menu(menu);
 	
 	setItems(activeInfo, NULL);
 	setMenu(activeInfo, NULL);
 	setNumItems(activeInfo, 0);
+}
+
+//clearAndClean()
+//Removes active windows and menus, cleans memory before exiting
+void clearAndClean(Winfo activeInfo){
+	WINDOW* mainWin = getMainWin(activeInfo);
+	WINDOW* insnWin = getInsnWin(activeInfo);
+	
+	if(getMenu(activeInfo) != NULL){
+		remWin(activeInfo);
+	}
+	remMenu(activeInfo);
+	wclear(mainWin);
+    delwin(mainWin);
+	wclear(insnWin);
+	delwin(insnWin);
+    endwin();
+	exit(0);
 }
 

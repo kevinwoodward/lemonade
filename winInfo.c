@@ -12,6 +12,7 @@
 
 typedef struct WinfoObj{
 	WINDOW* mainWin;
+	WINDOW* insnWin;
 	WINDOW* activeWin;
 	MENU* activeMenu;
 	ITEM** activeItems;
@@ -25,9 +26,10 @@ typedef struct WinfoObj{
 
 //newWinfo()
 //Constructor for Winfo object
-Winfo newWinfo(WINDOW* mainWin){
+Winfo newWinfo(WINDOW* mainWin, WINDOW* insnWin){
 	Winfo nWinfo = malloc(sizeof(WinfoObj));
 	nWinfo->mainWin = mainWin;
+	nWinfo->insnWin = insnWin;
 	nWinfo->activeWin = NULL;
 	nWinfo->activeMenu = NULL;
 	nWinfo->activeItems = NULL;
@@ -50,6 +52,12 @@ void freeWinfo(Winfo* pWinfo){
 //Getter for main WINDOW* field
 WINDOW* getMainWin(Winfo aWinfo){
 	return aWinfo->mainWin;
+}
+
+
+//Getter for instruction window field
+WINDOW* getInsnWin(Winfo aWinfo){
+	return aWinfo->insnWin;
 }
 
 
