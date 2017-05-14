@@ -8,7 +8,7 @@
 #include "backend.h"
 #include "frontend.h"
 #include "winInfo.h"
-
+#include "inputHandler.h"
 
 int main(int argc, char **argv) {
   char* name = "hello";
@@ -93,90 +93,34 @@ int main(int argc, char **argv) {
 	//Print out splash screen on startup
 	splash(mainWin);
 
+	//Print out welcome and intruction windows:
+	WINDOW* insnWin = cInsnwin(mainWin);
+	
 	//Init activeInfo for tracking window/menu/items
-	Winfo activeInfo = newWinfo(mainWin);
-
-	//Print out welcome window:
+	Winfo activeInfo = newWinfo(mainWin, insnWin);
+	
+	//Print Welcome window
 	cWelcwin(activeInfo);
 
 	int ch;
-	int itemNum;
-
+	
 	//Primary program input loop
 	while( (ch = getch()) != 'q'){
-		MENU* activeMenu = getMenu(activeInfo);
-		switch(ch){
-			case '1':
-				if(activeMenu != NULL) remMenu(activeInfo);
-				remWin(activeInfo);
-				cWelcwin(activeInfo);
-				break;
-
-			case '2':
-				if(activeMenu != NULL) remMenu(activeInfo);
-				remWin(activeInfo);
-				cSelectwin(activeInfo);
-				break;
-
-			case '3':
-				if(activeMenu != NULL) remMenu(activeInfo);
-				remWin(activeInfo);
-				cBrowsewin(activeInfo);
-				break;
-
-			case '4':
-				if(activeMenu != NULL) remMenu(activeInfo);
-				remWin(activeInfo);
-				cAboutwin(activeInfo);
-				break;
-
-			case KEY_UP : //UP arrow key
-				menu_driver(getMenu(activeInfo), REQ_UP_ITEM);
-				break;
-
-			case KEY_DOWN : //DOWN arrow key
-				menu_driver(getMenu(activeInfo), REQ_DOWN_ITEM);
-				break;
-
-			case '\n': //ENTER key
-				itemNum = item_index(current_item(activeMenu));
-				switch (itemNum){
-					case 0: //Select
-					if(activeMenu != NULL) remMenu(activeInfo);
-					remWin(activeInfo);
-					cSelectwin(activeInfo);
-					break;
-				case 1: //Browse
-					if(activeMenu != NULL) remMenu(activeInfo);
-					remWin(activeInfo);
-					cBrowsewin(activeInfo);
-					break;
-				case 2: //About
-					if(activeMenu != NULL) remMenu(activeInfo);
-					remWin(activeInfo);
-					cAboutwin(activeInfo);
-					break;
-				case 3: //Quit
-					if(activeMenu != NULL) remMenu(activeInfo);
-					remWin(activeInfo);
-					break;
-				}//End of ENTER switch
-				break;
-
-		}//End of switch
-
+		
+		//Determine actions based on current screen
+		handleInput(activeInfo, ch);
+		
 		wrefresh(getWin(activeInfo));
 
 	}//End of input while
 
 
-	//End of excecution
-	if(getMenu(activeInfo) != NULL) remWin(activeInfo);
-	remMenu(activeInfo);
+	//End of excecution cleanup
+	clearAndClean(activeInfo);
 	freeWinfo(&activeInfo);
-    delwin(mainWin);
-    endwin();
-    //refresh();
-
+	
+	//	clearAndClean exits program, but 
+	//	this is here to make the compiler happy.
 	return 0;
+
 }

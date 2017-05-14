@@ -13,7 +13,7 @@
 //	Menu: currently  active ncurses menu
 //	Item: two dimensional array composed of ncurses Menu items
 //	numItems: number of items in menu
-
+//  state: state variable that determines correct inputs to check for
 
 #ifndef WININFO_H
 #define WININFO_H
@@ -37,6 +37,13 @@ void freeWinfo(Winfo* pWinfo);
 WINDOW* getMainWin(Winfo aWinfo);
 void setMainWin(Winfo aWinfo, WINDOW* newWin);
 
+//Getter for instruction window field
+WINDOW* getInsnWin(Winfo aWinfo);
+
+//Get/Setters for state field
+int getState(Winfo aWinfo);
+void setState(Winfo aWinfo, int newState);
+	
 //Get/Setters for WINDOW* field
 WINDOW* getWin(Winfo aWinfo);
 void setWin(Winfo aWinfo, WINDOW* newWin);

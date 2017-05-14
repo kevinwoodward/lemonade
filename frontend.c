@@ -48,6 +48,21 @@ void splash(WINDOW* mainwin){
 	refresh();
 }
 
+//cInsnwin()
+//Prints out window navigation instruction
+WINDOW* cInsnwin(WINDOW* mainWin){
+	WINDOW* childWin = subwin(mainWin, 5, 60, 0, 0);
+	box(childWin, 0, 0);
+	
+	mvwaddstr(childWin, 1, 1, "Use the number keys to navigate to the different menus");
+	mvwaddstr(childWin, 2, 1, "[1]: Main Menu     [3]: File Browser");
+	mvwaddstr(childWin, 3, 1, "[2]: Song Selector [4]: About");
+	
+	wrefresh(childWin);
+	
+	return childWin;
+}
+
 
 //Private helper functions: -----------------------------------------------
 
@@ -88,7 +103,7 @@ void createMenu(Winfo activeInfo){
 	MENU* menu = new_menu(getItems(activeInfo));
 	WINDOW* win = getWin(activeInfo);
 	set_menu_win(menu, win);
-	set_menu_sub(menu, derwin(win, 4, 15, 5, 1));
+	set_menu_sub(menu, derwin(win, 4, 15, 4, 1));
 	post_menu(menu);
 	
 	setMenu(activeInfo, menu);
@@ -104,9 +119,8 @@ void cWelcwin(Winfo activeInfo){
 	createWin(activeInfo);
 	WINDOW* childWin = getWin(activeInfo);
 	
-    mvwaddstr(childWin, 1, 1, "Welcome to the Lemonade");
-    mvwaddstr(childWin, 2, 7, "music player!");
-    mvwaddstr(childWin, 3, 1, "Please select an action:");
+    mvwaddstr(childWin, 1, 1, "Welcome to the Lemonade music player!");
+    mvwaddstr(childWin, 2, 1, "Please select an action:");
 	
 	//Create selection menu
 	char* choices[] = {"Select a song","Browse files","About","Quit"};
@@ -161,8 +175,13 @@ void cAboutwin(Winfo activeInfo){
 	createWin(activeInfo);
 	WINDOW* childWin = getWin(activeInfo);
 	
-	mvwaddstr(childWin, 1, 1, "This is where the user");
-	mvwaddstr(childWin, 2, 1, "will read about things");
+	mvwaddstr(childWin, 1, 1, "Lemonade Music player");
+	mvwaddstr(childWin, 2, 1, "CMPS 115 Spring 2017");
+	mvwaddstr(childWin, 4, 1, "Kevin Woodward");
+	mvwaddstr(childWin, 5, 1, "Ryan Schouweiler");
+	mvwaddstr(childWin, 6, 1, "Amit Khatri");
+	mvwaddstr(childWin, 7, 1, "Akhshaya Baskar");
+	mvwaddstr(childWin, 8, 1, "Tarik Zeid");
 	
 	wrefresh(childWin);
 }
@@ -192,11 +211,30 @@ void remMenu(Winfo activeInfo){
 	for(int i = 0; i < numItems; ++i){
 		free_item(items[i]);
 	}
+	free(items);
 	
 	free_menu(menu);
 	
 	setItems(activeInfo, NULL);
 	setMenu(activeInfo, NULL);
 	setNumItems(activeInfo, 0);
+}
+
+//clearAndClean()
+//Removes active windows and menus, cleans memory before exiting
+void clearAndClean(Winfo activeInfo){
+	WINDOW* mainWin = getMainWin(activeInfo);
+	WINDOW* insnWin = getInsnWin(activeInfo);
+	
+	if(getMenu(activeInfo) != NULL){
+		remWin(activeInfo);
+	}
+	remMenu(activeInfo);
+	wclear(mainWin);
+    delwin(mainWin);
+	wclear(insnWin);
+	delwin(insnWin);
+    endwin();
+	exit(0);
 }
 
