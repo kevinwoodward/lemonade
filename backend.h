@@ -15,9 +15,13 @@ void sendScreenCommand(char* command);
 //Sends a play/pause command to screen
 void playpause();
 
-
 //plays a single specified song
 void startSingleSong(char* filePath);
+
+//starts playback from a playlist file
+//Assumes file is located in /usr/share/lemonade
+void startPlaylist(char* fileName);
+
 //Creates playlist file of absolute song paths, in the directory the program is run. Returns 0 on success, 1 on failure (file already exists).
 //char* fileName: the name of the playlist file. Should always begin with a period, as playlists should be internal to the program.
 //char* songFilePaths[]: an array of strings, each an absolute path to an mp3 file. LAST ARRAY ELEMENT MUST BE AN EMPTY STRING.

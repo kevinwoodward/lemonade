@@ -21,9 +21,10 @@ int main(int argc, char **argv) {
   //Backend: ---------------------------------------------------------
 
   int argCase;
-  //char* filePath = NULL;
+  system("pkill screen");
 
-  //handles flag options
+
+  //handles flag options (for backend testing)
   while((argCase = getopt(argc, argv, "ps:kelx")) != -1) {
     switch (argCase) {
       case 'p':
@@ -32,7 +33,7 @@ int main(int argc, char **argv) {
         break;
       case 's':
         //filePath = optarg;
-
+        startSingleSong(optarg);
         break;
       case 'k':
         system("killall screen");
@@ -42,7 +43,7 @@ int main(int argc, char **argv) {
         system("screen -r");
         break;
       case 'l':
-        //open
+        startPlaylist("playlist");
         break;
       case 'x':
         createPlaylistFile(name, arr);
@@ -50,8 +51,7 @@ int main(int argc, char **argv) {
       case '?':
         if (optopt == 's') {
           fprintf (stdout, "Option -%c requires an argument.\n", optopt);
-          startSingleSong("em.mp3");
-          //return 1;
+          return 1;
         }
         else if (isprint (optopt)) {
           fprintf (stdout, "Unknown option `-%c'.\n", optopt);

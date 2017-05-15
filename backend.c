@@ -9,34 +9,29 @@
 
 #include "backend.h"
 
-
+static const char FILEDIR[] = "/usr/share/lemonade/";
 
 void createScreen() {
   //creates a new detachted screen terminal instance with the name lemonade
   system("screen -d -m -S lemonade");
+  return;
 }
 
 void sendScreenCommand(char* command) {
   //takes the passed string and shoves it into the previously opened screen and auto executes it within said screen
   char str[300];
-  FILE *pf;
   strcpy(str, "screen -S lemonade -X stuff '");
   strcat(str, command);
   strcat(str, "^M'");
   char buffer[500];
-  char outStr[1000];
   snprintf(
     buffer,
     sizeof(buffer),
     "screen -S lemonade -X stuff '%s^M'",
     command
   );
-  pf = popen(buffer, "r");
-  while (fgets(outStr, sizeof(outStr), pf) != NULL) {
-    printf("%s", outStr);
-  }
-  pclose(pf);
-  //system(buffer);
+  printf("%s\n", buffer);
+  system(buffer);
   return;
 }
 
@@ -47,13 +42,21 @@ void playpause() {
 }
 
 void startSingleSong(char* filePath) {
-  system("killall screen");
   createScreen();
-  sendScreenCommand("cd ~/Documents/github/lemonade");
+  //sendScreenCommand("cd ~/Documents/github/lemonade"); //TODO: change to /usr/share/lemonade after development
   char fileStr[100];
   strcpy(fileStr, "mpg123 -C ");
   strcat(fileStr, filePath);
   sendScreenCommand(fileStr);
+}
+
+void startPlaylist(char* fileName) {
+  createScreen();
+  char playlistStr[100];
+  strcpy(playlistStr, "mpg123 -C -@ ");
+  strcat(playlistStr, FILEDIR);
+  strcat(playlistStr, fileName);
+  sendScreenCommand(playlistStr);
 }
 
 int createPlaylistFile(char* fileName, char* songFilePaths[]) {
