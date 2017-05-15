@@ -52,11 +52,11 @@ void splash(WINDOW* mainwin){
 //Prints out window navigation instruction
 WINDOW* cInsnwin(WINDOW* mainWin){
 	WINDOW* childWin = subwin(mainWin, 5, 60, 0, 0);
-	box(childWin, 0, 0);
+	//box(childWin, 0, 0);
 	
-	mvwaddstr(childWin, 1, 1, "Use the number keys to navigate to the different menus");
-	mvwaddstr(childWin, 2, 1, "[1]: Main Menu     [3]: File Browser");
-	mvwaddstr(childWin, 3, 1, "[2]: Song Selector [4]: About");
+	mvwaddstr(childWin, 0, 1, "Use the number keys to navigate to the different menus");
+	mvwaddstr(childWin, 1, 1, "[1]: Main Menu     [3]: File Browser");
+	mvwaddstr(childWin, 2, 1, "[2]: Song Selector [4]: About");
 	
 	wrefresh(childWin);
 	
