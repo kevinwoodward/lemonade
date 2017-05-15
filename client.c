@@ -21,14 +21,12 @@ int main(int argc, char **argv) {
   //Backend: ---------------------------------------------------------
 
   int argCase;
-  system("pkill screen");
-
-
+  createScreen(1);
   //handles flag options (for backend testing)
   while((argCase = getopt(argc, argv, "ps:kelx")) != -1) {
     switch (argCase) {
       case 'p':
-        playpause();
+        playPause();
         return 0;
         break;
       case 's':
@@ -65,17 +63,6 @@ int main(int argc, char **argv) {
         }
     }
   }
-
-  //starts process if command is -s with specified song
-  // if(filePath != NULL) {
-  //   system("killall screen");
-  //   createScreen();
-  //   sendScreenCommand("cd ~/Documents/github/lemonade");
-  //   char fileStr[100];
-  //   strcpy(fileStr, "mpg123 -C ");
-  //   strcat(fileStr, filePath);
-  //   sendScreenCommand(fileStr);
-  // }
 
 
 	//Frontend: --------------------------------------------------

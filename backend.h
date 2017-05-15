@@ -6,14 +6,17 @@
 #define BACKEND_H
 
 //Creates the background screen for file playback (requires screen dependency)
-void createScreen();
+void createScreen(int killPrev);
 
 //Shoves passed text into screen in background and simulates enter key
 //char* command: the string to be passed and entered into the screen
 void sendScreenCommand(char* command);
 
 //Sends a play/pause command to screen
-void playpause();
+void playPause();
+
+//Sends a end playback command to screen
+void endPlayback();
 
 //plays a single specified song
 void startSingleSong(char* filePath);

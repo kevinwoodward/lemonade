@@ -11,9 +11,18 @@
 
 static const char FILEDIR[] = "/usr/share/lemonade/";
 
-void createScreen() {
+void createScreen(int killPrev) {
   //creates a new detachted screen terminal instance with the name lemonade
-  system("screen -d -m -S lemonade");
+  
+  if(killPrev == 0) {
+    printf("only make\n");
+    system("screen -d -m -S lemonade");
+  } else if(killPrev == 1) {
+    printf("kill and make\n");
+    system("pkill screen; screen -d -m -S lemonade");
+  } else {
+    fprintf(stderr, "Internal error, bad usage of createScreen");
+  }
   return;
 }
 
@@ -30,19 +39,22 @@ void sendScreenCommand(char* command) {
     "screen -S lemonade -X stuff '%s^M'",
     command
   );
-  printf("%s\n", buffer);
+  //printf("%s\n", buffer);
   system(buffer);
   return;
 }
 
-void playpause() {
-  //send the space char to the screen, causing a pause or play depending on current state.
+void playPause() {
   sendScreenCommand(" ");
   return;
 }
 
+void endPlayback() {
+  sendScreenCommand("q");
+  return;
+}
+
 void startSingleSong(char* filePath) {
-  createScreen();
   //sendScreenCommand("cd ~/Documents/github/lemonade"); //TODO: change to /usr/share/lemonade after development
   char fileStr[100];
   strcpy(fileStr, "mpg123 -C ");
@@ -51,7 +63,6 @@ void startSingleSong(char* filePath) {
 }
 
 void startPlaylist(char* fileName) {
-  createScreen();
   char playlistStr[100];
   strcpy(playlistStr, "mpg123 -C -@ ");
   strcat(playlistStr, FILEDIR);
