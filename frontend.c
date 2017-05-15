@@ -235,6 +235,9 @@ void clearAndClean(Winfo activeInfo){
 	wclear(insnWin);
 	delwin(insnWin);
     endwin();
+	
+	freeWinfo(&activeInfo);
+	
 	exit(0);
 }
 

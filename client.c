@@ -113,9 +113,8 @@ int main(int argc, char **argv){
 
 	//End of excecution cleanup
 	clearAndClean(activeInfo);
-	freeWinfo(&activeInfo);
 	
-	//	clearAndClean exits program, but 
+	//	"clearAndClean()" exits program, but 
 	//	this is here to make the compiler happy.
 	return 0;
 
