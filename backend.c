@@ -6,6 +6,7 @@
 #include <string.h>
 #include <ctype.h>
 #include <unistd.h>
+#include <dirent.h>
 
 #include "backend.h"
 
@@ -75,11 +76,14 @@ int createPlaylistFile(char* fileName, char* songFilePaths[]) {
 
   int i = 0;
 
+  char fileInDir[200];
+  sprintf(fileInDir, "%s%s", FILEDIR, fileName);
+  printf("%s\n", fileInDir);
   FILE *fptr;
-  fptr = fopen(fileName, "w");
+  fptr = fopen(fileInDir, "w");
 
-  //while(songFilePaths[i] != "") {
   while(strcmp(songFilePaths[i], "") != 0) {
+    printf("%s\n", songFilePaths[i]);
     fprintf(fptr, "%s\n", songFilePaths[i]);
     i++;
   }
@@ -90,6 +94,48 @@ int createPlaylistFile(char* fileName, char* songFilePaths[]) {
 
 }
 
+void createPlaylistFromDir(char* dirPath, char* fileName) {
+  char fileInDir[200];
+  sprintf(fileInDir, "%s%s", FILEDIR, fileName);
+
+  struct dirent **namelist;
+  int n, i = 0;
+  FILE *fptr;
+  fptr = fopen(fileInDir, "w");
+
+  n = scandir(dirPath, &namelist, NULL, alphasort);
+  if (n < 0) {
+    perror("scandir");
+  } else {
+    while (i < n) {
+      char *dot = strrchr(namelist[i]->d_name, '.');
+      if (dot && !strcmp(dot, ".mp3")){
+        fprintf(fptr, "%s/%s\n", dirPath, namelist[i]->d_name);
+      }
+      free(namelist[i]);
+      ++i;
+    }
+    free(namelist);
+  }
+  fclose(fptr);
+
+  //int len;
+  // struct dirent *pDirent;
+  // DIR* pDir;
+  // pDir = opendir (dirPath);
+  // while ((pDirent = readdir(pDir)) != NULL) {
+  //   printf ("%s\n", pDirent->d_name);
+  // }
+  // closedir(pDir);
+
+
+
+  // FILE *fp = popen("ls *.mp3", "r");
+  // char* buf[1024];
+  // while(fgets(buf, sizeof(buf), fp) == 0) {
+  //   printf(buf);
+  // }
+}
 
 //ON HOLD
 // int currentPlaylistToFile(char* playlistName) {

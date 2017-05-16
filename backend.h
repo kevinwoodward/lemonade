@@ -30,6 +30,9 @@ void startPlaylist(char* fileName);
 //char* songFilePaths[]: an array of strings, each an absolute path to an mp3 file. LAST ARRAY ELEMENT MUST BE AN EMPTY STRING.
 int createPlaylistFile(char* fileName, char* songFilePaths[]);
 
+//Creates playlist of mp3s within a specified directory. To use, do a popen pwd command and pass result as parameter
+void createPlaylistFromDir(char* dirPath, char* fileName);
+
 //ON HOLD
 //Creates a playlist file based of the current playlist
 //int currentPlaylistToFile(char* playlistName);

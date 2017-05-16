@@ -23,7 +23,7 @@ int main(int argc, char **argv) {
   int argCase;
   createScreen(1);
   //handles flag options (for backend testing)
-  while((argCase = getopt(argc, argv, "ps:kelx")) != -1) {
+  while((argCase = getopt(argc, argv, "ps:kelxd")) != -1) {
     switch (argCase) {
       case 'p':
         playPause();
@@ -41,10 +41,13 @@ int main(int argc, char **argv) {
         system("screen -r");
         break;
       case 'l':
-        startPlaylist("playlist");
+        startPlaylist("testpl");
         break;
       case 'x':
         createPlaylistFile(name, arr);
+        break;
+      case 'd':
+        createPlaylistFromDir("/home/kevin/Music/Kendrick Lamar - DAMN", "testpl");
         break;
       case '?':
         if (optopt == 's') {
