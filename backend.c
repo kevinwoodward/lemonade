@@ -118,23 +118,6 @@ void createPlaylistFromDir(char* dirPath, char* fileName) {
     free(namelist);
   }
   fclose(fptr);
-
-  //int len;
-  // struct dirent *pDirent;
-  // DIR* pDir;
-  // pDir = opendir (dirPath);
-  // while ((pDirent = readdir(pDir)) != NULL) {
-  //   printf ("%s\n", pDirent->d_name);
-  // }
-  // closedir(pDir);
-
-
-
-  // FILE *fp = popen("ls *.mp3", "r");
-  // char* buf[1024];
-  // while(fgets(buf, sizeof(buf), fp) == 0) {
-  //   printf(buf);
-  // }
 }
 
 //ON HOLD
