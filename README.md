@@ -11,6 +11,8 @@ Console Based Music Player for CMPS 115
 
 * [Scrum Board](https://trello.com/b/sGYflS81/scrum)
 
+* [Sprint 2 Report](https://docs.google.com/a/ucsc.edu/document/d/1x_XO6yRvNBUOmw7O0aZNq4raEdC1qxheFQLR_rFNCXg/edit?usp=sharing)
+
 * [Sprint 2 Burnup](https://docs.google.com/a/ucsc.edu/spreadsheets/d/18VBGBWh5GzPUBvDYOq1lUUzMq0F6Jbn54dnNYJ55A-s/edit?usp=sharing)
 
 **Sprint 1**
