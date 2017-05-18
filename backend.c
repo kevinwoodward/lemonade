@@ -67,5 +67,5 @@ int createPlaylistFile(char* fileName, char* songFilePaths[]) {
 }
 
 int currentPlaylistToFile(char* playlistName) {
-
+	return 0;
 }
