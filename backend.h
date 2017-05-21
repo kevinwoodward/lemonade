@@ -26,4 +26,7 @@ int createPlaylistFile(char* fileName, char* songFilePaths[]);
 //Creates a playlist file based of the current playlist
 int currentPlaylistToFile(char* playlistName);
 
+//Creates a 2d char array that holds songs and folders in current directory
+void lsOutput(char inArray[][50]);
+
 #endif

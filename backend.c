@@ -69,3 +69,22 @@ int createPlaylistFile(char* fileName, char* songFilePaths[]) {
 int currentPlaylistToFile(char* playlistName) {
 	return 0;
 }
+
+void lsOutput(char inArray[][50])
+{
+  //This command filters FOLDERS
+  FILE *ls = popen("ls -d */","r");
+  char buf[50];
+  int count = 0;
+
+  while(fgets(inArray[count],sizeof(buf),ls) !=0)
+  {
+    count++;
+  }
+
+  ls = popen("ls *.mp3","r");
+  while(fgets(inArray[count],sizeof(buf),ls) !=0)
+  {
+    count++;
+  }
+}
