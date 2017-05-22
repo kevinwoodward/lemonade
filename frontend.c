@@ -5,9 +5,10 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
-//#include <menu.h>
 
 #include "frontend.h"
+
+#include "backend.h"
 #include "helpers.h"
 
 #define WIDTH 70
@@ -136,24 +137,18 @@ void cSelectwin(Winfo activeInfo){
 	createWin(activeInfo);
 	WINDOW* childWin = getWin(activeInfo);
 	
-	int lsCount = 1;
-	FILE *ls = popen("ls *.mp3", "r");
-	char buf[512];
-	attron(A_BOLD);
-	while (fgets(buf, sizeof(buf), ls) != 0) {
-		trimwhitespace(buf);
-		mvwaddstr(childWin, lsCount, 1, buf);
-		lsCount++;
+	int numItems = countLines();
+	char** choices = calloc(numItems, sizeof(char*));
+	for(int i=0; i<numItems; i++){
+		choices[i] = calloc(30, sizeof(char));
 	}
-	attroff(A_BOLD);
-	ls = popen("ls *.mp3", "r");
-	//char buf[512];
-	while (fgets(buf, sizeof(buf), ls) != 0) {
-		trimwhitespace(buf);
-		mvwaddstr(childWin, lsCount, 1, buf);
-		lsCount++;
-	}
-	pclose(ls);
+	lsOutput(choices);
+	//createItems(activeInfo, numItems, choices);
+	//createMenu(activeInfo);
+	mvwprintw(childWin, 1, 1, "choices[0] = %s", choices[0]);
+	mvwprintw(childWin, 2, 1, "choices[1] = %s", choices[1]);
+	mvwprintw(childWin, 3, 1, "choices[2] = %s", choices[2]);
+	mvwprintw(childWin, 4, 1, "choices[3] = %s", choices[3]);
 	wrefresh(childWin);
 }
 

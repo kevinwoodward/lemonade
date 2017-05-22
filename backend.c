@@ -70,21 +70,45 @@ int currentPlaylistToFile(char* playlistName) {
 	return 0;
 }
 
-void lsOutput(char inArray[][50])
+int countLines(){
+	int numItems = 0;
+	char buf[50];
+	FILE* ls = popen("ls -d */","r");
+	
+	while(fgets(buf,sizeof(buf),ls) !=0)
+	{
+		numItems++;
+	}	
+	pclose(ls);
+	
+	ls = popen("ls *.mp3","r");
+	while(fgets(buf,sizeof(buf),ls) !=0)
+	{
+		numItems++;
+	}
+	pclose(ls);
+	return numItems;
+}
+
+void lsOutput(char** choices)
 {
   //This command filters FOLDERS
   FILE *ls = popen("ls -d */","r");
-  char buf[50];
+  char buf[30];
   int count = 0;
-
-  while(fgets(inArray[count],sizeof(buf),ls) !=0)
+  
+  
+  while(fgets(buf,sizeof(buf),ls) !=0)
   {
+	strcpy(choices[count], buf);
     count++;
   }
 
   ls = popen("ls *.mp3","r");
-  while(fgets(inArray[count],sizeof(buf),ls) !=0)
+  while(fgets(buf,sizeof(buf),ls) !=0)
   {
+	strcpy(choices[count], buf);
     count++;
   }
+  //free(buf);
 }
