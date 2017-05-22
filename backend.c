@@ -74,13 +74,13 @@ int countLines(){
 	int numItems = 0;
 	char buf[50];
 	FILE* ls = popen("ls -d */","r");
-	
+
 	while(fgets(buf,sizeof(buf),ls) !=0)
 	{
 		numItems++;
-	}	
+	}
 	pclose(ls);
-	
+
 	ls = popen("ls *.mp3","r");
 	while(fgets(buf,sizeof(buf),ls) !=0)
 	{
@@ -94,10 +94,10 @@ void lsOutput(char** choices)
 {
   //This command filters FOLDERS
   FILE *ls = popen("ls -d */","r");
-  char buf[30];
+  char buf[512];
   int count = 0;
-  
-  
+
+
   while(fgets(buf,sizeof(buf),ls) !=0)
   {
 	strcpy(choices[count], buf);
