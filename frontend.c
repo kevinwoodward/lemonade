@@ -143,12 +143,8 @@ void cSelectwin(Winfo activeInfo){
 		choices[i] = calloc(30, sizeof(char));
 	}
 	lsOutput(choices);
-	//createItems(activeInfo, numItems, choices);
-	//createMenu(activeInfo);
-	mvwprintw(childWin, 1, 1, "choices[0] = %s", choices[0]);
-	mvwprintw(childWin, 2, 1, "choices[1] = %s", choices[1]);
-	mvwprintw(childWin, 3, 1, "choices[2] = %s", choices[2]);
-	mvwprintw(childWin, 4, 1, "choices[3] = %s", choices[3]);
+	createItems(activeInfo, numItems, choices);
+	createMenu(activeInfo);
 	wrefresh(childWin);
 }
 

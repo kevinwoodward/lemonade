@@ -95,19 +95,22 @@ void lsOutput(char** choices)
   //This command filters FOLDERS
   FILE *ls = popen("ls -d */","r");
   char buf[512];
+  char* tok;
   int count = 0;
 
 
   while(fgets(buf,sizeof(buf),ls) !=0)
   {
-	strcpy(choices[count], buf);
+	tok = strtok(buf, "\n");
+	strcpy(choices[count], tok);
     count++;
   }
 
   ls = popen("ls *.mp3","r");
   while(fgets(buf,sizeof(buf),ls) !=0)
   {
-	strcpy(choices[count], buf);
+	tok = strtok(buf, "\n");
+	strcpy(choices[count], tok);
     count++;
   }
   //free(buf);
