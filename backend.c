@@ -143,7 +143,8 @@ void lsOutput(char** choices)
     count++;
   }
   //free(buf);
-  
+}
+
 void createPlaylistFromDir(char* dirPath, char* fileName) {
   char fileInDir[200];
   sprintf(fileInDir, "%s%s", FILEDIR, fileName);
