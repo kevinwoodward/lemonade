@@ -94,6 +94,56 @@ int createPlaylistFile(char* fileName, char* songFilePaths[]) {
 
 }
 
+
+int currentPlaylistToFile(char* playlistName) {
+	return 0;
+}
+
+int countLines(){
+	int numItems = 0;
+	char buf[50];
+	FILE* ls = popen("ls -d */","r");
+
+	while(fgets(buf,sizeof(buf),ls) !=0)
+	{
+		numItems++;
+	}
+	pclose(ls);
+
+	ls = popen("ls *.mp3","r");
+	while(fgets(buf,sizeof(buf),ls) !=0)
+	{
+		numItems++;
+	}
+	pclose(ls);
+	return numItems;
+}
+
+void lsOutput(char** choices)
+{
+  //This command filters FOLDERS
+  FILE *ls = popen("ls -d */","r");
+  char buf[512];
+  char* tok;
+  int count = 0;
+
+
+  while(fgets(buf,sizeof(buf),ls) !=0)
+  {
+	tok = strtok(buf, "\n");
+	strcpy(choices[count], tok);
+    count++;
+  }
+
+  ls = popen("ls *.mp3","r");
+  while(fgets(buf,sizeof(buf),ls) !=0)
+  {
+	tok = strtok(buf, "\n");
+	strcpy(choices[count], tok);
+    count++;
+  }
+  //free(buf);
+  
 void createPlaylistFromDir(char* dirPath, char* fileName) {
   char fileInDir[200];
   sprintf(fileInDir, "%s%s", FILEDIR, fileName);
@@ -118,6 +168,7 @@ void createPlaylistFromDir(char* dirPath, char* fileName) {
     free(namelist);
   }
   fclose(fptr);
+
 }
 
 //ON HOLD
