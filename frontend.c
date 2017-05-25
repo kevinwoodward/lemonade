@@ -54,13 +54,13 @@ void splash(WINDOW* mainwin){
 WINDOW* cInsnwin(WINDOW* mainWin){
 	WINDOW* childWin = subwin(mainWin, 5, 60, 0, 0);
 	//box(childWin, 0, 0);
-	
+
 	mvwaddstr(childWin, 0, 1, "Use the number keys to navigate to the different menus");
 	mvwaddstr(childWin, 1, 1, "[1]: Main Menu     [3]: File Browser");
 	mvwaddstr(childWin, 2, 1, "[2]: Song Selector [4]: About");
-	
+
 	wrefresh(childWin);
-	
+
 	return childWin;
 }
 
@@ -78,7 +78,7 @@ void createWin(Winfo activeInfo){
     int y = (rows - height) / 2;
 	childWin = subwin(getMainWin(activeInfo), height, width, y, x);
     box(childWin, 0, 0);
-	
+
 	setWin(activeInfo, childWin);
 }
 
@@ -86,12 +86,12 @@ void createWin(Winfo activeInfo){
 //Returns items from string array
 void createItems(Winfo activeInfo, int numItems, char** choices){
 	ITEM** items = (ITEM **)calloc(numItems+1, sizeof(ITEM *));
-	
+
 	for(int i = 0; i < numItems; ++i){
 		items[i] = new_item(choices[i], choices[i]);
 	}
 	items[numItems] = (ITEM *)NULL;
-	
+
 	setNumItems(activeInfo, numItems);
 	setItems(activeInfo, items);
 }
@@ -99,14 +99,14 @@ void createItems(Winfo activeInfo, int numItems, char** choices){
 //createMenu()
 //Creates a new menu with given items
 void createMenu(Winfo activeInfo){
-	
+
 						//(ITEM **)
 	MENU* menu = new_menu(getItems(activeInfo));
 	WINDOW* win = getWin(activeInfo);
 	set_menu_win(menu, win);
 	set_menu_sub(menu, derwin(win, 4, 15, 4, 1));
 	post_menu(menu);
-	
+
 	setMenu(activeInfo, menu);
 }
 
@@ -119,15 +119,15 @@ void createMenu(Winfo activeInfo){
 void cWelcwin(Winfo activeInfo){
 	createWin(activeInfo);
 	WINDOW* childWin = getWin(activeInfo);
-	
+
     mvwaddstr(childWin, 1, 1, "Welcome to the Lemonade music player!");
     mvwaddstr(childWin, 2, 1, "Please select an action:");
-	
+
 	//Create selection menu
 	char* choices[] = {"Select a song","Browse files","About","Quit"};
 	createItems(activeInfo, 4, choices);
 	createMenu(activeInfo);
-	
+
 	wrefresh(childWin);
 }
 
@@ -136,7 +136,7 @@ void cWelcwin(Winfo activeInfo){
 void cSelectwin(Winfo activeInfo){
 	createWin(activeInfo);
 	WINDOW* childWin = getWin(activeInfo);
-	
+
 	int numItems = countLines();
 	char** choices = calloc(numItems, sizeof(char*));
 	for(int i=0; i<numItems; i++){
@@ -153,10 +153,10 @@ void cSelectwin(Winfo activeInfo){
 void cBrowsewin(Winfo activeInfo){
 	createWin(activeInfo);
 	WINDOW* childWin = getWin(activeInfo);
-	
+
     mvwaddstr(childWin, 1, 1, "This is where the user");
     mvwaddstr(childWin, 2, 1, "will browse songs");
-	
+
 	wrefresh(childWin);
 }
 
@@ -165,7 +165,7 @@ void cBrowsewin(Winfo activeInfo){
 void cAboutwin(Winfo activeInfo){
 	createWin(activeInfo);
 	WINDOW* childWin = getWin(activeInfo);
-	
+
 	mvwaddstr(childWin, 1, 1, "Lemonade Music player");
 	mvwaddstr(childWin, 2, 1, "CMPS 115 Spring 2017");
 	mvwaddstr(childWin, 4, 1, "Kevin Woodward");
@@ -173,7 +173,7 @@ void cAboutwin(Winfo activeInfo){
 	mvwaddstr(childWin, 6, 1, "Amit Khatri");
 	mvwaddstr(childWin, 7, 1, "Akhshaya Baskar");
 	mvwaddstr(childWin, 8, 1, "Tarik Zeid");
-	
+
 	wrefresh(childWin);
 }
 
@@ -194,8 +194,8 @@ void remWin(Winfo activeInfo){
 //Frees memory associated with a menu
 void remMenu(Winfo activeInfo){
 	MENU* menu = getMenu(activeInfo);
-	unpost_menu(menu);
-	
+	//unpost_menu(menu);
+
 	//Free menu items
 	ITEM** items = getItems(activeInfo);
 	int numItems = getNumItems(activeInfo);
@@ -203,9 +203,9 @@ void remMenu(Winfo activeInfo){
 		free_item(items[i]);
 	}
 	free(items);
-	
+
 	free_menu(menu);
-	
+
 	setItems(activeInfo, NULL);
 	setMenu(activeInfo, NULL);
 	setNumItems(activeInfo, 0);
@@ -216,7 +216,7 @@ void remMenu(Winfo activeInfo){
 void clearAndClean(Winfo activeInfo){
 	WINDOW* mainWin = getMainWin(activeInfo);
 	WINDOW* insnWin = getInsnWin(activeInfo);
-	
+
 	if(getMenu(activeInfo) != NULL){
 		remWin(activeInfo);
 	}
@@ -226,9 +226,8 @@ void clearAndClean(Winfo activeInfo){
 	wclear(insnWin);
 	delwin(insnWin);
     endwin();
-	
+
 	freeWinfo(&activeInfo);
-	
+
 	exit(0);
 }
-
