@@ -21,18 +21,17 @@ int main(int argc, char **argv) {
   //Backend: ---------------------------------------------------------
 
   int argCase;
-  //char* filePath = NULL;
-
-  //handles flag options
-  while((argCase = getopt(argc, argv, "ps:kelx")) != -1) {
+  createScreen(1);
+  //handles flag options (for backend testing)
+  while((argCase = getopt(argc, argv, "ps:kelxd")) != -1) {
     switch (argCase) {
       case 'p':
-        playpause();
+        playPause();
         return 0;
         break;
       case 's':
         //filePath = optarg;
-
+        startSingleSong(optarg);
         break;
       case 'k':
         system("killall screen");
@@ -42,16 +41,18 @@ int main(int argc, char **argv) {
         system("screen -r");
         break;
       case 'l':
-        //testList();
+        startPlaylist("testpl");
         break;
       case 'x':
         createPlaylistFile(name, arr);
         break;
+      case 'd':
+        createPlaylistFromDir("/home/kevin/Music/Kendrick Lamar - DAMN", "testpl");
+        break;
       case '?':
         if (optopt == 's') {
           fprintf (stdout, "Option -%c requires an argument.\n", optopt);
-          startSingleSong("em.mp3");
-          //return 1;
+          return 1;
         }
         else if (isprint (optopt)) {
           fprintf (stdout, "Unknown option `-%c'.\n", optopt);
@@ -65,17 +66,6 @@ int main(int argc, char **argv) {
         }
     }
   }
-
-  //starts process if command is -s with specified song
-  // if(filePath != NULL) {
-  //   system("killall screen");
-  //   createScreen();
-  //   sendScreenCommand("cd ~/Documents/github/lemonade");
-  //   char fileStr[100];
-  //   strcpy(fileStr, "mpg123 -C ");
-  //   strcat(fileStr, filePath);
-  //   sendScreenCommand(fileStr);
-  // }
 
 
 	//Frontend: --------------------------------------------------
@@ -117,9 +107,8 @@ int main(int argc, char **argv) {
 
 	//End of excecution cleanup
 	clearAndClean(activeInfo);
-	freeWinfo(&activeInfo);
 	
-	//	clearAndClean exits program, but 
+	//	"clearAndClean()" exits program, but 
 	//	this is here to make the compiler happy.
 	return 0;
 
