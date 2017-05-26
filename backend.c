@@ -12,6 +12,8 @@
 
 static const char FILEDIR[] = "/usr/share/lemonade/";
 
+//char currentDirectory[512];
+
 void createScreen(int killPrev) {
   //creates a new detachted screen terminal instance with the name lemonade
 
@@ -57,7 +59,7 @@ void endPlayback() {
 void startSingleSong(char* filePath) {
   //sendScreenCommand("cd ~/Documents/github/lemonade"); //TODO: change to /usr/share/lemonade after development
   createScreen(1);
-  char fileStr[100];
+  char fileStr[512];
   strcpy(fileStr, "mpg123 -C ");
   strcat(fileStr, filePath);
   sendScreenCommand(fileStr);
@@ -100,9 +102,10 @@ int currentPlaylistToFile(char* playlistName) {
 }
 
 int countLines(){
+
 	int numItems = 0;
 	char buf[50];
-	FILE* ls = popen("ls -d */","r");
+	FILE* ls = popen("ls -d */ 2> /dev/null","r");
 
 	while(fgets(buf,sizeof(buf),ls) !=0)
 	{
@@ -110,7 +113,7 @@ int countLines(){
 	}
 	pclose(ls);
 
-	ls = popen("ls *.mp3","r");
+	ls = popen("ls *.mp3 2> /dev/null","r");
 	while(fgets(buf,sizeof(buf),ls) !=0)
 	{
 		numItems++;
@@ -121,27 +124,30 @@ int countLines(){
 
 void lsOutput(char** choices)
 {
+  //TODO: fix this
   //This command filters FOLDERS
-  FILE *ls = popen("ls -d */","r");
+
+
   char buf[512];
   char* tok;
   int count = 0;
 
-
+  FILE *ls = popen("ls -d */ 2> /dev/null | sed 's/ /\\ /g'", "r");
   while(fgets(buf,sizeof(buf),ls) !=0)
   {
-	tok = strtok(buf, "\n");
-	strcpy(choices[count], tok);
+	  tok = strtok(buf, "\n");
+	  strcpy(choices[count], escapedString(tok));
     count++;
   }
 
-  ls = popen("ls *.mp3","r");
+  ls = popen("ls *.mp3 2> /dev/null | sed 's/ /\\ /g'", "r");
   while(fgets(buf,sizeof(buf),ls) !=0)
   {
-	tok = strtok(buf, "\n");
-	strcpy(choices[count], tok);
+  	tok = strtok(buf, "\n");
+  	strcpy(choices[count], escapedString(tok));
     count++;
   }
+
   //free(buf);
 }
 
@@ -170,6 +176,62 @@ void createPlaylistFromDir(char* dirPath, char* fileName) {
   }
   fclose(fptr);
 
+}
+
+void setInitialDirectory() {
+}
+
+void upDirectory() {
+  chdir("..");
+}
+
+void downDirectory(const char* dir) {
+  chdir(dir);
+}
+
+int str_end(const char *s, const char *t)
+{
+  size_t ls = strlen(s); // find length of s
+  size_t lt = strlen(t); // find length of t
+  if (ls >= lt)  // check if t can fit in s
+  {
+      // point s to where t should start and compare the strings from there
+      return (0 == memcmp(t, s + (ls - lt), lt));
+  }
+  return 0; // t was longer than s
+}
+
+char* escapedString(char* buffer){
+
+    int bufferLen = strlen(buffer);
+    int spaceCount = 0;
+    for(int n = 0; n < bufferLen; n++) {
+      if(buffer[n] == ' ') {
+        spaceCount++;
+      }
+    }
+
+    char* str = calloc(bufferLen + spaceCount + 1 , sizeof(char));
+    int currentNumberOfSpaces = 0;
+
+    for(int i = 0; i < bufferLen; i++) {
+      if(buffer[i] == ' ' && buffer[i-1] != '\\') {
+        str[i] = '\\';
+        str[i+1] = ' ';
+        currentNumberOfSpaces++;
+      } else {
+        str[i + currentNumberOfSpaces] = buffer[i];
+      }
+    }
+    //str[sizeof(str)+2] = '\0';
+
+    FILE *fptr;
+    fptr = fopen("test", "w");
+    fprintf(fptr, "%d\n",  bufferLen);
+    fclose(fptr);
+
+
+    return str;
 }
 
 //ON HOLD

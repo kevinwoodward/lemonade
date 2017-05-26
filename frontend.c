@@ -84,11 +84,11 @@ void createWin(Winfo activeInfo){
 
 //createItems()
 //Returns items from string array
-void createItems(Winfo activeInfo, int numItems, char** choices){
+void createItems(Winfo activeInfo, int numItems, char** choices){ //TODO: change params or new func to handle multiple menu gens
 	ITEM** items = (ITEM **)calloc(numItems+1, sizeof(ITEM *));
 
 	for(int i = 0; i < numItems; ++i){
-		items[i] = new_item(choices[i], choices[i]);
+		items[i] = new_item(choices[i], ""); //TODO: change params so name is just last part of path
 	}
 	items[numItems] = (ITEM *)NULL;
 
@@ -98,13 +98,14 @@ void createItems(Winfo activeInfo, int numItems, char** choices){
 
 //createMenu()
 //Creates a new menu with given items
-void createMenu(Winfo activeInfo){
+void createMenu(Winfo activeInfo, int lineLen){
 
 						//(ITEM **)
 	MENU* menu = new_menu(getItems(activeInfo));
 	WINDOW* win = getWin(activeInfo);
 	set_menu_win(menu, win);
-	set_menu_sub(menu, derwin(win, 4, 15, 4, 1));
+	set_menu_sub(menu, derwin(win, 4, lineLen, 4, 1)); //TODO: change these to be passed in
+
 	post_menu(menu);
 
 	setMenu(activeInfo, menu);
@@ -126,7 +127,7 @@ void cWelcwin(Winfo activeInfo){
 	//Create selection menu
 	char* choices[] = {"Select a song","Browse files","About","Quit"};
 	createItems(activeInfo, 4, choices);
-	createMenu(activeInfo);
+	createMenu(activeInfo, 15);
 
 	wrefresh(childWin);
 }
@@ -144,7 +145,7 @@ void cSelectwin(Winfo activeInfo){
 	}
 	lsOutput(choices);
 	createItems(activeInfo, numItems, choices);
-	createMenu(activeInfo);
+	createMenu(activeInfo, 80);
 	wrefresh(childWin);
 }
 
@@ -194,7 +195,7 @@ void remWin(Winfo activeInfo){
 //Frees memory associated with a menu
 void remMenu(Winfo activeInfo){
 	MENU* menu = getMenu(activeInfo);
-	//unpost_menu(menu);
+	unpost_menu(menu);
 
 	//Free menu items
 	ITEM** items = getItems(activeInfo);

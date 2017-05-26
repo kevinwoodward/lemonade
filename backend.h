@@ -5,6 +5,8 @@
 #ifndef BACKEND_H
 #define BACKEND_H
 
+//extern char currentDirectory[512];
+
 //Creates the background screen for file playback (requires screen dependency)
 void createScreen(int killPrev);
 
@@ -41,5 +43,20 @@ int countLines();
 
 //Creates a 2d char array that holds songs and folders in current directory
 void lsOutput(char** choices);
+
+//sets initial static var
+void setInitialDirectory();
+
+//working directory is pushed one level up
+void upDirectory();
+
+//working directory is pushed down a level into specified path
+void downDirectory(const char* dir);
+
+//checks if a string ends with another string
+int str_end(const char *, const char*);
+
+//escaped string
+char* escapedString(char* buffer);
 
 #endif

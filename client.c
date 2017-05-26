@@ -69,7 +69,7 @@ int main(int argc, char **argv) {
 
 
 	//Frontend: --------------------------------------------------
-
+  //setInitialDirectory();
 
 	//Init main window
 	WINDOW * mainWin;
@@ -85,21 +85,21 @@ int main(int argc, char **argv) {
 
 	//Print out welcome and intruction windows:
 	WINDOW* insnWin = cInsnwin(mainWin);
-	
+
 	//Init activeInfo for tracking window/menu/items
 	Winfo activeInfo = newWinfo(mainWin, insnWin);
-	
+
 	//Print Welcome window
 	cWelcwin(activeInfo);
 
 	int ch;
-	
+
 	//Primary program input loop
 	while( (ch = getch()) != 'q'){
-		
+
 		//Determine actions based on current screen
 		handleInput(activeInfo, ch);
-		
+
 		wrefresh(getWin(activeInfo));
 
 	}//End of input while
@@ -107,8 +107,8 @@ int main(int argc, char **argv) {
 
 	//End of excecution cleanup
 	clearAndClean(activeInfo);
-	
-	//	"clearAndClean()" exits program, but 
+
+	//	"clearAndClean()" exits program, but
 	//	this is here to make the compiler happy.
 	return 0;
 

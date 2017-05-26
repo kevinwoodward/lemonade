@@ -8,9 +8,13 @@
 
 #include "frontend.h"
 
+#include "backend.h"
+
 #include <string.h>
 
 #include <stdbool.h>
+
+#include <stdlib.h>
 
 
 //Screen-specific input handling: -------------------------------------------
@@ -55,11 +59,47 @@ void handleWelcWin(Winfo activeInfo, int ch){
 //Handles input specific to "select" window
 void handleSelectWin(Winfo activeInfo, int ch){
 	MENU* activeMenu = getMenu(activeInfo);
+	FILE* pwd = popen("pwd","r");
+	char buf[512];
+	const char* selectedItemName = item_name(current_item(activeMenu));
+	//char *selectedItemName = selectedItemNameConst;
+	//strcpy(selectedItemName, escapedString(selectedItemName));
+
 	switch(ch){
-		case '\n':
-			//TODO: get current menu item!
-			//Proof of concept, prints current item on enter press
-			printf("%s\n", item_name(current_item(activeMenu)));
+		case '\n':\
+			//for an mp3
+			if(str_end(selectedItemName, ".mp3")) {
+				fgets(buf,sizeof(buf),pwd);
+				pclose(pwd);
+				strcpy(buf, strtok(buf, "\n")); //removes newline
+				strcat(buf, "/");
+				strcat(buf, item_name(current_item(activeMenu)));
+				startSingleSong(buf);
+		  } else if (str_end(selectedItemName, "/")) {
+				downDirectory(selectedItemName);
+				remMenu(activeInfo);
+				cSelectwin(activeInfo);
+			}
+			//TODO: add for entering directory as well as a check
+			break;
+		case ' ':
+			playPause();
+			break;
+		case '.':
+			//up a directory
+			upDirectory();
+			remMenu(activeInfo);
+			cSelectwin(activeInfo);
+			break;
+		case 'p':
+			//create and start playlist from dir
+			fgets(buf,sizeof(buf),pwd);
+			pclose(pwd);
+			strcpy(buf, strtok(buf, "\n")); //removes newline
+			strcat(buf, "/");
+			strcat(buf, item_name(current_item(activeMenu)));
+			createPlaylistFromDir(buf, "temp");
+			startPlaylist("temp");
 			break;
 	}
 }

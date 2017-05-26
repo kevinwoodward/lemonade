@@ -18,6 +18,9 @@ void splash(WINDOW* mainwin);
 //Prints out window navigation instruction
 WINDOW* cInsnwin(WINDOW* mainwin);
 
+//Creates menu
+void createMenu(Winfo activeInfo, int lineLen);
+
 //Print out welcome window
 void cWelcwin(Winfo activeInfo);
 
