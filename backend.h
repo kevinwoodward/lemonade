@@ -39,13 +39,20 @@ void createPlaylistFromDir(char* dirPath, char* fileName);
 //Creates a playlist file based of the current playlist
 //int currentPlaylistToFile(char* playlistName);
 
+//Gets number of items in directory for menu display
 int countLines();
 
 //Creates a 2d char array that holds songs and folders in current directory
 void lsOutput(char** choices);
 
-//sets initial static var
-void setInitialDirectory();
+//Sends command to go to next song in queue. Will end playback if only 1 song is playing.
+void nextSong();
+
+//Sends command to go to previous song in queue. Will restart song if first/only 1 song.
+void prevSong();
+
+//Restarts current song from beginning.
+void restartSong();
 
 //working directory is pushed one level up
 void upDirectory();
@@ -56,10 +63,10 @@ void downDirectory(const char* dir);
 //checks if a string ends with another string
 int str_end(const char *, const char*);
 
-//escaped string
+//Escapes certain characters if needed by calling command
 char* escapedString(char* buffer);
 
-//check if screen currently exists
+//check if screen currently exists to properly send commands
 int checkIfScreenExists();
 
 #endif

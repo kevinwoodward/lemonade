@@ -84,7 +84,6 @@ void handleSelectWin(Winfo activeInfo, int ch){
 				remMenu(activeInfo);
 				cSelectwin(activeInfo);
 			}
-			//TODO: add for entering directory as well as a check
 			break;
 		case ' ':
 			//checkIfScreenExists();
@@ -105,6 +104,18 @@ void handleSelectWin(Winfo activeInfo, int ch){
 			strcat(buf, item_name(current_item(activeMenu)));
 			createPlaylistFromDir(buf, "temp");
 			startPlaylist("temp");
+			break;
+		case '[':
+			//previous song
+			prevSong();
+			break;
+		case ']':
+			//next song
+			nextSong();
+			break;
+		case 'o':
+			//restart song
+			restartSong();
 			break;
 	}
 }

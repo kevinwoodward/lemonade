@@ -42,10 +42,10 @@ void sendScreenCommand(char* command) {
   snprintf(
     buffer,
     sizeof(buffer),
-    "screen -S lemonade -X stuff '%s^M 2> /dev/null' 2> /dev/null",
+    "screen -S lemonade -X stuff '%s^M'",
     command
   );
-  //printf("%s\n", buffer);
+
   system(buffer);
   return;
 }
@@ -61,7 +61,6 @@ void endPlayback() {
 }
 
 void startSingleSong(char* filePath) {
-  //sendScreenCommand("cd ~/Documents/github/lemonade"); //TODO: change to /usr/share/lemonade after development
   createScreen(1);
   char fileStr[512];
   strcpy(fileStr, "mpg123 -C ");
@@ -177,7 +176,16 @@ void createPlaylistFromDir(char* dirPath, char* fileName) {
 
 }
 
-void setInitialDirectory() {
+void nextSong() {
+  sendScreenCommand("f");
+}
+
+void prevSong() {
+  sendScreenCommand("d");
+}
+
+void restartSong() {
+  sendScreenCommand("b");
 }
 
 void upDirectory() {

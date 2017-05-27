@@ -11,66 +11,8 @@
 #include "inputHandler.h"
 
 int main(int argc, char **argv) {
-  char* name = "hello";
-  char* arr[] = {"apple", "banana", "clementine", "durian", ""};
-
-  if(argc <= 1) {
-    printf("No option specified! Currently:\n-s for start, followed by a filepath to an mp3\n-p for play/pause\n-k for kill\n-e to enter screen\n-l to do the test ls function\n");
-  }
-
-  //Backend: ---------------------------------------------------------
-
-  int argCase;
-  createScreen(1);
-  //handles flag options (for backend testing)
-  while((argCase = getopt(argc, argv, "ps:kelxd")) != -1) {
-    switch (argCase) {
-      case 'p':
-        playPause();
-        return 0;
-        break;
-      case 's':
-        //filePath = optarg;
-        startSingleSong(optarg);
-        break;
-      case 'k':
-        system("killall screen");
-        return 0;
-        break;
-      case 'e':
-        system("screen -r");
-        break;
-      case 'l':
-        startPlaylist("testpl");
-        break;
-      case 'x':
-        createPlaylistFile(name, arr);
-        break;
-      case 'd':
-        createPlaylistFromDir("/home/kevin/Music/Kendrick Lamar - DAMN", "testpl");
-        break;
-      case '?':
-        if (optopt == 's') {
-          fprintf (stdout, "Option -%c requires an argument.\n", optopt);
-          return 1;
-        }
-        else if (isprint (optopt)) {
-          fprintf (stdout, "Unknown option `-%c'.\n", optopt);
-          return 1;
-        }
-        else {
-          fprintf (stdout,
-                   "Unknown option character `\\x%x'.\n",
-                   optopt);
-                   return 1;
-        }
-    }
-  }
-
-
+  
 	//Frontend: --------------------------------------------------
-  //setInitialDirectory();
-
 	//Init main window
 	WINDOW * mainWin;
 	if((mainWin = initscr()) == NULL){

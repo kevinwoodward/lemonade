@@ -12,7 +12,7 @@
 #include "helpers.h"
 
 #define WIDTH 70
-#define HEIGHT 10
+#define HEIGHT 18
 #define ROWS 25
 #define COLS 80
 
@@ -73,22 +73,22 @@ WINDOW* cInsnwin(WINDOW* mainWin){
 void createWin(Winfo activeInfo){
 	WINDOW* childWin;
 	int width = WIDTH, height = HEIGHT;
-    int rows  = ROWS, cols   = COLS;
-    int x = (cols - width)  / 2;
-    int y = (rows - height) / 2;
+  int rows = ROWS, cols = COLS;
+  int x = (cols - width)  / 2;
+  int y = ((rows - height) / 2) + 2;
 	childWin = subwin(getMainWin(activeInfo), height, width, y, x);
-    box(childWin, 0, 0);
+  box(childWin, 0, 0);
 
 	setWin(activeInfo, childWin);
 }
 
 //createItems()
 //Returns items from string array
-void createItems(Winfo activeInfo, int numItems, char** choices){ //TODO: change params or new func to handle multiple menu gens
+void createItems(Winfo activeInfo, int numItems, char** choices){
 	ITEM** items = (ITEM **)calloc(numItems+1, sizeof(ITEM *));
 
 	for(int i = 0; i < numItems; ++i){
-		items[i] = new_item(choices[i], ""); //TODO: change params so name is just last part of path
+		items[i] = new_item(choices[i], "");
 	}
 	items[numItems] = (ITEM *)NULL;
 
@@ -144,6 +144,7 @@ void cSelectwin(Winfo activeInfo){
 		choices[i] = calloc(30, sizeof(char));
 	}
 	lsOutput(choices);
+
 	createItems(activeInfo, numItems, choices);
 	createMenu(activeInfo, 80);
 	wrefresh(childWin);
