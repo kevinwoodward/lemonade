@@ -66,6 +66,12 @@ void startSingleSong(char* filePath) {
   char fileStr[512];
   strcpy(fileStr, "mpg123 -C ");
   strcat(fileStr, filePath);
+
+  FILE* temp;
+  temp = fopen("temp", "a");
+  fprintf(temp, "%s\n", fileStr);
+  fclose(temp);
+
   sendScreenCommand(fileStr);
 }
 
@@ -186,11 +192,6 @@ void upDirectory() {
 
 void downDirectory(const char* dir) {
   chdir(dir);
-  FILE* temp;
-  temp = fopen("temp", "a");
-  fprintf(temp, "%s\n", dir);
-  fclose(temp);
-
 }
 
 int str_end(const char *s, const char *t)

@@ -63,7 +63,7 @@ void handleSelectWin(Winfo activeInfo, int ch){
 	char buf[512];
 	const char* selectedItemName = item_name(current_item(activeMenu));
 
-	
+
 	//char *selectedItemName = selectedItemNameConst;
 	//strcpy(selectedItemName, escapedString(selectedItemName));
 
@@ -77,6 +77,7 @@ void handleSelectWin(Winfo activeInfo, int ch){
 				strcpy(buf, strtok(buf, "\n")); //removes newline
 				strcat(buf, "/");
 				strcat(buf, item_name(current_item(activeMenu)));
+				strcpy(buf, escapedString(buf));
 				startSingleSong(buf);
 		  } else if (str_end(selectedItemName, "/")) {
 				downDirectory(selectedItemName);
