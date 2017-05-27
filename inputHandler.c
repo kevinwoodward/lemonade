@@ -62,13 +62,16 @@ void handleSelectWin(Winfo activeInfo, int ch){
 	FILE* pwd = popen("pwd","r");
 	char buf[512];
 	const char* selectedItemName = item_name(current_item(activeMenu));
+
+	
 	//char *selectedItemName = selectedItemNameConst;
 	//strcpy(selectedItemName, escapedString(selectedItemName));
 
 	switch(ch){
-		case '\n':\
+		case '\n':
 			//for an mp3
 			if(str_end(selectedItemName, ".mp3")) {
+
 				fgets(buf,sizeof(buf),pwd);
 				pclose(pwd);
 				strcpy(buf, strtok(buf, "\n")); //removes newline
@@ -83,6 +86,7 @@ void handleSelectWin(Winfo activeInfo, int ch){
 			//TODO: add for entering directory as well as a check
 			break;
 		case ' ':
+			//checkIfScreenExists();
 			playPause();
 			break;
 		case '.':
@@ -161,6 +165,10 @@ void handleInput(Winfo activeInfo, int ch){
 
 		case KEY_DOWN : //DOWN arrow key
 			menu_driver(getMenu(activeInfo), REQ_DOWN_ITEM);
+			break;
+
+		case 'k' :
+			system("pkill screen");
 			break;
 
 	}//End of switch

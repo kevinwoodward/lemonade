@@ -30,6 +30,10 @@ void createScreen(int killPrev) {
 
 void sendScreenCommand(char* command) {
   //takes the passed string and shoves it into the previously opened screen and auto executes it within said screen
+
+  if(checkIfScreenExists() == 0) {
+    return;
+  }
   char str[300];
   strcpy(str, "screen -S lemonade -X stuff '");
   strcat(str, command);
@@ -38,7 +42,7 @@ void sendScreenCommand(char* command) {
   snprintf(
     buffer,
     sizeof(buffer),
-    "screen -S lemonade -X stuff '%s^M'",
+    "screen -S lemonade -X stuff '%s^M 2> /dev/null' 2> /dev/null",
     command
   );
   //printf("%s\n", buffer);
@@ -124,27 +128,22 @@ int countLines(){
 
 void lsOutput(char** choices)
 {
-  //TODO: fix this
-  //This command filters FOLDERS
-
-
-  char buf[512];
+  char buf[1024];
   char* tok;
   int count = 0;
 
-  FILE *ls = popen("ls -d */ 2> /dev/null | sed 's/ /\\ /g'", "r");
-  while(fgets(buf,sizeof(buf),ls) !=0)
-  {
-	  tok = strtok(buf, "\n");
-	  strcpy(choices[count], escapedString(tok));
-    count++;
-  }
+  FILE *ls = popen("ls -d */ 2> /dev/null", "r");
 
-  ls = popen("ls *.mp3 2> /dev/null | sed 's/ /\\ /g'", "r");
+  ls = popen("ls *.mp3 -d */ 2> /dev/null", "r");
   while(fgets(buf,sizeof(buf),ls) !=0)
   {
   	tok = strtok(buf, "\n");
-  	strcpy(choices[count], escapedString(tok));
+    if(str_end(tok, ".mp3")) {
+      strcpy(choices[count], escapedString(tok));
+    } else {
+      strcpy(choices[count], tok);
+    }
+
     count++;
   }
 
@@ -187,6 +186,11 @@ void upDirectory() {
 
 void downDirectory(const char* dir) {
   chdir(dir);
+  FILE* temp;
+  temp = fopen("temp", "a");
+  fprintf(temp, "%s\n", dir);
+  fclose(temp);
+
 }
 
 int str_end(const char *s, const char *t)
@@ -203,41 +207,38 @@ int str_end(const char *s, const char *t)
 
 char* escapedString(char* buffer){
 
-    int bufferLen = strlen(buffer);
-    int spaceCount = 0;
-    for(int n = 0; n < bufferLen; n++) {
-      if(buffer[n] == ' ') {
-        spaceCount++;
-      }
+  int bufferLen = strlen(buffer);
+  int spaceCount = 0;
+  for(int n = 0; n < bufferLen; n++) {
+    if(buffer[n] == ' ') {
+      spaceCount++;
     }
+  }
 
-    char* str = calloc(bufferLen + spaceCount + 1 , sizeof(char));
-    int currentNumberOfSpaces = 0;
+  char* str = calloc(bufferLen + spaceCount , sizeof(char));
+  int currentNumberOfSpaces = 0;
 
-    for(int i = 0; i < bufferLen; i++) {
-      if(buffer[i] == ' ' && buffer[i-1] != '\\') {
-        str[i] = '\\';
-        str[i+1] = ' ';
-        currentNumberOfSpaces++;
-      } else {
-        str[i + currentNumberOfSpaces] = buffer[i];
-      }
+  for(int i = 0; i < bufferLen; i++) {
+    if(buffer[i] == ' ' && buffer[i-1] != '\\') {
+      str[i + currentNumberOfSpaces] = '\\';
+      str[i + currentNumberOfSpaces + 1] = ' ';
+      currentNumberOfSpaces++;
+    } else {
+      str[i + currentNumberOfSpaces] = buffer[i];
     }
-    //str[sizeof(str)+2] = '\0';
+  }
 
-    FILE *fptr;
-    fptr = fopen("test", "w");
-    fprintf(fptr, "%d\n",  bufferLen);
-    fclose(fptr);
-
-
-    return str;
+  return str;
 }
 
-//ON HOLD
-// int currentPlaylistToFile(char* playlistName) {
-//   char pl[300];
-//   sendScreenCommand("l");
-//   printf("%s\n", pl);
-//   return 1;
-// }
+int checkIfScreenExists() {
+  char buf[512];
+  FILE* check = popen("screen -S lemonade -Q select . ; echo $?", "r");
+  fgets(buf, sizeof(buf), check);
+
+  if(buf[0] == '0') {
+    return 1;
+  } else {
+    return 0;
+  }
+}

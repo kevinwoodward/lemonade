@@ -59,4 +59,7 @@ int str_end(const char *, const char*);
 //escaped string
 char* escapedString(char* buffer);
 
+//check if screen currently exists
+int checkIfScreenExists();
+
 #endif
