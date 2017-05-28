@@ -5,16 +5,15 @@
 #include "inputHandler.h"
 
 #include <menu.h>
+#include <string.h>
+#include <stdbool.h>
+#include <stdlib.h>
 
 #include "frontend.h"
-
 #include "backend.h"
+#include "helpers.h"
 
-#include <string.h>
 
-#include <stdbool.h>
-
-#include <stdlib.h>
 
 
 //Screen-specific input handling: -------------------------------------------
@@ -59,27 +58,22 @@ void handleWelcWin(Winfo activeInfo, int ch){
 //Handles input specific to "select" window
 void handleSelectWin(Winfo activeInfo, int ch){
 	MENU* activeMenu = getMenu(activeInfo);
-	FILE* pwd = popen("pwd","r");
-	char buf[512];
+	char* path;
+	
+	//Get name of current selection
 	const char* selectedItemName = item_name(current_item(activeMenu));
-
 
 	//char *selectedItemName = selectedItemNameConst;
 	//strcpy(selectedItemName, escapedString(selectedItemName));
 
 	switch(ch){
 		case '\n':
-			//for an mp3
-			if(str_end(selectedItemName, ".mp3")) {
-
-				fgets(buf,sizeof(buf),pwd);
-				pclose(pwd);
-				strcpy(buf, strtok(buf, "\n")); //removes newline
-				strcat(buf, "/");
-				strcat(buf, item_name(current_item(activeMenu)));
-				strcpy(buf, escapedString(buf));
-				startSingleSong(buf);
-		  } else if (str_end(selectedItemName, "/")) {
+			if(str_end(selectedItemName, ".mp3")) { //File
+				path = getPath(selectedItemName);
+				startSingleSong(path);
+				free(path);
+				path = NULL;
+		  } else if(str_end(selectedItemName, "/")) { //Folder
 				downDirectory(selectedItemName);
 				remMenu(activeInfo);
 				cSelectwin(activeInfo);
@@ -96,14 +90,11 @@ void handleSelectWin(Winfo activeInfo, int ch){
 			cSelectwin(activeInfo);
 			break;
 		case 'p':
-			//create and start playlist from dir
-			fgets(buf,sizeof(buf),pwd);
-			pclose(pwd);
-			strcpy(buf, strtok(buf, "\n")); //removes newline
-			strcat(buf, "/");
-			strcat(buf, item_name(current_item(activeMenu)));
-			createPlaylistFromDir(buf, "temp");
+			path = getPath(selectedItemName);
+			createPlaylistFromDir(path, "temp");
 			startPlaylist("temp");
+			free(path);
+				path = NULL;
 			break;
 		case '[':
 			//previous song

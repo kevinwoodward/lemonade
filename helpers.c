@@ -3,6 +3,14 @@
 
 #include "helpers.h"
 
+#include <stdlib.h>
+#include <stdio.h>
+//#include <string.h>
+
+#include "backend.h"
+
+
+
 char *trimwhitespace(char *str) {
   char *end;
 
@@ -20,4 +28,19 @@ char *trimwhitespace(char *str) {
   *(end+1) = 0;
 
   return str;
+}
+
+
+//getPath()
+//Returns name of file with current directory prepended
+char *getPath(const char* fileName){
+	FILE* pwd = popen("pwd","r");
+	char* buf = calloc(512, sizeof(char));
+	fgets(buf,sizeof(buf),pwd);
+	pclose(pwd);
+	strcpy(buf, strtok(buf, "\n")); //removes newline
+	strcat(buf, "/");
+	strcat(buf, fileName);
+	strcpy(buf, escapedString(buf));
+	return buf;
 }

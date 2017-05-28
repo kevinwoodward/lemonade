@@ -8,4 +8,8 @@
 //Trims whitespace from beginning and end of char array for sanitization
 char *trimwhitespace(char *str);
 
+
+//Returns name of file with working current directory prepended
+char *getPath(const char* fileName);
+
 #endif 
