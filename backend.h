@@ -60,12 +60,6 @@ void upDirectory();
 //working directory is pushed down a level into specified path
 void downDirectory(const char* dir);
 
-//checks if a string ends with another string
-int str_end(const char *, const char*);
-
-//Escapes certain characters if needed by calling command
-char* escapedString(char* buffer);
-
 //check if screen currently exists to properly send commands
 int checkIfScreenExists();
 

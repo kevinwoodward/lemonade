@@ -12,4 +12,10 @@ char *trimwhitespace(char *str);
 //Returns name of file with working current directory prepended
 char *getPath(const char* fileName);
 
+//Checks if a string ends with another string
+int str_end(const char *, const char*);
+
+//Escapes certain characters if needed by calling command
+char* escapedString(char* buffer);
+
 #endif 
