@@ -37,7 +37,7 @@ void handleWelcWin(Winfo activeInfo, int ch){
 			case 1: //Browse
 				if(activeMenu != NULL) remMenu(activeInfo);
 				remWin(activeInfo);
-				cBrowsewin(activeInfo);
+				cPlaylistwin(activeInfo);
 				setState(activeInfo, 2);
 				break;
 			case 2: //About
@@ -76,6 +76,7 @@ void handleSelectWin(Winfo activeInfo, int ch){
 		  } else if(str_end(selectedItemName, "/")) { //Folder
 				downDirectory(selectedItemName);
 				remMenu(activeInfo);
+				remWin(activeInfo);
 				cSelectwin(activeInfo);
 			}
 			break;
@@ -113,7 +114,7 @@ void handleSelectWin(Winfo activeInfo, int ch){
 
 //handleBrowseWin()
 //Handles input specific to "browser" window
-void handleBrowseWin(Winfo activeInfo, int ch){
+void handlePlaylistWin(Winfo activeInfo, int ch){
 
 }
 
@@ -151,7 +152,7 @@ void handleInput(Winfo activeInfo, int ch){
 		case '3':
 			if(activeMenu != NULL) remMenu(activeInfo);
 			remWin(activeInfo);
-			cBrowsewin(activeInfo);
+			cPlaylistwin(activeInfo);
 			setState(activeInfo, 2);
 			return;
 
@@ -187,7 +188,7 @@ void handleInput(Winfo activeInfo, int ch){
 			handleSelectWin(activeInfo, ch);
 			break;
 		case 2:
-			handleBrowseWin(activeInfo, ch);
+			handlePlaylistWin(activeInfo, ch);
 			break;
 		case 3:
 			handleAboutWin(activeInfo, ch);

@@ -56,7 +56,7 @@ WINDOW* cInsnwin(WINDOW* mainWin){
 	//box(childWin, 0, 0);
 
 	mvwaddstr(childWin, 0, 1, "Use the number keys to navigate to the different menus");
-	mvwaddstr(childWin, 1, 1, "[1]: Main Menu     [3]: File Browser");
+	mvwaddstr(childWin, 1, 1, "[1]: Main Menu     [3]: Playlist Browser");
 	mvwaddstr(childWin, 2, 1, "[2]: Song Selector [4]: About");
 
 	wrefresh(childWin);
@@ -100,7 +100,6 @@ void createItems(Winfo activeInfo, int numItems, char** choices){
 //Creates a new menu with given items
 void createMenu(Winfo activeInfo, int lineLen){
 
-						//(ITEM **)
 	MENU* menu = new_menu(getItems(activeInfo));
 	WINDOW* win = getWin(activeInfo);
 	set_menu_win(menu, win);
@@ -125,9 +124,9 @@ void cWelcwin(Winfo activeInfo){
     mvwaddstr(childWin, 2, 1, "Please select an action:");
 
 	//Create selection menu
-	char* choices[] = {"Select a song","Browse files","About","Quit"};
+	char* choices[] = {"Select a song","Browse Playlists","About","Quit"};
 	createItems(activeInfo, 4, choices);
-	createMenu(activeInfo, 15);
+	createMenu(activeInfo, 20);
 
 	wrefresh(childWin);
 }
@@ -152,12 +151,12 @@ void cSelectwin(Winfo activeInfo){
 
 //cBrowsewin()
 //Print out File browser window
-void cBrowsewin(Winfo activeInfo){
+void cPlaylistwin(Winfo activeInfo){
 	createWin(activeInfo);
 	WINDOW* childWin = getWin(activeInfo);
 
     mvwaddstr(childWin, 1, 1, "This is where the user");
-    mvwaddstr(childWin, 2, 1, "will browse songs");
+    mvwaddstr(childWin, 2, 1, "will browse playlists");
 
 	wrefresh(childWin);
 }
