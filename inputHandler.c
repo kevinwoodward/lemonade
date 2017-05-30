@@ -56,7 +56,7 @@ void handleWelcWin(Winfo activeInfo, int ch){
 void handleSelectWin(Winfo activeInfo, int ch){
 	MENU* activeMenu = getMenu(activeInfo);
 	char* path;
-	
+
 	//Get name of current selection
 	const char* selectedItemName = item_name(current_item(activeMenu));
 
@@ -66,7 +66,7 @@ void handleSelectWin(Winfo activeInfo, int ch){
 	switch(ch){
 		case '\n':
 			if(str_end(selectedItemName, ".mp3")) { //File
-				path = getPath(selectedItemName);
+				path = getPath(selectedItemName, 1);
 				startSingleSong(path);
 				free(path);
 				path = NULL;
@@ -87,7 +87,7 @@ void handleSelectWin(Winfo activeInfo, int ch){
 			cSelectwin(activeInfo);
 			break;
 		case 'p':
-			path = getPath(selectedItemName);
+			path = getPath(selectedItemName, 0);
 			createPlaylistFromDir(path, "temp");
 			startPlaylist("temp");
 			free(path);

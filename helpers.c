@@ -33,16 +33,23 @@ char *trimwhitespace(char *str) {
 
 //getPath()
 //Returns name of file with current directory prepended
-char *getPath(const char* fileName){
+char *getPath(const char* fileName, int shouldEscape){
 	FILE* pwd = popen("pwd","r");
-	char* buf = calloc(512, sizeof(char));
+	char buf[512];
 	fgets(buf,sizeof(buf),pwd);
 	pclose(pwd);
+  FILE* f = fopen("test", "a");
+  fprintf(f, "%s\n", buf);
+  fclose(f);
 	strcpy(buf, strtok(buf, "\n")); //removes newline
 	strcat(buf, "/");
 	strcat(buf, fileName);
-	strcpy(buf, escapedString(buf));
-	return buf;
+  if(shouldEscape == 1) {
+    strcpy(buf, escapedString(buf));
+  }
+  char* retStr = calloc(512, sizeof(char));
+  strcpy(retStr, buf);
+	return retStr;
 }
 
 
