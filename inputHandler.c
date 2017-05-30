@@ -72,7 +72,6 @@ void handleSelectWin(Winfo activeInfo, int ch){
 				path = NULL;
 		  } else if(str_end(selectedItemName, "/")) { //Folder
 				downDirectory(selectedItemName);
-				remMenu(activeInfo);
 				remWin(activeInfo);
 				cSelectwin(activeInfo);
 			}

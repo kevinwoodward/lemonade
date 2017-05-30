@@ -85,7 +85,7 @@ void createWin(Winfo activeInfo){
 //createItems()
 //Returns items from string array
 void createItems(Winfo activeInfo, int numItems, char** choices){
-	ITEM** items = (ITEM **)calloc(numItems+1, sizeof(ITEM *));
+	ITEM** items = calloc(numItems+1, sizeof(ITEM *));
 
 	for(int i = 0; i < numItems; ++i){
 		items[i] = new_item(choices[i], "");
