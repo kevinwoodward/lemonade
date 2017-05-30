@@ -183,8 +183,14 @@ void cAboutwin(Winfo activeInfo){
 
 
 //remWin()
-//Clears and removes active window.
+//Clears and removes active window. (and associated menu if one exists)
 void remWin(Winfo activeInfo){
+	
+	//Remove menu if one exists
+	if(getMenu(activeInfo) != NULL){
+		remMenu(activeInfo);
+	}
+	
 	WINDOW* window = getWin(activeInfo);
 	wclear(window);
 	delwin(window);
@@ -194,6 +200,7 @@ void remWin(Winfo activeInfo){
 //remMenu()
 //Frees memory associated with a menu
 void remMenu(Winfo activeInfo){
+	
 	MENU* menu = getMenu(activeInfo);
 	unpost_menu(menu);
 

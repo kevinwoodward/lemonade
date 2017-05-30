@@ -35,7 +35,7 @@ void cAboutwin(Winfo activeInfo);
 
 //Remove and clean windows/menus: ----------------------------------------
 
-//Frees memory associated with a window
+//Frees memory associated with a window (and associated menu if one exists)
 void remWin(Winfo activeInfo);
 
 //Frees memory associated with a menu

@@ -29,19 +29,16 @@ void handleWelcWin(Winfo activeInfo, int ch){
 			itemNum = item_index(current_item(activeMenu));
 			switch (itemNum){
 				case 0: //Select
-				if(activeMenu != NULL) remMenu(activeInfo);
 				remWin(activeInfo);
 				cSelectwin(activeInfo);
 				setState(activeInfo, 1);
 				break;
 			case 1: //Browse
-				if(activeMenu != NULL) remMenu(activeInfo);
 				remWin(activeInfo);
 				cPlaylistwin(activeInfo);
 				setState(activeInfo, 2);
 				break;
 			case 2: //About
-				if(activeMenu != NULL) remMenu(activeInfo);
 				remWin(activeInfo);
 				cAboutwin(activeInfo);
 				setState(activeInfo, 3);
