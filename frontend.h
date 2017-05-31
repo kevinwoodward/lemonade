@@ -18,6 +18,9 @@ void splash(WINDOW* mainwin);
 //Prints out window navigation instruction
 WINDOW* cInsnwin(WINDOW* mainwin);
 
+//Creates menu
+void createMenu(Winfo activeInfo, int lineLen);
+
 //Print out welcome window
 void cWelcwin(Winfo activeInfo);
 
@@ -25,14 +28,14 @@ void cWelcwin(Winfo activeInfo);
 void cSelectwin(Winfo activeInfo);
 
 //Print out File browser window
-void cBrowsewin(Winfo activeInfo);
+void cPlaylistwin(Winfo activeInfo);
 
 //Print out about window
 void cAboutwin(Winfo activeInfo);
 
 //Remove and clean windows/menus: ----------------------------------------
 
-//Frees memory associated with a window
+//Frees memory associated with a window (and associated menu if one exists)
 void remWin(Winfo activeInfo);
 
 //Frees memory associated with a menu

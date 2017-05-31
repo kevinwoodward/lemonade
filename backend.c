@@ -10,7 +10,11 @@
 
 #include "backend.h"
 
+#include "helpers.h"
+
 static const char FILEDIR[] = "/usr/share/lemonade/";
+
+//char currentDirectory[512];
 
 void createScreen(int killPrev) {
   //creates a new detachted screen terminal instance with the name lemonade
@@ -28,6 +32,10 @@ void createScreen(int killPrev) {
 
 void sendScreenCommand(char* command) {
   //takes the passed string and shoves it into the previously opened screen and auto executes it within said screen
+
+  if(checkIfScreenExists() == 0) {
+    return;
+  }
   char str[300];
   strcpy(str, "screen -S lemonade -X stuff '");
   strcat(str, command);
@@ -39,7 +47,7 @@ void sendScreenCommand(char* command) {
     "screen -S lemonade -X stuff '%s^M'",
     command
   );
-  //printf("%s\n", buffer);
+
   system(buffer);
   return;
 }
@@ -55,9 +63,8 @@ void endPlayback() {
 }
 
 void startSingleSong(char* filePath) {
-  //sendScreenCommand("cd ~/Documents/github/lemonade"); //TODO: change to /usr/share/lemonade after development
   createScreen(1);
-  char fileStr[100];
+  char fileStr[512];
   strcpy(fileStr, "mpg123 -C ");
   strcat(fileStr, filePath);
   sendScreenCommand(fileStr);
@@ -100,9 +107,10 @@ int currentPlaylistToFile(char* playlistName) {
 }
 
 int countLines(){
+
 	int numItems = 0;
 	char buf[50];
-	FILE* ls = popen("ls -d */","r");
+	FILE* ls = popen("ls -d */ 2> /dev/null","r");
 
 	while(fgets(buf,sizeof(buf),ls) !=0)
 	{
@@ -110,7 +118,7 @@ int countLines(){
 	}
 	pclose(ls);
 
-	ls = popen("ls *.mp3","r");
+	ls = popen("ls *.mp3 2> /dev/null","r");
 	while(fgets(buf,sizeof(buf),ls) !=0)
 	{
 		numItems++;
@@ -121,27 +129,25 @@ int countLines(){
 
 void lsOutput(char** choices)
 {
-  //This command filters FOLDERS
-  FILE *ls = popen("ls -d */","r");
-  char buf[512];
+  char buf[1024];
   char* tok;
   int count = 0;
 
+  FILE *ls = popen("ls -d */ 2> /dev/null", "r");
 
+  ls = popen("ls *.mp3 -d */ 2> /dev/null", "r");
   while(fgets(buf,sizeof(buf),ls) !=0)
   {
-	tok = strtok(buf, "\n");
-	strcpy(choices[count], tok);
+  	tok = strtok(buf, "\n");
+    if(str_end(tok, ".mp3")) {
+      strcpy(choices[count], escapedString(tok));
+    } else {
+      strcpy(choices[count], tok);
+    }
+
     count++;
   }
 
-  ls = popen("ls *.mp3","r");
-  while(fgets(buf,sizeof(buf),ls) !=0)
-  {
-	tok = strtok(buf, "\n");
-	strcpy(choices[count], tok);
-    count++;
-  }
   //free(buf);
 }
 
@@ -172,10 +178,34 @@ void createPlaylistFromDir(char* dirPath, char* fileName) {
 
 }
 
-//ON HOLD
-// int currentPlaylistToFile(char* playlistName) {
-//   char pl[300];
-//   sendScreenCommand("l");
-//   printf("%s\n", pl);
-//   return 1;
-// }
+void nextSong() {
+  sendScreenCommand("f");
+}
+
+void prevSong() {
+  sendScreenCommand("d");
+}
+
+void restartSong() {
+  sendScreenCommand("b");
+}
+
+void upDirectory() {
+  chdir("..");
+}
+
+void downDirectory(const char* dir) {
+  chdir(dir);
+}
+
+int checkIfScreenExists() {
+  char buf[512];
+  FILE* check = popen("screen -S lemonade -Q select . ; echo $?", "r");
+  fgets(buf, sizeof(buf), check);
+
+  if(buf[0] == '0') {
+    return 1;
+  } else {
+    return 0;
+  }
+}

@@ -5,12 +5,15 @@
 #include "inputHandler.h"
 
 #include <menu.h>
+#include <string.h>
+#include <stdbool.h>
+#include <stdlib.h>
 
 #include "frontend.h"
+#include "backend.h"
+#include "helpers.h"
 
-#include <string.h>
 
-#include <stdbool.h>
 
 
 //Screen-specific input handling: -------------------------------------------
@@ -26,19 +29,16 @@ void handleWelcWin(Winfo activeInfo, int ch){
 			itemNum = item_index(current_item(activeMenu));
 			switch (itemNum){
 				case 0: //Select
-				if(activeMenu != NULL) remMenu(activeInfo);
 				remWin(activeInfo);
 				cSelectwin(activeInfo);
 				setState(activeInfo, 1);
 				break;
 			case 1: //Browse
-				if(activeMenu != NULL) remMenu(activeInfo);
 				remWin(activeInfo);
-				cBrowsewin(activeInfo);
+				cPlaylistwin(activeInfo);
 				setState(activeInfo, 2);
 				break;
 			case 2: //About
-				if(activeMenu != NULL) remMenu(activeInfo);
 				remWin(activeInfo);
 				cAboutwin(activeInfo);
 				setState(activeInfo, 3);
@@ -55,18 +55,62 @@ void handleWelcWin(Winfo activeInfo, int ch){
 //Handles input specific to "select" window
 void handleSelectWin(Winfo activeInfo, int ch){
 	MENU* activeMenu = getMenu(activeInfo);
+	char* path;
+
+	//Get name of current selection
+	const char* selectedItemName = item_name(current_item(activeMenu));
+
+	//char *selectedItemName = selectedItemNameConst;
+	//strcpy(selectedItemName, escapedString(selectedItemName));
+
 	switch(ch){
 		case '\n':
-			//TODO: get current menu item!
-			//Proof of concept, prints current item on enter press
-			printf("%s\n", item_name(current_item(activeMenu)));
+			if(str_end(selectedItemName, ".mp3")) { //File
+				path = getPath(selectedItemName, 1);
+				startSingleSong(path);
+				free(path);
+				path = NULL;
+		  } else if(str_end(selectedItemName, "/")) { //Folder
+				downDirectory(selectedItemName);
+				remWin(activeInfo);
+				cSelectwin(activeInfo);
+			}
+			break;
+		case ' ':
+			//checkIfScreenExists();
+			playPause();
+			break;
+		case '.':
+			//up a directory
+			upDirectory();
+			remMenu(activeInfo);
+			cSelectwin(activeInfo);
+			break;
+		case 'p':
+			path = getPath(selectedItemName, 0);
+			createPlaylistFromDir(path, "temp");
+			startPlaylist("temp");
+			free(path);
+				path = NULL;
+			break;
+		case '[':
+			//previous song
+			prevSong();
+			break;
+		case ']':
+			//next song
+			nextSong();
+			break;
+		case 'o':
+			//restart song
+			restartSong();
 			break;
 	}
 }
 
 //handleBrowseWin()
 //Handles input specific to "browser" window
-void handleBrowseWin(Winfo activeInfo, int ch){
+void handlePlaylistWin(Winfo activeInfo, int ch){
 
 }
 
@@ -104,7 +148,7 @@ void handleInput(Winfo activeInfo, int ch){
 		case '3':
 			if(activeMenu != NULL) remMenu(activeInfo);
 			remWin(activeInfo);
-			cBrowsewin(activeInfo);
+			cPlaylistwin(activeInfo);
 			setState(activeInfo, 2);
 			return;
 
@@ -123,6 +167,10 @@ void handleInput(Winfo activeInfo, int ch){
 			menu_driver(getMenu(activeInfo), REQ_DOWN_ITEM);
 			break;
 
+		case 'k' :
+			system("pkill screen");
+			break;
+
 	}//End of switch
 
 
@@ -136,7 +184,7 @@ void handleInput(Winfo activeInfo, int ch){
 			handleSelectWin(activeInfo, ch);
 			break;
 		case 2:
-			handleBrowseWin(activeInfo, ch);
+			handlePlaylistWin(activeInfo, ch);
 			break;
 		case 3:
 			handleAboutWin(activeInfo, ch);

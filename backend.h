@@ -5,6 +5,8 @@
 #ifndef BACKEND_H
 #define BACKEND_H
 
+//extern char currentDirectory[512];
+
 //Creates the background screen for file playback (requires screen dependency)
 void createScreen(int killPrev);
 
@@ -37,9 +39,28 @@ void createPlaylistFromDir(char* dirPath, char* fileName);
 //Creates a playlist file based of the current playlist
 //int currentPlaylistToFile(char* playlistName);
 
+//Gets number of items in directory for menu display
 int countLines();
 
 //Creates a 2d char array that holds songs and folders in current directory
 void lsOutput(char** choices);
+
+//Sends command to go to next song in queue. Will end playback if only 1 song is playing.
+void nextSong();
+
+//Sends command to go to previous song in queue. Will restart song if first/only 1 song.
+void prevSong();
+
+//Restarts current song from beginning.
+void restartSong();
+
+//working directory is pushed one level up
+void upDirectory();
+
+//working directory is pushed down a level into specified path
+void downDirectory(const char* dir);
+
+//check if screen currently exists to properly send commands
+int checkIfScreenExists();
 
 #endif
