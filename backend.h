@@ -39,11 +39,17 @@ void createPlaylistFromDir(char* dirPath, char* fileName);
 //Creates a playlist file based of the current playlist
 //int currentPlaylistToFile(char* playlistName);
 
-//Gets number of items in directory for menu display
+//Gets number of items in directory for menu display (filtered by .mp3 and dirs)
 int countLines();
 
 //Creates a 2d char array that holds songs and folders in current directory
 void lsOutput(char** choices);
+
+//Gets number of items in directory for menu display (all)
+int countAll();
+
+//Creates a 2d char array that holds all values in /usr/share/lemonade (playlists)
+void lsAll(char** choices);
 
 //Sends command to go to next song in queue. Will end playback if only 1 song is playing.
 void nextSong();
@@ -59,6 +65,15 @@ void upDirectory();
 
 //working directory is pushed down a level into specified path
 void downDirectory(const char* dir);
+
+//Go directly to a specific directory
+void toDirectory(char* dir);
+
+//Opens the cava visualizer in a new default terminal
+void startVisualizer();
+
+//
+void editTags();
 
 //check if screen currently exists to properly send commands
 int checkIfScreenExists();

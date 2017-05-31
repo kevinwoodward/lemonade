@@ -155,9 +155,16 @@ void cPlaylistwin(Winfo activeInfo){
 	createWin(activeInfo);
 	WINDOW* childWin = getWin(activeInfo);
 
-    mvwaddstr(childWin, 1, 1, "This is where the user");
-    mvwaddstr(childWin, 2, 1, "will browse playlists");
+	chdir("/usr/share/lemonade");
+	int numItems = countAll();
+	char** choices = calloc(numItems, sizeof(char*));
+	for(int i=0; i<numItems; i++){
+		choices[i] = calloc(30, sizeof(char));
+	}
+	lsAll(choices);
 
+	createItems(activeInfo, numItems, choices);
+	createMenu(activeInfo, 80);
 	wrefresh(childWin);
 }
 
@@ -185,12 +192,12 @@ void cAboutwin(Winfo activeInfo){
 //remWin()
 //Clears and removes active window. (and associated menu if one exists)
 void remWin(Winfo activeInfo){
-	
+
 	//Remove menu if one exists
 	if(getMenu(activeInfo) != NULL){
 		remMenu(activeInfo);
 	}
-	
+
 	WINDOW* window = getWin(activeInfo);
 	wclear(window);
 	delwin(window);
@@ -200,7 +207,7 @@ void remWin(Winfo activeInfo){
 //remMenu()
 //Frees memory associated with a menu
 void remMenu(Winfo activeInfo){
-	
+
 	MENU* menu = getMenu(activeInfo);
 	unpost_menu(menu);
 

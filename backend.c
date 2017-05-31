@@ -7,6 +7,7 @@
 #include <ctype.h>
 #include <unistd.h>
 #include <dirent.h>
+#include <ncurses.h>
 
 #include "backend.h"
 
@@ -133,8 +134,7 @@ void lsOutput(char** choices)
   char* tok;
   int count = 0;
 
-  FILE *ls = popen("ls -d */ 2> /dev/null", "r");
-
+  FILE *ls;
   ls = popen("ls *.mp3 -d */ 2> /dev/null", "r");
   while(fgets(buf,sizeof(buf),ls) !=0)
   {
@@ -149,6 +149,31 @@ void lsOutput(char** choices)
   }
 
   //free(buf);
+}
+
+int countAll() {
+  char buf[1024];
+  int itemCount = 0;
+  FILE* ls;
+  ls = popen("ls 2> /dev/null", "r");
+  while(fgets(buf,sizeof(buf), ls) !=0) {
+    itemCount++;
+  }
+  return itemCount;
+}
+
+void lsAll(char** choices) {
+  char buf[1024];
+  char* tok;
+  int count = 0;
+  FILE* ls;
+  ls = popen("ls 2> /dev/null", "r");
+  while(fgets(buf,sizeof(buf),ls) !=0) {
+    tok = strtok(buf, "\n");
+    strcpy(choices[count], tok);
+    count++;
+  }
+
 }
 
 void createPlaylistFromDir(char* dirPath, char* fileName) {
@@ -196,6 +221,21 @@ void upDirectory() {
 
 void downDirectory(const char* dir) {
   chdir(dir);
+}
+
+void toDirectory(char* dir) {
+  chdir(dir);
+}
+
+void startVisualizer() {
+  system("x-terminal-emulator -e cava");
+}
+
+void editTags() {
+  int ch;
+  while((ch = getch()) != '\e') {
+    //TODO: fill out stub for editing. Possibly new screen.
+  }
 }
 
 int checkIfScreenExists() {

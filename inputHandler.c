@@ -29,6 +29,7 @@ void handleWelcWin(Winfo activeInfo, int ch){
 			itemNum = item_index(current_item(activeMenu));
 			switch (itemNum){
 				case 0: //Select
+				toDirectory("/home");
 				remWin(activeInfo);
 				cSelectwin(activeInfo);
 				setState(activeInfo, 1);
@@ -105,13 +106,30 @@ void handleSelectWin(Winfo activeInfo, int ch){
 			//restart song
 			restartSong();
 			break;
+		case 'h':
+			//goto /home directory
+			toDirectory("/home");
+			remMenu(activeInfo);
+			cSelectwin(activeInfo);
+			break;
+		case 'e':
+			editTags();
+			break;
 	}
 }
 
 //handleBrowseWin()
 //Handles input specific to "browser" window
 void handlePlaylistWin(Winfo activeInfo, int ch){
-
+	MENU* activeMenu = getMenu(activeInfo);
+	const char* selectedItemName = item_name(current_item(activeMenu));
+	char nonConstName[256];
+	strcpy(nonConstName, selectedItemName);
+	switch (ch) {
+		case '\n':
+			startPlaylist(nonConstName);
+			break;
+	}
 }
 
 //handleAboutWin()
@@ -133,6 +151,7 @@ void handleInput(Winfo activeInfo, int ch){
 	switch(ch){
 		case '1':
 			if(activeMenu != NULL) remMenu(activeInfo);
+			toDirectory("/home");
 			remWin(activeInfo);
 			cWelcwin(activeInfo);
 			setState(activeInfo, 0);
@@ -169,6 +188,10 @@ void handleInput(Winfo activeInfo, int ch){
 
 		case 'k' :
 			system("pkill screen");
+			break;
+
+		case 'v':
+			startVisualizer();
 			break;
 
 	}//End of switch
