@@ -77,10 +77,6 @@ void handleSelectWin(Winfo activeInfo, int ch){
 				cSelectwin(activeInfo);
 			}
 			break;
-		case ' ':
-			//checkIfScreenExists();
-			playPause();
-			break;
 		case '.':
 			//up a directory
 			upDirectory();
@@ -89,22 +85,13 @@ void handleSelectWin(Winfo activeInfo, int ch){
 			break;
 		case 'p':
 			path = getPath(selectedItemName, 0);
+			if(str_end(selectedItemName, "/") != 1) {
+				break;
+			}
 			createPlaylistFromDir(path, "temp");
 			startPlaylist("temp");
 			free(path);
 				path = NULL;
-			break;
-		case '[':
-			//previous song
-			prevSong();
-			break;
-		case ']':
-			//next song
-			nextSong();
-			break;
-		case 'o':
-			//restart song
-			restartSong();
 			break;
 		case 'h':
 			//goto /home directory
@@ -113,7 +100,15 @@ void handleSelectWin(Winfo activeInfo, int ch){
 			cSelectwin(activeInfo);
 			break;
 		case 'e':
-			editTags();
+			if(str_end(selectedItemName, ".mp3") != 1) {
+				break;
+			}
+
+			remWin(activeInfo);
+			cTagEditwin(activeInfo, selectedItemName);
+			editTags(selectedItemName);
+			remWin(activeInfo);
+			cSelectwin(activeInfo);
 			break;
 	}
 }
@@ -151,7 +146,6 @@ void handleInput(Winfo activeInfo, int ch){
 	switch(ch){
 		case '1':
 			if(activeMenu != NULL) remMenu(activeInfo);
-			toDirectory("/home");
 			remWin(activeInfo);
 			cWelcwin(activeInfo);
 			setState(activeInfo, 0);
@@ -159,6 +153,7 @@ void handleInput(Winfo activeInfo, int ch){
 
 		case '2':
 			if(activeMenu != NULL) remMenu(activeInfo);
+			toDirectory("/home");
 			remWin(activeInfo);
 			cSelectwin(activeInfo);
 			setState(activeInfo, 1);
@@ -181,17 +176,30 @@ void handleInput(Winfo activeInfo, int ch){
 		case KEY_UP : //UP arrow key
 			menu_driver(getMenu(activeInfo), REQ_UP_ITEM);
 			break;
-
 		case KEY_DOWN : //DOWN arrow key
 			menu_driver(getMenu(activeInfo), REQ_DOWN_ITEM);
 			break;
-
 		case 'k' :
 			system("pkill screen");
 			break;
-
 		case 'v':
 			startVisualizer();
+			break;
+		case '[':
+			//previous song
+			prevSong();
+			break;
+		case ']':
+			//next song
+			nextSong();
+			break;
+		case 'o':
+			//restart song
+			restartSong();
+			break;
+		case ' ':
+			//checkIfScreenExists();
+			playPause();
 			break;
 
 	}//End of switch

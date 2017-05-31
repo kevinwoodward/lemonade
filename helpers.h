@@ -18,4 +18,7 @@ int str_end(const char *, const char*);
 //Escapes certain characters if needed by calling command
 char* escapedString(char* buffer);
 
+//Appends char to char* for string building
+int appendCharToString(char* s, size_t size, char c);
+
 #endif

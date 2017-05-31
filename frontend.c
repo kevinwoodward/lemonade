@@ -124,7 +124,7 @@ void cWelcwin(Winfo activeInfo){
     mvwaddstr(childWin, 2, 1, "Please select an action:");
 
 	//Create selection menu
-	char* choices[] = {"Select a song","Browse Playlists","About","Quit"};
+	char* choices[] = {"Browse files","Browse Playlists","About","Quit"};
 	createItems(activeInfo, 4, choices);
 	createMenu(activeInfo, 20);
 
@@ -185,6 +185,25 @@ void cAboutwin(Winfo activeInfo){
 	wrefresh(childWin);
 }
 
+void cTagEditwin(Winfo activeInfo, const char* selected) {
+	createWin(activeInfo);
+	WINDOW* childWin = getWin(activeInfo);
+
+	//TODO: get selected name as top, populate with editing selections, each selection goes to text input
+
+	mvwaddstr(childWin, 1, 1, "Editing: ");
+	mvwaddstr(childWin, 1, 10, selected);
+	mvwaddstr(childWin, 3, 1, "- (A)rtist");
+	mvwaddstr(childWin, 4, 1, "- A(l)bum");
+	mvwaddstr(childWin, 5, 1, "- (S)ong");
+	mvwaddstr(childWin, 6, 1, "- (G)enre");
+	mvwaddstr(childWin, 7, 1, "- (Y)ear");
+	mvwaddstr(childWin, 8, 1, "- (T)rack number");
+	mvwaddstr(childWin, 10, 1, "- Escape to exit");
+
+	wrefresh(childWin);
+
+}
 
 //Memory cleaning functions: ----------------------------------------------
 

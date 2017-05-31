@@ -33,6 +33,9 @@ void cPlaylistwin(Winfo activeInfo);
 //Print out about window
 void cAboutwin(Winfo activeInfo);
 
+//Print out editing window
+void cTagEditwin(Winfo activeInfo, const char* selected);
+
 //Remove and clean windows/menus: ----------------------------------------
 
 //Frees memory associated with a window (and associated menu if one exists)

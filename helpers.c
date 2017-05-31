@@ -38,9 +38,6 @@ char *getPath(const char* fileName, int shouldEscape){
 	char buf[512];
 	fgets(buf,sizeof(buf),pwd);
 	pclose(pwd);
-  FILE* f = fopen("test", "a");
-  fprintf(f, "%s\n", buf);
-  fclose(f);
 	strcpy(buf, strtok(buf, "\n")); //removes newline
 	strcat(buf, "/");
 	strcat(buf, fileName);
@@ -94,4 +91,14 @@ char* escapedString(char* buffer){
   }
 
   return str;
+}
+
+int appendCharToString(char* s, size_t size, char c) {
+  if(strlen(s) + 1 >= size) {
+    return 1;
+  }
+  int len = strlen(s);
+  s[len] = c;
+  s[len+1] = '\0';
+  return 0;
 }

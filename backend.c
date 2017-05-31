@@ -216,6 +216,12 @@ void restartSong() {
 }
 
 void upDirectory() {
+  char dir[512];
+  getcwd(dir, sizeof(dir));
+  if(strlen(dir) < 6) {
+    //checks to make sure user isn't going into files without root access, prevents segfaults and security concerns
+    return;
+  }
   chdir("..");
 }
 
@@ -231,11 +237,90 @@ void startVisualizer() {
   system("x-terminal-emulator -e cava");
 }
 
-void editTags() {
+void editTags(const char* fileName) {
+
   int ch;
-  while((ch = getch()) != '\e') {
-    //TODO: fill out stub for editing. Possibly new screen.
+
+  //get and display current tag info
+  char tagCommand[128];
+  char tagGet[512];
+  sprintf(tagCommand, "id3v2 --list-rfc822 %s", fileName);
+  FILE* tags = popen(tagCommand, "r");
+  int count = 0;
+  while(fgets(tagGet, sizeof(tagGet), tags) !=0) {
+    if(count > 14) {
+      break;
+    }
+    mvaddnstr(7 + count, 35, strtok(tagGet, "\n"), 39);
+    count++;
   }
+  pclose(tags);
+
+  //option selection and string building
+  char buf[512];
+  strcpy(buf, "id3v2 ");
+  ch = getTagOptionChar();
+  switch (ch) {
+    case '\e':
+      return;
+      break;
+    case 'a':
+      strcat(buf, "--artist ");
+      break;
+    case 'l':
+      strcat(buf, "--album ");
+      break;
+    case 's':
+      strcat(buf, "--song ");
+      break;
+    case 'g':
+      strcat(buf, "--genre ");
+      break;
+    case 'y':
+      strcat(buf, "--year ");
+      break;
+    case 't':
+      strcat(buf, "--track ");
+      break;
+    default:
+       break;
+  }
+
+
+  char textInput[256];
+  echo();
+  mvaddstr(20, 7, "Value: ");
+  mvgetstr(20, 15, textInput);
+
+  //getstr(textInput);
+  strcpy(textInput, escapedString(textInput));
+  strcat(buf, textInput);
+  strcat(buf, " ");
+  strcat(buf, fileName);
+  strcat(buf, " 2> /dev/null");
+
+  noecho();
+
+  system(buf);
+
+}
+
+char getTagOptionChar() {
+  char ch = getch();
+  if(
+    ch == 'a' ||
+    ch == 'l' ||
+    ch == 's' ||
+    ch == 'g' ||
+    ch == 'y' ||
+    ch == 't' ||
+    ch == '\e'
+  ) {
+    return ch;
+  } else {
+    getTagOptionChar();
+  }
+  return ch;
 }
 
 int checkIfScreenExists() {

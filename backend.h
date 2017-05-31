@@ -73,7 +73,10 @@ void toDirectory(char* dir);
 void startVisualizer();
 
 //
-void editTags();
+void editTags(const char* fileName);
+
+//
+char getTagOptionChar();
 
 //check if screen currently exists to properly send commands
 int checkIfScreenExists();
