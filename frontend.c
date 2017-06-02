@@ -98,12 +98,13 @@ void createItems(Winfo activeInfo, int numItems, char** choices){
 
 //createMenu()
 //Creates a new menu with given items
-void createMenu(Winfo activeInfo, int lineLen){
+void createMenu(Winfo activeInfo, int numLines, int lineLen, int beginY, int beginX){
 
 	MENU* menu = new_menu(getItems(activeInfo));
 	WINDOW* win = getWin(activeInfo);
 	set_menu_win(menu, win);
-	set_menu_sub(menu, derwin(win, 4, lineLen, 4, 1)); //TODO: change these to be passed in
+	//set_menu_sub(menu, derwin(win, 4, lineLen, 4, 1)); //TODO: change these to be passed in
+	set_menu_sub(menu, derwin(win, numLines, lineLen, beginY, beginX)); //TODO: change these to be passed in
 
 	post_menu(menu);
 
@@ -124,9 +125,9 @@ void cWelcwin(Winfo activeInfo){
     mvwaddstr(childWin, 2, 1, "Please select an action:");
 
 	//Create selection menu
-	char* choices[] = {"Select a song","Browse Playlists","About","Quit"};
+	char* choices[] = {"Browse files","Browse Playlists","About","Quit"};
 	createItems(activeInfo, 4, choices);
-	createMenu(activeInfo, 20);
+	createMenu(activeInfo, 4, 20, 4, 1);
 
 	wrefresh(childWin);
 }
@@ -145,7 +146,7 @@ void cSelectwin(Winfo activeInfo){
 	lsOutput(choices);
 
 	createItems(activeInfo, numItems, choices);
-	createMenu(activeInfo, 80);
+	createMenu(activeInfo, numItems, 65, 1, 1);
 	wrefresh(childWin);
 }
 
@@ -155,9 +156,16 @@ void cPlaylistwin(Winfo activeInfo){
 	createWin(activeInfo);
 	WINDOW* childWin = getWin(activeInfo);
 
-    mvwaddstr(childWin, 1, 1, "This is where the user");
-    mvwaddstr(childWin, 2, 1, "will browse playlists");
+	chdir("/usr/share/lemonade");
+	int numItems = countAll();
+	char** choices = calloc(numItems, sizeof(char*));
+	for(int i=0; i<numItems; i++){
+		choices[i] = calloc(30, sizeof(char));
+	}
+	lsAll(choices);
 
+	createItems(activeInfo, numItems, choices);
+	createMenu(activeInfo, numItems, 80, 10, 10);
 	wrefresh(childWin);
 }
 
@@ -174,10 +182,28 @@ void cAboutwin(Winfo activeInfo){
 	mvwaddstr(childWin, 6, 1, "Amit Khatri");
 	mvwaddstr(childWin, 7, 1, "Akhshaya Baskar");
 	mvwaddstr(childWin, 8, 1, "Tarik Zeid");
+	mvwaddstr(childWin, 10, 1, "Press 'h' for help.");
 
 	wrefresh(childWin);
 }
 
+void cTagEditwin(Winfo activeInfo, const char* selected) {
+	createWin(activeInfo);
+	WINDOW* childWin = getWin(activeInfo);
+
+	mvwaddstr(childWin, 1, 1, "Editing: ");
+	mvwaddstr(childWin, 1, 10, selected);
+	mvwaddstr(childWin, 3, 1, "- (A)rtist");
+	mvwaddstr(childWin, 4, 1, "- A(l)bum");
+	mvwaddstr(childWin, 5, 1, "- (S)ong");
+	mvwaddstr(childWin, 6, 1, "- (G)enre");
+	mvwaddstr(childWin, 7, 1, "- (Y)ear");
+	mvwaddstr(childWin, 8, 1, "- (T)rack number");
+	mvwaddstr(childWin, 10, 1, "- Escape to exit");
+
+	wrefresh(childWin);
+
+}
 
 //Memory cleaning functions: ----------------------------------------------
 
@@ -185,12 +211,12 @@ void cAboutwin(Winfo activeInfo){
 //remWin()
 //Clears and removes active window. (and associated menu if one exists)
 void remWin(Winfo activeInfo){
-	
+
 	//Remove menu if one exists
 	if(getMenu(activeInfo) != NULL){
 		remMenu(activeInfo);
 	}
-	
+
 	WINDOW* window = getWin(activeInfo);
 	wclear(window);
 	delwin(window);
@@ -200,7 +226,7 @@ void remWin(Winfo activeInfo){
 //remMenu()
 //Frees memory associated with a menu
 void remMenu(Winfo activeInfo){
-	
+
 	MENU* menu = getMenu(activeInfo);
 	unpost_menu(menu);
 

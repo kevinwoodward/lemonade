@@ -11,7 +11,7 @@
 #include "inputHandler.h"
 
 int main(int argc, char **argv) {
-  
+
 	//Frontend: --------------------------------------------------
 	//Init main window
 	WINDOW * mainWin;
@@ -24,6 +24,9 @@ int main(int argc, char **argv) {
 
 	//Print out splash screen on startup
 	splash(mainWin);
+
+  //Sets cursor to off
+  curs_set(0);
 
 	//Print out welcome and intruction windows:
 	WINDOW* insnWin = cInsnwin(mainWin);

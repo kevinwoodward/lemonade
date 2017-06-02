@@ -19,7 +19,7 @@ void splash(WINDOW* mainwin);
 WINDOW* cInsnwin(WINDOW* mainwin);
 
 //Creates menu
-void createMenu(Winfo activeInfo, int lineLen);
+void createMenu(Winfo activeInfo, int numLines, int lineLen, int beginY, int beginX);
 
 //Print out welcome window
 void cWelcwin(Winfo activeInfo);
@@ -32,6 +32,9 @@ void cPlaylistwin(Winfo activeInfo);
 
 //Print out about window
 void cAboutwin(Winfo activeInfo);
+
+//Print out editing window
+void cTagEditwin(Winfo activeInfo, const char* selected);
 
 //Remove and clean windows/menus: ----------------------------------------
 

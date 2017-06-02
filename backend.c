@@ -7,6 +7,7 @@
 #include <ctype.h>
 #include <unistd.h>
 #include <dirent.h>
+#include <ncurses.h>
 
 #include "backend.h"
 
@@ -70,12 +71,22 @@ void startSingleSong(char* filePath) {
   sendScreenCommand(fileStr);
 }
 
-void startPlaylist(char* fileName) {
+void startPlaylist(const char* fileName) {
   createScreen(1);
+
+  char subName[256];
+  if(fileName[strlen(fileName) - 1] == '/') {
+    int nameLen = strlen(fileName);
+    strcpy(subName, fileName);
+    subName[nameLen - 1] = '\0';
+  } else {
+      strcpy(subName, fileName);
+  }
+
   char playlistStr[100];
   strcpy(playlistStr, "mpg123 -C -@ ");
   strcat(playlistStr, FILEDIR);
-  strcat(playlistStr, fileName);
+  strcat(playlistStr, subName);
   sendScreenCommand(playlistStr);
 }
 
@@ -133,8 +144,7 @@ void lsOutput(char** choices)
   char* tok;
   int count = 0;
 
-  FILE *ls = popen("ls -d */ 2> /dev/null", "r");
-
+  FILE *ls;
   ls = popen("ls *.mp3 -d */ 2> /dev/null", "r");
   while(fgets(buf,sizeof(buf),ls) !=0)
   {
@@ -151,9 +161,40 @@ void lsOutput(char** choices)
   //free(buf);
 }
 
-void createPlaylistFromDir(char* dirPath, char* fileName) {
+int countAll() {
+  char buf[1024];
+  int itemCount = 0;
+  FILE* ls;
+  ls = popen("ls 2> /dev/null", "r");
+  while(fgets(buf,sizeof(buf), ls) !=0) {
+    itemCount++;
+  }
+  return itemCount;
+}
+
+void lsAll(char** choices) {
+  char buf[1024];
+  char* tok;
+  int count = 0;
+  FILE* ls;
+  ls = popen("ls 2> /dev/null", "r");
+  while(fgets(buf,sizeof(buf),ls) !=0) {
+    tok = strtok(buf, "\n");
+    strcpy(choices[count], tok);
+    count++;
+  }
+
+}
+
+void createPlaylistFromDir(char* dirPath, const char* fileName) {
   char fileInDir[200];
-  sprintf(fileInDir, "%s%s", FILEDIR, fileName);
+
+  char subName[256];
+  int nameLen = strlen(fileName);
+  strcpy(subName, fileName);
+  subName[nameLen - 1] = '\0';
+
+  sprintf(fileInDir, "%s%s", FILEDIR, subName);
 
   struct dirent **namelist;
   int n, i = 0;
@@ -191,11 +232,165 @@ void restartSong() {
 }
 
 void upDirectory() {
+  char dir[512];
+  getcwd(dir, sizeof(dir));
+  if(strlen(dir) < 6) {
+    //checks to make sure user isn't going into files without root access, prevents segfaults and security concerns
+    return;
+  }
   chdir("..");
 }
 
 void downDirectory(const char* dir) {
   chdir(dir);
+}
+
+void toDirectory(char* dir) {
+  chdir(dir);
+}
+
+void startVisualizer() {
+  system("xterm -e \"cava\" &");
+}
+
+void editTags(const char* fileName) {
+
+  int ch;
+
+  //get and display current tag info
+  printCurrentTagInfo(fileName);
+
+  //option selection and string building
+  char buf[512];
+  strcpy(buf, "id3v2 ");
+  ch = getTagOptionChar();
+  switch (ch) {
+    case '\e':
+      return;
+      break;
+    case 'a':
+      strcat(buf, "--artist ");
+      break;
+    case 'l':
+      strcat(buf, "--album ");
+      break;
+    case 's':
+      strcat(buf, "--song ");
+      break;
+    case 'g':
+      strcat(buf, "--genre ");
+      break;
+    case 'y':
+      strcat(buf, "--year ");
+      break;
+    case 't':
+      strcat(buf, "--track ");
+      break;
+    default:
+       break;
+  }
+
+
+  char textInput[256];
+  curs_set(2);
+  echo();
+  mvaddstr(20, 7, "Value: ");
+  mvgetstr(20, 15, textInput);
+
+  //getstr(textInput);
+  strcpy(textInput, escapedString(textInput));
+  strcat(buf, textInput);
+  strcat(buf, " ");
+  strcat(buf, fileName);
+  strcat(buf, " 2> /dev/null");
+
+  noecho();
+  curs_set(0);
+
+  system(buf);
+
+}
+
+char getTagOptionChar() {
+  char ch = getch();
+  if(
+    ch == 'a' ||
+    ch == 'l' ||
+    ch == 's' ||
+    ch == 'g' ||
+    ch == 'y' ||
+    ch == 't' ||
+    ch == '\e'
+  ) {
+    return ch;
+  } else {
+    getTagOptionChar();
+  }
+  return ch;
+}
+
+void printCurrentTagInfo(const char* fileName) {
+  char tagCommand[128];
+  char tagGet[512];
+  sprintf(tagCommand, "id3v2 --list-rfc822 %s", fileName);
+  FILE* tags = popen(tagCommand, "r");
+  int count = 0;
+  while(fgets(tagGet, sizeof(tagGet), tags) !=0) {
+    if(count > 14) {
+      break;
+    }
+    mvaddnstr(7 + count, 35, strtok(tagGet, "\n"), 39);
+    count++;
+  }
+  pclose(tags);
+}
+
+void displayArt(const char* selectedItemName) {
+
+  if(str_end(selectedItemName, ".mp3") != 1) {
+    return;
+  }
+
+  char imgName[128];
+  //char displayCommand[512];
+
+  strcpy(imgName, ".");
+  strcat(imgName, selectedItemName);
+  strcat(imgName, ".jpg");
+
+  if( access(imgName, F_OK ) != -1) {
+    // image file already exists
+    invokeImageToAscii(imgName);
+    return;
+  } else {
+    extractImageFromMp3(selectedItemName, imgName);
+  }
+
+  if( access(imgName, F_OK) != -1) {
+    //file created successfully
+    invokeImageToAscii(imgName);
+  } else {
+    system("xterm -hold -geometry 50x2 -e echo No embedded album art for selected song! & 2> /dev/null");
+    return;
+  }
+}
+
+void extractImageFromMp3(const char* selectedItemName, char* imgName) {
+  char buf[512];
+  strcpy(buf, "ffmpeg -i ");
+  strcat(buf, selectedItemName);
+  strcat(buf, " -an -vcodec copy ");
+  strcat(buf, imgName);
+  strcat(buf, " 2> /dev/null");
+  system(buf);
+}
+
+void invokeImageToAscii(char* imgName) {
+  char displayCommand[512];
+  strcpy(displayCommand, "xterm -hold -geometry 100x50 -e jp2a -b --color --fill --background=dark ");
+  strcat(displayCommand, imgName);
+  strcat(displayCommand, " & 2> /dev/null");
+  system(displayCommand);
 }
 
 int checkIfScreenExists() {

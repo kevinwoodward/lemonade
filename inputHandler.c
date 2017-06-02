@@ -29,6 +29,7 @@ void handleWelcWin(Winfo activeInfo, int ch){
 			itemNum = item_index(current_item(activeMenu));
 			switch (itemNum){
 				case 0: //Select
+				toDirectory("/home");
 				remWin(activeInfo);
 				cSelectwin(activeInfo);
 				setState(activeInfo, 1);
@@ -76,10 +77,6 @@ void handleSelectWin(Winfo activeInfo, int ch){
 				cSelectwin(activeInfo);
 			}
 			break;
-		case ' ':
-			//checkIfScreenExists();
-			playPause();
-			break;
 		case '.':
 			//up a directory
 			upDirectory();
@@ -88,22 +85,34 @@ void handleSelectWin(Winfo activeInfo, int ch){
 			break;
 		case 'p':
 			path = getPath(selectedItemName, 0);
-			createPlaylistFromDir(path, "temp");
-			startPlaylist("temp");
+			if(str_end(selectedItemName, "/") != 1) {
+				break;
+			}
+			createPlaylistFromDir(path, selectedItemName);
+			startPlaylist(selectedItemName);
 			free(path);
 				path = NULL;
 			break;
-		case '[':
-			//previous song
-			prevSong();
+		case 'h':
+			//goto /home directory
+			toDirectory("/home");
+			remMenu(activeInfo);
+			cSelectwin(activeInfo);
 			break;
-		case ']':
-			//next song
-			nextSong();
+		case 't':
+			if(str_end(selectedItemName, ".mp3") != 1) {
+				break;
+			}
+
+			remWin(activeInfo);
+			cTagEditwin(activeInfo, selectedItemName);
+			editTags(selectedItemName);
+			remWin(activeInfo);
+			cSelectwin(activeInfo);
 			break;
-		case 'o':
-			//restart song
-			restartSong();
+		case 'i':
+			//album art
+			displayArt(selectedItemName);
 			break;
 	}
 }
@@ -111,13 +120,24 @@ void handleSelectWin(Winfo activeInfo, int ch){
 //handleBrowseWin()
 //Handles input specific to "browser" window
 void handlePlaylistWin(Winfo activeInfo, int ch){
-
+	MENU* activeMenu = getMenu(activeInfo);
+	const char* selectedItemName = item_name(current_item(activeMenu));
+	char nonConstName[256];
+	strcpy(nonConstName, selectedItemName);
+	switch (ch) {
+		case '\n':
+			startPlaylist(nonConstName);
+			break;
+	}
 }
 
 //handleAboutWin()
 //Handles input specific to "about" window
 void handleAboutWin(Winfo activeInfo, int ch){
-
+	switch (ch) {
+		case 'h':
+			system("sensible-browser https://docs.google.com/document/d/1pPvelGZFUB94YW7hT2COPODH8C3Av2oZ9XNly7zuCIk/edit");
+	}
 }
 
 
@@ -140,6 +160,7 @@ void handleInput(Winfo activeInfo, int ch){
 
 		case '2':
 			if(activeMenu != NULL) remMenu(activeInfo);
+			toDirectory("/home");
 			remWin(activeInfo);
 			cSelectwin(activeInfo);
 			setState(activeInfo, 1);
@@ -162,13 +183,30 @@ void handleInput(Winfo activeInfo, int ch){
 		case KEY_UP : //UP arrow key
 			menu_driver(getMenu(activeInfo), REQ_UP_ITEM);
 			break;
-
 		case KEY_DOWN : //DOWN arrow key
 			menu_driver(getMenu(activeInfo), REQ_DOWN_ITEM);
 			break;
-
 		case 'k' :
 			system("pkill screen");
+			break;
+		case 'v':
+			startVisualizer();
+			break;
+		case '[':
+			//previous song
+			prevSong();
+			break;
+		case ']':
+			//next song
+			nextSong();
+			break;
+		case 'o':
+			//restart song
+			restartSong();
+			break;
+		case ' ':
+			//checkIfScreenExists();
+			playPause();
 			break;
 
 	}//End of switch
