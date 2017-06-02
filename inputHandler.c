@@ -88,8 +88,8 @@ void handleSelectWin(Winfo activeInfo, int ch){
 			if(str_end(selectedItemName, "/") != 1) {
 				break;
 			}
-			createPlaylistFromDir(path, "temp");
-			startPlaylist("temp");
+			createPlaylistFromDir(path, selectedItemName);
+			startPlaylist(selectedItemName);
 			free(path);
 				path = NULL;
 			break;
@@ -99,7 +99,7 @@ void handleSelectWin(Winfo activeInfo, int ch){
 			remMenu(activeInfo);
 			cSelectwin(activeInfo);
 			break;
-		case 'e':
+		case 't':
 			if(str_end(selectedItemName, ".mp3") != 1) {
 				break;
 			}
@@ -109,6 +109,10 @@ void handleSelectWin(Winfo activeInfo, int ch){
 			editTags(selectedItemName);
 			remWin(activeInfo);
 			cSelectwin(activeInfo);
+			break;
+		case 'i':
+			//album art
+			displayArt(selectedItemName);
 			break;
 	}
 }
@@ -130,7 +134,10 @@ void handlePlaylistWin(Winfo activeInfo, int ch){
 //handleAboutWin()
 //Handles input specific to "about" window
 void handleAboutWin(Winfo activeInfo, int ch){
-
+	switch (ch) {
+		case 'h':
+			system("sensible-browser https://docs.google.com/document/d/1pPvelGZFUB94YW7hT2COPODH8C3Av2oZ9XNly7zuCIk/edit");
+	}
 }
 
 

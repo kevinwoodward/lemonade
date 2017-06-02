@@ -71,12 +71,22 @@ void startSingleSong(char* filePath) {
   sendScreenCommand(fileStr);
 }
 
-void startPlaylist(char* fileName) {
+void startPlaylist(const char* fileName) {
   createScreen(1);
+
+  char subName[256];
+  if(fileName[strlen(fileName) - 1] == '/') {
+    int nameLen = strlen(fileName);
+    strcpy(subName, fileName);
+    subName[nameLen - 1] = '\0';
+  } else {
+      strcpy(subName, fileName);
+  }
+
   char playlistStr[100];
   strcpy(playlistStr, "mpg123 -C -@ ");
   strcat(playlistStr, FILEDIR);
-  strcat(playlistStr, fileName);
+  strcat(playlistStr, subName);
   sendScreenCommand(playlistStr);
 }
 
@@ -176,9 +186,15 @@ void lsAll(char** choices) {
 
 }
 
-void createPlaylistFromDir(char* dirPath, char* fileName) {
+void createPlaylistFromDir(char* dirPath, const char* fileName) {
   char fileInDir[200];
-  sprintf(fileInDir, "%s%s", FILEDIR, fileName);
+
+  char subName[256];
+  int nameLen = strlen(fileName);
+  strcpy(subName, fileName);
+  subName[nameLen - 1] = '\0';
+
+  sprintf(fileInDir, "%s%s", FILEDIR, subName);
 
   struct dirent **namelist;
   int n, i = 0;
@@ -234,7 +250,7 @@ void toDirectory(char* dir) {
 }
 
 void startVisualizer() {
-  system("x-terminal-emulator -e cava");
+  system("xterm -e \"cava\" &");
 }
 
 void editTags(const char* fileName) {
@@ -242,19 +258,7 @@ void editTags(const char* fileName) {
   int ch;
 
   //get and display current tag info
-  char tagCommand[128];
-  char tagGet[512];
-  sprintf(tagCommand, "id3v2 --list-rfc822 %s", fileName);
-  FILE* tags = popen(tagCommand, "r");
-  int count = 0;
-  while(fgets(tagGet, sizeof(tagGet), tags) !=0) {
-    if(count > 14) {
-      break;
-    }
-    mvaddnstr(7 + count, 35, strtok(tagGet, "\n"), 39);
-    count++;
-  }
-  pclose(tags);
+  printCurrentTagInfo(fileName);
 
   //option selection and string building
   char buf[512];
@@ -288,6 +292,7 @@ void editTags(const char* fileName) {
 
 
   char textInput[256];
+  curs_set(2);
   echo();
   mvaddstr(20, 7, "Value: ");
   mvgetstr(20, 15, textInput);
@@ -300,6 +305,7 @@ void editTags(const char* fileName) {
   strcat(buf, " 2> /dev/null");
 
   noecho();
+  curs_set(0);
 
   system(buf);
 
@@ -321,6 +327,70 @@ char getTagOptionChar() {
     getTagOptionChar();
   }
   return ch;
+}
+
+void printCurrentTagInfo(const char* fileName) {
+  char tagCommand[128];
+  char tagGet[512];
+  sprintf(tagCommand, "id3v2 --list-rfc822 %s", fileName);
+  FILE* tags = popen(tagCommand, "r");
+  int count = 0;
+  while(fgets(tagGet, sizeof(tagGet), tags) !=0) {
+    if(count > 14) {
+      break;
+    }
+    mvaddnstr(7 + count, 35, strtok(tagGet, "\n"), 39);
+    count++;
+  }
+  pclose(tags);
+}
+
+void displayArt(const char* selectedItemName) {
+
+  if(str_end(selectedItemName, ".mp3") != 1) {
+    return;
+  }
+
+  char imgName[128];
+  //char displayCommand[512];
+
+  strcpy(imgName, ".");
+  strcat(imgName, selectedItemName);
+  strcat(imgName, ".jpg");
+
+  if( access(imgName, F_OK ) != -1) {
+    // image file already exists
+    invokeImageToAscii(imgName);
+    return;
+  } else {
+    extractImageFromMp3(selectedItemName, imgName);
+  }
+
+  if( access(imgName, F_OK) != -1) {
+    //file created successfully
+    invokeImageToAscii(imgName);
+  } else {
+    system("xterm -hold -geometry 50x2 -e echo No embedded album art for selected song! & 2> /dev/null");
+    return;
+  }
+}
+
+void extractImageFromMp3(const char* selectedItemName, char* imgName) {
+  char buf[512];
+  strcpy(buf, "ffmpeg -i ");
+  strcat(buf, selectedItemName);
+  strcat(buf, " -an -vcodec copy ");
+  strcat(buf, imgName);
+  strcat(buf, " 2> /dev/null");
+  system(buf);
+}
+
+void invokeImageToAscii(char* imgName) {
+  char displayCommand[512];
+  strcpy(displayCommand, "xterm -hold -geometry 100x50 -e jp2a -b --color --fill --background=dark ");
+  strcat(displayCommand, imgName);
+  strcat(displayCommand, " & 2> /dev/null");
+  system(displayCommand);
 }
 
 int checkIfScreenExists() {

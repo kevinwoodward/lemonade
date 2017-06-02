@@ -98,12 +98,13 @@ void createItems(Winfo activeInfo, int numItems, char** choices){
 
 //createMenu()
 //Creates a new menu with given items
-void createMenu(Winfo activeInfo, int lineLen){
+void createMenu(Winfo activeInfo, int numLines, int lineLen, int beginY, int beginX){
 
 	MENU* menu = new_menu(getItems(activeInfo));
 	WINDOW* win = getWin(activeInfo);
 	set_menu_win(menu, win);
-	set_menu_sub(menu, derwin(win, 4, lineLen, 4, 1)); //TODO: change these to be passed in
+	//set_menu_sub(menu, derwin(win, 4, lineLen, 4, 1)); //TODO: change these to be passed in
+	set_menu_sub(menu, derwin(win, numLines, lineLen, beginY, beginX)); //TODO: change these to be passed in
 
 	post_menu(menu);
 
@@ -126,7 +127,7 @@ void cWelcwin(Winfo activeInfo){
 	//Create selection menu
 	char* choices[] = {"Browse files","Browse Playlists","About","Quit"};
 	createItems(activeInfo, 4, choices);
-	createMenu(activeInfo, 20);
+	createMenu(activeInfo, 4, 20, 4, 1);
 
 	wrefresh(childWin);
 }
@@ -145,7 +146,7 @@ void cSelectwin(Winfo activeInfo){
 	lsOutput(choices);
 
 	createItems(activeInfo, numItems, choices);
-	createMenu(activeInfo, 80);
+	createMenu(activeInfo, numItems, 65, 1, 1);
 	wrefresh(childWin);
 }
 
@@ -164,7 +165,7 @@ void cPlaylistwin(Winfo activeInfo){
 	lsAll(choices);
 
 	createItems(activeInfo, numItems, choices);
-	createMenu(activeInfo, 80);
+	createMenu(activeInfo, numItems, 80, 10, 10);
 	wrefresh(childWin);
 }
 
@@ -181,6 +182,7 @@ void cAboutwin(Winfo activeInfo){
 	mvwaddstr(childWin, 6, 1, "Amit Khatri");
 	mvwaddstr(childWin, 7, 1, "Akhshaya Baskar");
 	mvwaddstr(childWin, 8, 1, "Tarik Zeid");
+	mvwaddstr(childWin, 10, 1, "Press 'h' for help.");
 
 	wrefresh(childWin);
 }
@@ -188,8 +190,6 @@ void cAboutwin(Winfo activeInfo){
 void cTagEditwin(Winfo activeInfo, const char* selected) {
 	createWin(activeInfo);
 	WINDOW* childWin = getWin(activeInfo);
-
-	//TODO: get selected name as top, populate with editing selections, each selection goes to text input
 
 	mvwaddstr(childWin, 1, 1, "Editing: ");
 	mvwaddstr(childWin, 1, 10, selected);
