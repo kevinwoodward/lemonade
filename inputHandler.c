@@ -61,29 +61,30 @@ void handleSelectWin(Winfo activeInfo, int ch){
 	//Get name of current selection
 	const char* selectedItemName = item_name(current_item(activeMenu));
 
-	//char *selectedItemName = selectedItemNameConst;
-	//strcpy(selectedItemName, escapedString(selectedItemName));
-
+	//Switch on the entered character
 	switch(ch){
 		case '\n':
-			if(str_end(selectedItemName, ".mp3")) { //File
+			if(str_end(selectedItemName, ".mp3")) {
+				//If mp3, start playback
 				path = getPath(selectedItemName, 1);
 				startSingleSong(path);
 				free(path);
 				path = NULL;
-		  } else if(str_end(selectedItemName, "/")) { //Folder
+		  } else if(str_end(selectedItemName, "/")) {
+				//If folder, enter it
 				downDirectory(selectedItemName);
 				remWin(activeInfo);
 				cSelectwin(activeInfo);
 			}
 			break;
 		case '.':
-			//up a directory
+			//Up a directory
 			upDirectory();
 			remMenu(activeInfo);
 			cSelectwin(activeInfo);
 			break;
 		case 'p':
+			//If selected on a directory, create and start playback of all mp3s in that directory (non-recursive)
 			path = getPath(selectedItemName, 0);
 			if(str_end(selectedItemName, "/") != 1) {
 				break;
@@ -94,12 +95,13 @@ void handleSelectWin(Winfo activeInfo, int ch){
 				path = NULL;
 			break;
 		case 'h':
-			//goto /home directory
+			//Go to /home directory
 			toDirectory("/home");
 			remMenu(activeInfo);
 			cSelectwin(activeInfo);
 			break;
 		case 't':
+			//If pressed on an mp3, invoke the tag editing menu
 			if(str_end(selectedItemName, ".mp3") != 1) {
 				break;
 			}
@@ -111,7 +113,7 @@ void handleSelectWin(Winfo activeInfo, int ch){
 			cSelectwin(activeInfo);
 			break;
 		case 'i':
-			//album art
+			//Invoke embedded art display
 			displayArt(selectedItemName);
 			break;
 	}
@@ -124,8 +126,10 @@ void handlePlaylistWin(Winfo activeInfo, int ch){
 	const char* selectedItemName = item_name(current_item(activeMenu));
 	char nonConstName[256];
 	strcpy(nonConstName, selectedItemName);
+
 	switch (ch) {
 		case '\n':
+			//Start playback of selected playlist
 			startPlaylist(nonConstName);
 			break;
 	}
@@ -136,6 +140,7 @@ void handlePlaylistWin(Winfo activeInfo, int ch){
 void handleAboutWin(Winfo activeInfo, int ch){
 	switch (ch) {
 		case 'h':
+			//Open help page if h is pressed
 			system("sensible-browser https://docs.google.com/document/d/1pPvelGZFUB94YW7hT2COPODH8C3Av2oZ9XNly7zuCIk/edit");
 	}
 }
@@ -148,8 +153,10 @@ void handleAboutWin(Winfo activeInfo, int ch){
 //Takes state information, and routes input to correct handlers
 void handleInput(Winfo activeInfo, int ch){
 
-	//Handle screen switching
+	//Handle screen switching by state (set on creation)
 	MENU* activeMenu = getMenu(activeInfo);
+
+	//Global key bindings (works on all screens)
 	switch(ch){
 		case '1':
 			if(activeMenu != NULL) remMenu(activeInfo);
@@ -181,31 +188,35 @@ void handleInput(Winfo activeInfo, int ch){
 			return;
 
 		case KEY_UP : //UP arrow key
+			//Menu selector up
 			menu_driver(getMenu(activeInfo), REQ_UP_ITEM);
 			break;
 		case KEY_DOWN : //DOWN arrow key
+			//Menu selector down
 			menu_driver(getMenu(activeInfo), REQ_DOWN_ITEM);
 			break;
 		case 'k' :
+			//Kill background screen
 			system("pkill screen");
 			break;
 		case 'v':
+			//Invoke cava visualizer
 			startVisualizer();
 			break;
 		case '[':
-			//previous song
+			//Previous song
 			prevSong();
 			break;
 		case ']':
-			//next song
+			//Next song
 			nextSong();
 			break;
 		case 'o':
-			//restart song
+			//Restart song
 			restartSong();
 			break;
 		case ' ':
-			//checkIfScreenExists();
+			//Play/pause the current playback
 			playPause();
 			break;
 

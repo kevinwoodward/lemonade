@@ -5,12 +5,29 @@
 #include <unistd.h>
 
 //#include "helpers.h"
+#include "tests/AllTests.h"
 #include "backend.h"
 #include "frontend.h"
 #include "winInfo.h"
 #include "inputHandler.h"
 
 int main(int argc, char **argv) {
+
+	//if there are some flags used
+	if(argc > 1) {
+		if(strcmp(argv[1], "--tests") == 0) {
+			//if --tests, run tests
+			RunAllTests();
+		} else if(strcmp(argv[1], "--help") == 0 || strcmp(argv[1], "-h") == 0) {
+			//if --help or -h, open help page
+			system("sensible-browser https://docs.google.com/document/d/1pPvelGZFUB94YW7hT2COPODH8C3Av2oZ9XNly7zuCIk/edit"); //open help doc
+		} else {
+			//else, print flag usage
+			printf("\nThe supported flags are:\nRun tests: --tests\nOpen help webpage: --help, -h\n\n");
+		}
+		//quit
+		return 0;
+	}
 
 	//Frontend: --------------------------------------------------
 	//Init main window

@@ -42,6 +42,7 @@ char *getPath(const char* fileName, int shouldEscape){
 	strcat(buf, "/");
 	strcat(buf, fileName);
   if(shouldEscape == 1) {
+    //if spaces should be escaped
     strcpy(buf, escapedString(buf));
   }
   char* retStr = calloc(512, sizeof(char));
@@ -52,6 +53,7 @@ char *getPath(const char* fileName, int shouldEscape){
 
 //str_end()
 //Checks if a string ends with another string
+//Credit to a Stack Overflow post
 int str_end(const char *s, const char *t)
 {
   size_t ls = strlen(s); // find length of s
@@ -71,21 +73,29 @@ char* escapedString(char* buffer){
 
   int bufferLen = strlen(buffer);
   int spaceCount = 0;
+
+  //get the number of spaces in the original string
   for(int n = 0; n < bufferLen; n++) {
     if(buffer[n] == ' ') {
       spaceCount++;
     }
   }
 
+  //allocate space for a new string of size (oldstring + number of spaces, because each ' ' becomes '\ ')
+  //init a counter to keep track of number of spaces replaced while iterating for indexing correctly
   char* str = calloc(bufferLen + spaceCount , sizeof(char));
   int currentNumberOfSpaces = 0;
 
+  //iterate over old string to build new string
   for(int i = 0; i < bufferLen; i++) {
     if(buffer[i] == ' ' && buffer[i-1] != '\\') {
+      //if current char is space and previous char is not a backslash (to prevent multiple escaping)
+      //then set char and next char to backslash and space respectively, increment counter
       str[i + currentNumberOfSpaces] = '\\';
       str[i + currentNumberOfSpaces + 1] = ' ';
       currentNumberOfSpaces++;
     } else {
+      //if any other char, simply duplicate
       str[i + currentNumberOfSpaces] = buffer[i];
     }
   }
@@ -93,6 +103,7 @@ char* escapedString(char* buffer){
   return str;
 }
 
+//unused
 int appendCharToString(char* s, size_t size, char c) {
   if(strlen(s) + 1 >= size) {
     return 1;
