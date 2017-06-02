@@ -165,7 +165,7 @@ void cPlaylistwin(Winfo activeInfo){
 	lsAll(choices);
 
 	createItems(activeInfo, numItems, choices);
-	createMenu(activeInfo, numItems, 80, 10, 10);
+	createMenu(activeInfo, numItems, 65, 1, 1);
 	wrefresh(childWin);
 }
 
