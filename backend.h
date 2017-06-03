@@ -91,11 +91,5 @@ void invokeImageToAscii(char* imgName);
 //check if screen currently exists to properly send commands
 int checkIfScreenExists();
 
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~TESTS~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-//void TestCountLines(CuTest *tc);
-
-//CuSuite* countLinesGetSuite();
-
 
 #endif

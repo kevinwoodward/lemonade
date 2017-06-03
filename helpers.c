@@ -9,7 +9,7 @@
 
 #include "backend.h"
 
-
+#include "tests/CuTest.h"
 
 char *trimwhitespace(char *str) {
   char *end;
@@ -112,4 +112,67 @@ int appendCharToString(char* s, size_t size, char c) {
   s[len] = c;
   s[len+1] = '\0';
   return 0;
+}
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~TESTING~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+void TestGetPathNormal (CuTest *tc) {
+  //Test getting path without escaping
+
+  char* actual = getPath("em.mp3", 0); //change based on your filesystem
+  char* expected = "/home/kevin/Documents/github/lemonade/em.mp3"; //change based on your filesystem
+  CuAssertStrEquals(tc, expected, actual);
+}
+
+void TestGetPathEscapedSpaces (CuTest *tc) {
+  //Test getting path with escaping
+
+  char* actual = getPath("In\\ The\\ Dark.mp3", 1); //change based on your filesystem
+  char* expected = "/home/kevin/Documents/github/lemonade/In\\ The\\ Dark.mp3"; //change based on your filesystem
+  CuAssertStrEquals(tc, expected, actual);
+}
+
+void TestGetPathEscapedNoSpaces (CuTest *tc) {
+  //Test getting path with escaping (no spaces)
+
+  char* actual = getPath("em.mp3", 1); //change based on your filesystem
+  char* expected = "/home/kevin/Documents/github/lemonade/em.mp3"; //change based on your filesystem
+  CuAssertStrEquals(tc, expected, actual);
+}
+
+void TestStr_endMatching(CuTest *tc) {
+  int actual = str_end("This is a test.mp3", ".mp3");
+  int expected = 1;
+  CuAssertIntEquals(tc, expected, actual);
+}
+
+void TestStr_endNonmatching(CuTest *tc) {
+  int actual = str_end("This is a test.mp3", ".mp4");
+  int expected = 0;
+  CuAssertIntEquals(tc, expected, actual);
+}
+
+void TestEscapedStringSingle(CuTest *tc) {
+  char* actual = escapedString("This is a test for escaping spaces in strings!");
+  char* expected = "This\\ is\\ a\\ test\\ for\\ escaping\\ spaces\\ in\\ strings!";
+  CuAssertStrEquals(tc, expected, actual);
+}
+
+void TestEscapedStringMulti(CuTest *tc) {
+  char* actual = escapedString("This  is  a  test  for  multiple  spaces!");
+  char* expected = "This\\ \\ is\\ \\ a\\ \\ test\\ \\ for\\ \\ multiple\\ \\ spaces!";
+  CuAssertStrEquals(tc, expected, actual);
+}
+
+CuSuite* helpersGetSuite() {
+  CuSuite* suite = CuSuiteNew();
+  SUITE_ADD_TEST(suite, TestGetPathNormal);
+  SUITE_ADD_TEST(suite, TestGetPathEscapedSpaces);
+  SUITE_ADD_TEST(suite, TestGetPathEscapedNoSpaces);
+  SUITE_ADD_TEST(suite, TestStr_endMatching);
+  SUITE_ADD_TEST(suite, TestStr_endNonmatching);
+  SUITE_ADD_TEST(suite, TestEscapedStringSingle);
+  SUITE_ADD_TEST(suite, TestEscapedStringMulti);
+
+  return suite;
 }

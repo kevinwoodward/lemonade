@@ -435,6 +435,24 @@ void TestCountAll(CuTest *tc) {
   CuAssertIntEquals(tc, expected, actual);
 }
 
+void TestCheckIfScreenExistsTrue (CuTest *tc) {
+  //setup screen
+  createScreen(1);
+
+  int actual = checkIfScreenExists();
+  int expected = 1;
+  CuAssertIntEquals(tc, expected, actual);
+}
+
+void TestCheckIfScreenExistsFalse (CuTest *tc) {
+  //kill screens
+  system("pkill screen");
+
+  int actual = checkIfScreenExists();
+  int expected = 0;
+  CuAssertIntEquals(tc, expected, actual);
+}
+
 void TestLsOutput(CuTest *tc) {
   //setup
   int num = countLines();
@@ -469,10 +487,20 @@ void TestLsOutput(CuTest *tc) {
 
 }
 
+// void TestGetTagOptionChar(CuTest *tc) {
+//   char actual = getTagOptionChar();
+//   char expected = 'e';
+//
+//   CuAssertIntEquals(tc, expected, actual);
+// }
+
 CuSuite* backendGetSuite() {
   CuSuite* suite = CuSuiteNew();
   SUITE_ADD_TEST(suite, TestCountLines);
   SUITE_ADD_TEST(suite, TestCountAll);
+  SUITE_ADD_TEST(suite, TestCheckIfScreenExistsTrue);
+  SUITE_ADD_TEST(suite, TestCheckIfScreenExistsFalse);
   SUITE_ADD_TEST(suite, TestLsOutput);
+  //SUITE_ADD_TEST(suite, TestGetTagOptionChar);
   return suite;
 }
