@@ -5,11 +5,22 @@ Console Based Music Player for CMPS 115
 
 * [Release plan](https://docs.google.com/a/ucsc.edu/document/d/1jjz3BqpC7BOpat5F-w3haDFaZqG2L8qL60ufZ3Sz5nA/edit?usp=sharing)
 
+* [Coding standard](https://docs.google.com/a/ucsc.edu/document/d/1y2ps0gPofOhUFe1KlguoMwYyC8Vt_dMsOYBJ2TkJV0k/edit?usp=sharing)
+
+**Release Documents**
+* [System and Unit Test Report](https://docs.google.com/a/ucsc.edu/document/d/1I6C0B_1oiP_wYhM9FV_rmM6plwHcR7tNYoqMn_hrljk/edit?usp=sharing)
+
+* [Working Prototype Known Problems Report](https://docs.google.com/a/ucsc.edu/document/d/1T5c5pKbFOGfImQ-Jk4zMNScrJ_eu0Bv6qUSIndwkETI/edit?usp=sharing)
+
+* Installation guide/User manual: See Setup and Usage link above
+
 **Sprint 3**
 
 * [Sprint 3 plan](https://drive.google.com/a/ucsc.edu/file/d/0ByyFAbunNFMPZG1QQmpvTHFuX1NodDcxb3ZpM1NwMUIwSW9N/view?usp=sharing)
 
 * [Scrum Board](https://trello.com/b/jSPVNzvU/scrum-sprint-3)
+
+* [Sprint 3 Report](https://docs.google.com/a/ucsc.edu/document/d/1iAKru9ynsei_7__pUBzKKjLtn9-ub5hypntN-pVRZJ0/edit?usp=sharing)
 
 * [Sprint 3 Burnup](https://docs.google.com/a/ucsc.edu/spreadsheets/d/1rm9Eb9H9CWt1EBSuoe9btEn_CoJRGJaJyyGwdAD-b2Y/edit?usp=sharing)
 
