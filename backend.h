@@ -91,4 +91,5 @@ void invokeImageToAscii(char* imgName);
 //check if screen currently exists to properly send commands
 int checkIfScreenExists();
 
+
 #endif

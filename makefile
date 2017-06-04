@@ -4,12 +4,13 @@
 CC = gcc
 FLAGS = -Wall
 OBJECTS = client.o frontend.o backend.o helpers.o winInfo.o inputHandler.o
+TESTOBJS = tests/AllTests.c tests/CuTest.c
 EXEBIN = lemonade
 
 all : lemonade
 
 lemonade : $(OBJECTS)
-	$(CC) -o $(EXEBIN) $(OBJECTS) -lmenu -lncurses
+	$(CC) -o $(EXEBIN) $(TESTOBJS) $(OBJECTS) -lmenu -lncurses
 
 helpers.o : helpers.h helpers.c
 	$(CC) -c $(FLAGS) helpers.c
